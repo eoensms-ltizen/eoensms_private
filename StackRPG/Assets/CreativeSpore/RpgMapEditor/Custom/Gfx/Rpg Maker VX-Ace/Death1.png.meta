@@ -1,0 +1,664 @@
+fileFormatVersion: 2
+guid: 21db1b6f0540b0f459981a9eb45b001b
+timeCreated: 1475915820
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Death1_0
+    21300002: Death1_1
+    21300004: Death1_2
+    21300006: Death1_3
+    21300008: Death1_4
+    21300010: Death1_5
+    21300012: Death1_6
+    21300014: Death1_7
+    21300016: Death1_8
+    21300018: Death1_9
+    21300020: Death1_10
+    21300022: Death1_11
+    21300024: Death1_12
+    21300026: Death1_13
+    21300028: Death1_14
+    21300030: Death1_15
+    21300032: Death1_16
+    21300034: Death1_17
+    21300036: Death1_18
+    21300038: Death1_19
+    21300040: Death1_20
+    21300042: Death1_21
+    21300044: Death1_22
+    21300046: Death1_23
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Death1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 768
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -71, y: 96}
+        - {x: -71, y: 73}
+        - {x: -10, y: -20}
+        - {x: 10, y: -20}
+        - {x: 66, y: 72}
+        - {x: 66, y: 96}
+    - name: Death1_1
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 768
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 65, y: 96}
+        - {x: 57, y: 96}
+        - {x: 46, y: 88}
+        - {x: -19, y: 96}
+        - {x: -69, y: 96}
+        - {x: -69, y: -2}
+        - {x: -58, y: -91}
+        - {x: -56, y: -96}
+        - {x: 56, y: -96}
+        - {x: 60, y: -91}
+        - {x: 54, y: -72}
+        - {x: 65, y: 50}
+    - name: Death1_2
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 768
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -55, y: -96}
+        - {x: 57, y: -96}
+        - {x: 57, y: 72}
+        - {x: -27, y: 72}
+        - {x: -55, y: 71}
+    - name: Death1_3
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 768
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -25, y: 8}
+        - {x: -55, y: -68}
+        - {x: -55, y: -96}
+        - {x: 57, y: -96}
+        - {x: 57, y: -53}
+        - {x: 48, y: 8}
+    - name: Death1_4
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 768
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 57, y: -81}
+        - {x: 13, y: -15}
+        - {x: -16, y: -15}
+        - {x: -55, y: -82}
+        - {x: -55, y: -96}
+        - {x: -38, y: -96}
+        - {x: -16, y: -61}
+        - {x: 48, y: -96}
+        - {x: 57, y: -96}
+    - name: Death1_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 76}
+        - {x: -36, y: 39}
+        - {x: -36, y: -42}
+        - {x: -31, y: -68}
+        - {x: 27, y: -68}
+        - {x: 30, y: -53}
+        - {x: 30, y: 43}
+        - {x: 9, y: 76}
+    - name: Death1_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: 84}
+        - {x: -36, y: 60}
+        - {x: -36, y: -66}
+        - {x: 29, y: -66}
+        - {x: 29, y: 37}
+        - {x: 5, y: 84}
+    - name: Death1_7
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 2, y: 91}
+        - {x: -17, y: 91}
+        - {x: -41, y: 58}
+        - {x: -41, y: -60}
+        - {x: -35, y: -77}
+        - {x: 22, y: -77}
+        - {x: 34, y: -55}
+        - {x: 34, y: 20}
+        - {x: 20, y: 65}
+    - name: Death1_8
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 89}
+        - {x: -38, y: 49}
+        - {x: -39, y: 26}
+        - {x: -39, y: -58}
+        - {x: -18, y: -82}
+        - {x: -1, y: -82}
+        - {x: 18, y: -75}
+        - {x: 43, y: -51}
+        - {x: 43, y: 17}
+        - {x: 15, y: 89}
+    - name: Death1_9
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -41, y: 90}
+        - {x: -42, y: 84}
+        - {x: -42, y: -84}
+        - {x: -36, y: -88}
+        - {x: 4, y: -88}
+        - {x: 39, y: -76}
+        - {x: 43, y: -48}
+        - {x: 43, y: 25}
+        - {x: 7, y: 90}
+    - name: Death1_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -23, y: 92}
+        - {x: -42, y: 67}
+        - {x: -42, y: -61}
+        - {x: -28, y: -94}
+        - {x: -4, y: -94}
+        - {x: 40, y: -64}
+        - {x: 43, y: -51}
+        - {x: 43, y: 44}
+        - {x: 9, y: 92}
+    - name: Death1_11
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 39, y: 27}
+        - {x: -33, y: 27}
+        - {x: -33, y: -18}
+        - {x: -20, y: -20}
+        - {x: 25, y: -20}
+        - {x: 42, y: 15}
+        - {x: 42, y: 24}
+    - name: Death1_12
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 41}
+        - {x: -33, y: 39}
+        - {x: -44, y: 35}
+        - {x: -44, y: 14}
+        - {x: -42, y: 7}
+        - {x: -20, y: -20}
+        - {x: 22, y: -20}
+        - {x: 56, y: 20}
+        - {x: 56, y: 37}
+        - {x: 53, y: 41}
+    - name: Death1_13
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -46, y: 55}
+        - {x: -48, y: 53}
+        - {x: -48, y: 12}
+        - {x: -26, y: -20}
+        - {x: 25, y: -20}
+        - {x: 62, y: 37}
+        - {x: 62, y: 50}
+        - {x: 60, y: 55}
+    - name: Death1_14
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 44}
+        - {x: 9, y: 6}
+        - {x: 9, y: 4}
+        - {x: 7, y: 0}
+        - {x: 8, y: 2}
+        - {x: 8, y: 8}
+        - {x: -2, y: 28}
+        - {x: -9, y: 33}
+        - {x: -20, y: 53}
+        - {x: -42, y: 62}
+        - {x: -49, y: 60}
+        - {x: -49, y: 20}
+        - {x: -35, y: -18}
+        - {x: 21, y: -18}
+        - {x: 63, y: 26}
+        - {x: 63, y: 65}
+        - {x: 31, y: 65}
+    - name: Death1_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 41, y: 79}
+        - {x: 28, y: 72}
+        - {x: 5, y: 55}
+        - {x: 9, y: 5}
+        - {x: 8, y: 2}
+        - {x: 8, y: -2}
+        - {x: 8, y: 8}
+        - {x: -2, y: 40}
+        - {x: -10, y: 46}
+        - {x: -20, y: 46}
+        - {x: -21, y: 65}
+        - {x: -32, y: 75}
+        - {x: -50, y: 66}
+        - {x: -50, y: 15}
+        - {x: -28, y: -17}
+        - {x: -16, y: -17}
+        - {x: -11, y: -15}
+        - {x: -9, y: -13}
+        - {x: -5, y: -17}
+        - {x: 24, y: -17}
+        - {x: 66, y: 24}
+        - {x: 66, y: 79}
+    - name: Death1_16
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: 56}
+        - {x: -24, y: 53}
+        - {x: -24, y: 51}
+        - {x: -25, y: 50}
+        - {x: -25, y: 30}
+        - {x: -25, y: 51}
+        - {x: -24, y: 52}
+        - {x: -23, y: 58}
+        - {x: -25, y: 64}
+        - {x: -27, y: 68}
+        - {x: -44, y: 68}
+        - {x: -49, y: 66}
+        - {x: -49, y: 16}
+        - {x: -20, y: -16}
+        - {x: 7, y: -16}
+        - {x: 7, y: 62}
+        - {x: -18, y: 61}
+      - - {x: 38, y: 78}
+        - {x: 36, y: 71}
+        - {x: 36, y: 55}
+        - {x: 40, y: 48}
+        - {x: 26, y: 64}
+        - {x: 7, y: 55}
+        - {x: 10, y: 46}
+        - {x: 1, y: -4}
+        - {x: 1, y: -16}
+        - {x: 13, y: -16}
+        - {x: 53, y: 4}
+        - {x: 65, y: 42}
+        - {x: 65, y: 77}
+        - {x: 60, y: 78}
+    - name: Death1_17
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 14, y: 77}
+        - {x: 9, y: 75}
+        - {x: 2, y: 19}
+        - {x: 2, y: -16}
+        - {x: 25, y: -16}
+        - {x: 64, y: 12}
+        - {x: 64, y: 77}
+      - - {x: -48, y: 72}
+        - {x: -48, y: 26}
+        - {x: -38, y: -7}
+        - {x: -8, y: -15}
+        - {x: 5, y: -15}
+        - {x: 7, y: -14}
+        - {x: 7, y: 61}
+        - {x: 2, y: 72}
+    - name: Death1_18
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 40, y: 76}
+        - {x: 36, y: 74}
+        - {x: 38, y: 55}
+        - {x: 28, y: 58}
+        - {x: 19, y: 59}
+        - {x: 10, y: 55}
+        - {x: 2, y: -2}
+        - {x: 2, y: -15}
+        - {x: 24, y: -15}
+        - {x: 63, y: 20}
+        - {x: 63, y: 74}
+        - {x: 62, y: 76}
+      - - {x: -9, y: 87}
+        - {x: -24, y: 87}
+        - {x: -31, y: 80}
+        - {x: -24, y: 63}
+        - {x: -29, y: 68}
+        - {x: -44, y: 69}
+        - {x: -47, y: 63}
+        - {x: -47, y: 9}
+        - {x: -27, y: -11}
+        - {x: 6, y: -11}
+        - {x: 6, y: 55}
+        - {x: 1, y: 83}
+    - name: Death1_19
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 76}
+        - {x: 7, y: -7}
+        - {x: 10, y: -10}
+        - {x: 29, y: -10}
+        - {x: 61, y: 34}
+        - {x: 61, y: 72}
+        - {x: 59, y: 76}
+      - - {x: -46, y: 23}
+        - {x: -44, y: 4}
+        - {x: -26, y: -9}
+        - {x: -5, y: -9}
+        - {x: -5, y: 51}
+        - {x: -7, y: 66}
+        - {x: -45, y: 66}
+        - {x: -46, y: 65}
+      - - {x: -28, y: 18}
+        - {x: -7, y: 2}
+        - {x: 6, y: 2}
+        - {x: 6, y: 64}
+        - {x: -2, y: 90}
+        - {x: -29, y: 90}
+        - {x: -29, y: 36}
+    - name: Death1_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 42, y: 75}
+        - {x: 39, y: 74}
+        - {x: 12, y: 70}
+        - {x: 11, y: 52}
+        - {x: 9, y: 28}
+        - {x: 9, y: -8}
+        - {x: 25, y: -8}
+        - {x: 47, y: 1}
+        - {x: 60, y: 45}
+        - {x: 60, y: 75}
+      - - {x: -45, y: 65}
+        - {x: -45, y: 9}
+        - {x: -40, y: 4}
+        - {x: -17, y: -7}
+        - {x: -8, y: -7}
+        - {x: -8, y: 40}
+        - {x: -27, y: 65}
+      - - {x: -28, y: 89}
+        - {x: -28, y: 39}
+        - {x: -18, y: 4}
+        - {x: 4, y: 4}
+        - {x: 4, y: 23}
+        - {x: -1, y: 83}
+        - {x: -4, y: 89}
+    - name: Death1_21
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 15, y: 56}
+        - {x: 15, y: 48}
+        - {x: 11, y: 15}
+        - {x: 11, y: -6}
+        - {x: 32, y: -6}
+        - {x: 43, y: 11}
+        - {x: 43, y: 51}
+        - {x: 34, y: 56}
+      - - {x: -44, y: 65}
+        - {x: -44, y: 23}
+        - {x: -42, y: 2}
+        - {x: -28, y: -5}
+        - {x: -11, y: -5}
+        - {x: -11, y: 7}
+        - {x: -14, y: 22}
+        - {x: -23, y: 51}
+        - {x: -31, y: 65}
+      - - {x: -27, y: 50}
+        - {x: -18, y: 6}
+        - {x: 2, y: 6}
+        - {x: 2, y: 34}
+        - {x: -3, y: 84}
+        - {x: -14, y: 89}
+        - {x: -27, y: 89}
+      - - {x: 56, y: 74}
+        - {x: 46, y: 74}
+        - {x: 42, y: 73}
+        - {x: 42, y: 28}
+        - {x: 49, y: 28}
+        - {x: 58, y: 41}
+        - {x: 59, y: 55}
+        - {x: 59, y: 71}
+    - name: Death1_22
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -17, y: 28}
+        - {x: -25, y: 17}
+        - {x: -27, y: 6}
+        - {x: -27, y: -18}
+        - {x: -25, y: -26}
+        - {x: -10, y: -30}
+        - {x: 20, y: -30}
+        - {x: 27, y: -26}
+        - {x: 27, y: 23}
+        - {x: 13, y: 28}
+    - name: Death1_23
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -33, y: 55}
+        - {x: -54, y: 43}
+        - {x: -54, y: -46}
+        - {x: -32, y: -55}
+        - {x: 31, y: -55}
+        - {x: 55, y: -36}
+        - {x: 55, y: 45}
+        - {x: 16, y: 55}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

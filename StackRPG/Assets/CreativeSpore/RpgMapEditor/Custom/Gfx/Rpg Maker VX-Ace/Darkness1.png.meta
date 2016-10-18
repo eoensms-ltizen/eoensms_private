@@ -1,0 +1,260 @@
+fileFormatVersion: 2
+guid: 99846ed1fb4e7a64fa108ba38ba202c7
+timeCreated: 1475715528
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Darkness1_0
+    21300002: Darkness1_1
+    21300004: Darkness1_2
+    21300006: Darkness1_3
+    21300008: Darkness1_4
+    21300010: Darkness1_5
+    21300012: Darkness1_6
+    21300014: Darkness1_7
+    21300016: Darkness1_8
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Darkness1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 29, y: 63}
+        - {x: -37, y: 63}
+        - {x: -63, y: 32}
+        - {x: -63, y: -48}
+        - {x: -39, y: -64}
+        - {x: 48, y: -64}
+        - {x: 62, y: -51}
+        - {x: 63, y: -47}
+        - {x: 63, y: 46}
+    - name: Darkness1_1
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 42, y: 63}
+        - {x: -30, y: 63}
+        - {x: -63, y: 40}
+        - {x: -63, y: -41}
+        - {x: -53, y: -62}
+        - {x: -45, y: -64}
+        - {x: 29, y: -64}
+        - {x: 64, y: -29}
+        - {x: 64, y: 32}
+        - {x: 63, y: 41}
+    - name: Darkness1_2
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -62, y: 63}
+        - {x: -62, y: -35}
+        - {x: -34, y: -64}
+        - {x: 36, y: -64}
+        - {x: 63, y: -39}
+        - {x: 63, y: 63}
+    - name: Darkness1_3
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -47, y: 63}
+        - {x: -62, y: 53}
+        - {x: -62, y: -52}
+        - {x: -47, y: -65}
+        - {x: 41, y: -65}
+        - {x: 62, y: -50}
+        - {x: 62, y: 46}
+        - {x: 31, y: 63}
+    - name: Darkness1_4
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 45, y: 86}
+        - {x: -45, y: 86}
+        - {x: -70, y: 46}
+        - {x: -88, y: 11}
+        - {x: -88, y: -30}
+        - {x: -42, y: -83}
+        - {x: 25, y: -83}
+        - {x: 75, y: -65}
+        - {x: 81, y: -31}
+        - {x: 81, y: 59}
+        - {x: 50, y: 85}
+    - name: Darkness1_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 48, y: 86}
+        - {x: -63, y: 86}
+        - {x: -88, y: 31}
+        - {x: -88, y: -40}
+        - {x: -69, y: -61}
+        - {x: -59, y: -59}
+        - {x: -58, y: -56}
+        - {x: -37, y: -78}
+        - {x: -23, y: -83}
+        - {x: 1, y: -85}
+        - {x: 35, y: -85}
+        - {x: 56, y: -68}
+        - {x: 82, y: -32}
+        - {x: 82, y: 69}
+    - name: Darkness1_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 63, y: 86}
+        - {x: -56, y: 86}
+        - {x: -75, y: 78}
+        - {x: -86, y: 49}
+        - {x: -86, y: -26}
+        - {x: -75, y: -76}
+        - {x: -29, y: -84}
+        - {x: 37, y: -84}
+        - {x: 71, y: -63}
+        - {x: 83, y: -45}
+        - {x: 83, y: 51}
+    - name: Darkness1_7
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 54, y: -69}
+        - {x: 57, y: -59}
+        - {x: 50, y: -55}
+        - {x: 77, y: 11}
+        - {x: 77, y: 37}
+        - {x: 69, y: 71}
+        - {x: 17, y: 82}
+        - {x: -42, y: 82}
+        - {x: -77, y: 68}
+        - {x: -77, y: -73}
+        - {x: -26, y: -73}
+        - {x: -25, y: -69}
+        - {x: 10, y: -73}
+        - {x: 25, y: -73}
+    - name: Darkness1_8
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: 80}
+        - {x: -14, y: 80}
+        - {x: -15, y: 75}
+        - {x: -85, y: 69}
+        - {x: -85, y: -67}
+        - {x: -60, y: -54}
+        - {x: -57, y: -52}
+        - {x: 17, y: -68}
+        - {x: 54, y: -68}
+        - {x: 73, y: -58}
+        - {x: 82, y: -26}
+        - {x: 82, y: 64}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
