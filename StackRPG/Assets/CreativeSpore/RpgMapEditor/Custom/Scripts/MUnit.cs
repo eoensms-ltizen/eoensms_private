@@ -59,15 +59,16 @@ namespace stackRPG
         AttackEnemy,        
         FindEnemy,
         ChaseTarget,
+        AvoidTarget,
         AttackHold,
         PathMove,
     }
 
     public enum Propensity
     {
-        Normal,
-        Chase,
-        Avoid,
+        Avoid = 0,
+        Normal = 1,
+        Chase = 2,
     }
 
     public enum Type
@@ -91,10 +92,18 @@ namespace stackRPG
         }
     }
 
+    public enum WeaponType
+    {
+        Sword,
+        Gun,
+        Magic,
+    }
+
     [Serializable]
     public struct Weapon
     {
         public bool m_enable;
+        public WeaponType m_weaponType;
         public GameObject m_effectPrefab;
         public GameObject m_criticalEffectPrefab;
         public float m_range;
@@ -108,9 +117,10 @@ namespace stackRPG
         public float m_holdTime;
 
 
-        public Weapon(bool enable, GameObject effectPrefab, GameObject criticalEffectPrefab, float range, int power, float force, float delay, float holdTime)
+        public Weapon(bool enable, WeaponType weaponType, GameObject effectPrefab, GameObject criticalEffectPrefab, float range, int power, float force, float delay, float holdTime)
         {
             m_enable = enable;
+            m_weaponType = weaponType;
             m_effectPrefab = effectPrefab;
             m_criticalEffectPrefab = criticalEffectPrefab;
             m_range = range;
@@ -129,12 +139,14 @@ namespace stackRPG
         public float MinDistToReachTarget = 0.16f;
 
         public MovingBehaviour m_moving;
+        public CharAnimationController m_animCtrl;
         public SpriteRenderer m_spriteRenderer;
         public MapPathFindingBehaviour m_pathFindingBehaviour;
 
         public Guid m_guid;
         void Awake()
         {
+            m_animCtrl = GetComponent<CharAnimationController>();
             m_moving = GetComponent<MovingBehaviour>();
             m_pathFindingBehaviour = GetComponent<MapPathFindingBehaviour>();
             m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -174,6 +186,9 @@ namespace stackRPG
         public float m_attackCoolTime;
         public float m_attackHoldTime;
 
+        //! 날때린 녀석        
+        public Dictionary<Guid, MUnit> m_damage_enemys = new Dictionary<Guid, MUnit>();
+
         //! 타겟 적군
         public MUnit m_target_enemy;
         //! 타겟 아군
@@ -206,8 +221,11 @@ namespace stackRPG
         }
 
         //! 주체, 데미지 타입, 데미지 크기 등이 있어야한다.
-        public void OnDamage(Damage damage)
+        public void OnDamage(MUnit enemy, Damage damage)
         {
+            //! 때린놈을 기억한다.
+            if (m_propensity > Propensity.Avoid) AddAttackOnMeEnemy(enemy);
+
             m_hp -= damage.m_power;
             if(m_hp <= 0) { ChangeState(State.Dead); }
             else
@@ -258,36 +276,59 @@ namespace stackRPG
                                     {
                                         case Propensity.Chase:
                                             {
+                                                //! 때리면 문다.
+                                                if (m_target_enemy == null) { m_target_enemy = GetNearestAttackOnMeEnemy(ref m_target_enemy); }
+
                                                 //! 옆에오면 문다.
                                                 if (m_target_enemy == null) { ChangeAction(Action.FindEnemy); return; }
+
+                                                //! 평상시 이동
+                                                if (m_target_enemy == null) { return; }
+
+                                                //! 타겟이있다면, 쫒아가
                                                 if (IsInAttackRange(m_target_enemy) == false) { ChangeAction(Action.ChaseTarget); return; }
 
+                                                //! 사정거리 안이라면, 공격
                                                 ChangeAction(Action.AttackEnemy);
                                             }
                                             break;
-                                        //case Propensity.Normal:
-                                        //    {
-                                        //        //! 때리면 문다.
-                                        //    }
-                                        //    break;
-                                        //case Propensity.Avoid:
-                                        //    {
-                                        //        //! 때리면 도망간다.
-                                        //    }
-                                        //    break;
-                                        default:
+                                        case Propensity.Normal:
                                             {
-                                                //! 일단 움직이게되면, 서려고 애쓴다.
-                                                //m_moving.ApplyForce((-m_moving.Veloc).normalized * m_moving.MaxForce * Time.deltaTime);
+                                                //! 때리면 문다.
+                                                if (m_target_enemy == null) { m_target_enemy = GetNearestAttackOnMeEnemy(ref m_target_enemy); }
+
+                                                //! 평상시 이동
+                                                if (m_target_enemy == null) { return; }
+
+                                                //! 타겟이있다면, 쫒아가
+                                                if (IsInAttackRange(m_target_enemy) == false) { ChangeAction(Action.ChaseTarget); return; }
+
+                                                //! 사정거리 안이라면, 공격
+                                                ChangeAction(Action.AttackEnemy);
                                             }
                                             break;
+                                        case Propensity.Avoid:
+                                            {
+                                                //! 때리면 도망간다.                                                
+                                                if (m_target_enemy == null) { m_target_enemy = GetNearestAttackOnMeEnemy(ref m_target_enemy); }
+
+                                                //! 평상시 이동
+                                                if (m_target_enemy == null) { return; }
+
+                                                //! 사정거리 밖이면, 위험제거
+                                                if (IsInAttackRange(m_target_enemy) == false) { m_target_enemy = null;  return; }
+
+                                                //! 사정거리 안이면, 도망가
+                                                ChangeAction(Action.AvoidTarget);
+                                            }
+                                            break;                                        
                                     }
                                 }
                                 break;
                             case Action.PathMove:
                                 {
-                                    if (IsInMoveRange(this) == true) { m_pathFindingBehaviour.enabled = false; ChangeAction(Action.None);}
-                                    else
+                                    //if (IsInMoveRange(this) == true) { m_pathFindingBehaviour.enabled = false; ChangeAction(Action.None);}
+                                    //else
                                     {
                                         Vector3 vTarget = m_pathFindingBehaviour.TargetPos;
                                         vTarget.z = transform.position.z;
@@ -319,16 +360,19 @@ namespace stackRPG
                                 break;
                             case Action.FindEnemy:
                                 {
-                                    if(FindEnemy(ref m_target_enemy) == true) ChangeAction(Action.None);
-                                    else m_moving.Arrive(m_rangeCenterPosition);
+                                    if (FindEnemy(ref m_target_enemy) == true) ChangeAction(Action.None);
+                                    else
+                                    {
+                                        m_moving.Arrive(m_rangeCenterPosition);
+                                        ChangeAction(Action.None);
+                                    }
                                 }   
                                 break;
                             case Action.ChaseTarget:
                                 {
                                     //! 타겟이 특정 지역에서 벗어나면 놓는다.
                                     if (IsInMoveRange(m_target_enemy) == false)
-                                    {
-                                        Debug.Log(m_target_enemy.name + " 이 범위를 벗어났습니다.");
+                                    {   
                                         m_target_enemy = null;
                                     }
 
@@ -338,6 +382,24 @@ namespace stackRPG
                                     if (IsInAttackRange(m_target_enemy) == true) { m_moving.Arrive(transform.position); ChangeAction(Action.None); return; }
 
                                     Vector3 vTarget = m_target_enemy.transform.position; vTarget.z = transform.position.z;
+
+                                    //! 계속 거기로 가려한다.
+                                    m_moving.Arrive(vTarget);
+                                }
+                                break;
+                            case Action.AvoidTarget:
+                                {
+                                    if (IsInMoveRange(m_target_enemy) == false)
+                                    {
+                                        m_target_enemy = null;
+                                    }
+
+                                    if (m_target_enemy == null) { ChangeAction(Action.None); return; }
+
+                                    //! 공격 사정거리 안에 들어오면
+                                    if (IsInAttackRange(m_target_enemy) == true) { m_moving.Arrive(transform.position); ChangeAction(Action.None); return; }
+
+                                    Vector3 vTarget = -m_target_enemy.transform.position; vTarget.z = transform.position.z;
 
                                     //! 계속 거기로 가려한다.
                                     m_moving.Arrive(vTarget);
@@ -359,7 +421,7 @@ namespace stackRPG
                                     }
 
                                     Damage damage = new Damage(m_weapon.m_power, (m_target_enemy.transform.position - transform.position).normalized * m_weapon.m_force);
-                                    m_target_enemy.OnDamage(damage);
+                                    m_target_enemy.OnDamage(this, damage);
                                     m_attackCoolTime = m_weapon.m_delay;
                                     m_attackHoldTime = m_weapon.m_holdTime;
                                     ChangeAction(Action.AttackHold);
@@ -367,9 +429,86 @@ namespace stackRPG
                                 }
                                 break;
                         }
+
+                        UpdateAnimDir();
                     }
                     break;
             }
+        }
+
+        void UpdateAnimDir()
+        {
+            float absVx = Mathf.Abs(m_moving.Veloc.x);
+            float absVy = Mathf.Abs(m_moving.Veloc.y);
+            m_animCtrl.IsAnimated = true;
+            if (absVx > absVy)
+            {
+                if (m_moving.Veloc.x > 0)
+                    m_animCtrl.CurrentDir = CharAnimationController.eDir.RIGHT;
+                else if (m_moving.Veloc.x < 0)
+                    m_animCtrl.CurrentDir = CharAnimationController.eDir.LEFT;
+            }
+            else if (absVy > 0f)
+            {
+                if (m_moving.Veloc.y > 0)
+                    m_animCtrl.CurrentDir = CharAnimationController.eDir.UP;
+                else if (m_moving.Veloc.y < 0)
+                    m_animCtrl.CurrentDir = CharAnimationController.eDir.DOWN;
+            }
+            else
+            {
+                m_animCtrl.IsAnimated = false;
+            }
+        }
+
+
+        public void AddAttackOnMeEnemy(MUnit unit)
+        {
+            if (unit == null) return;
+            if (m_damage_enemys.ContainsKey(unit.m_guid) == true) return;
+
+            m_damage_enemys.Add(unit.m_guid, unit);
+        }
+
+        public bool IsAttackOnMeEnemy(MUnit unit)
+        {
+            if (unit == null) return false;
+            return m_damage_enemys.ContainsKey(unit.m_guid);
+        }
+
+        public void RemoveAttackOnMeEnemy(MUnit unit)
+        {
+            if (unit == null) return;
+            if (m_damage_enemys.ContainsKey(unit.m_guid) == false) return;
+
+            m_damage_enemys.Remove(unit.m_guid);
+        }
+
+        public MUnit GetNearestAttackOnMeEnemy(ref MUnit unit)
+        {   
+            float sqrMagnitude = 0;
+            foreach(KeyValuePair<Guid,MUnit> value in m_damage_enemys)
+            {
+                if (value.Value == null) continue;
+
+                if (unit == null || sqrMagnitude > (value.Value.transform.position - transform.position).sqrMagnitude)
+                {
+                    unit = value.Value;
+                    sqrMagnitude = (value.Value.transform.position - transform.position).sqrMagnitude;
+                }
+            }
+
+            return unit;
+        }
+
+        public void SetAttackPoint(Vector2 point)
+        {
+            SetMoveRange(point, 0);
+        }
+
+        public void SetMovePoint(Vector2 point)
+        {
+            //! 일단 닥치고 이동한다. 그다음은? 홀드다.
         }
 
         public void SetMoveRange(Vector2 rangeCenterPosition, float range)
@@ -384,6 +523,10 @@ namespace stackRPG
         private bool IsInMoveRange(MUnit unit)
         {
             if (unit == null) return false;
+
+            //! 적이 날 공격한적이있다면, 이동할수있다고 판단한다.
+            if (IsAttackOnMeEnemy(unit) == true) return true;
+
             if ((unit.transform.position - m_rangeCenterPosition).magnitude > m_findRange) return false;
             return true;
         }

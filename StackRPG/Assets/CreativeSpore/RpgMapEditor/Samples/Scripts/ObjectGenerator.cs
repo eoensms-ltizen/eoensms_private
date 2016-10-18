@@ -11,7 +11,7 @@ namespace CreativeSpore
 		public int MaxNumberOfEntities = -1; // < 0 for infinite
 		public Vector3 Offset = default(Vector3);
 
-		[SerializeField]
+        [SerializeField]
 		private List<GameObject> m_listOfEntities = new List<GameObject>();
 
 		void Start()
