@@ -17,8 +17,6 @@ namespace stackRPG
 
         public Text m_text;
         private LinkedListNode<MUnit> m_unitLinkedListNode;
-        private UnityAction m_changeActionDelegate = null;
-        private UnityAction m_changeStateDelegate = null;
 
         private FollowObjectBehaviour m_followObjectBehaviour;
 
@@ -34,49 +32,19 @@ namespace stackRPG
         public ClickAction m_clickAction_left;
         public ClickAction m_clickAction_right;
 
+        public bool m_isTouching = false;
+
+        public Vector2 m_dragPoint_1;
+        public Vector2 m_dragPoint_2;
+
 
         void Start()
         {
             m_text = GetComponent<Text>();
 
             m_followObjectBehaviour = Camera.main.GetComponent<FollowObjectBehaviour>();
-
-            m_changeActionDelegate = () => 
-            {
-                //Debug.Log(m_target.m_action.ToString());
-            };
-            m_changeStateDelegate = () => 
-            {
-                //Debug.Log(m_target.m_state.ToString());
-            };
         }
-
         
-
-        void SetTarget(MUnit unit)
-        {
-            //! 이벤트 해지
-            if (m_target != null)
-            {
-                m_target.m_changeActionDelegate -= m_changeActionDelegate;
-                m_target.m_changeStateDelegate -= m_changeStateDelegate;
-            }
-
-            m_target = unit;
-
-            if (m_followObjectBehaviour != null)
-            {
-                if (m_target != null) m_followObjectBehaviour.SetTarget(m_target.transform);
-                else m_followObjectBehaviour.SetTarget(null);
-            }
-
-            //! 이벤트 등록
-            if (m_target != null)
-            {
-                m_target.m_changeActionDelegate += m_changeActionDelegate;
-                m_target.m_changeStateDelegate += m_changeStateDelegate;
-            }
-        }
 
         void UnSelect()
         {
@@ -97,10 +65,79 @@ namespace stackRPG
             else m_clickAction_right = ClickAction.Move;
         }
 
+        void SetTextPosition(Vector3 position)
+        {   
+            position.z = m_text.transform.position.z;
+            m_text.transform.position = position;
+        }
+
+        void DrawInfo()
+        {
+            if (m_targets.Count == 0)
+            {
+                m_text.text = "Click! Mouse rightButton\n Press Tab!";
+               
+                SetTextPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            }
+            else if(m_targets.Count == 1)
+            {
+                MUnit target = m_targets[0];
+                
+                m_text.text = "State : " + target.m_state;
+                m_text.text += "\nCommand : " + target.m_command;
+                m_text.text += "\nHp : " + target.m_hp;
+                m_text.text += "\nPower : " + target.m_weapon.m_power;
+                m_text.text += "\nCoolTime : " + target.m_attackCoolTime + " / " + target.m_weapon.m_delay;
+                
+                SetTextPosition(target.transform.position);
+            }
+            else
+            {
+                m_text.text = "Ready to Command!!";
+
+                SetTextPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            }
+        }
+
         void Update()
         {
+            DrawInfo();
+
+            if (m_targets.Count > 0)
+            {
+                if (Input.GetKeyDown(KeyCode.H))
+                {
+                    foreach (MUnit unit in m_targets)
+                    {
+                        unit.CommandHold();
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.S))
+                {
+                    foreach (MUnit unit in m_targets)
+                    {
+                        unit.CommandStop();
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.N))
+                {
+                    foreach (MUnit unit in m_targets)
+                    {
+                        unit.CommandNone();
+                    }
+                }
+            }
+
+
             if (m_clickAction_left == ClickAction.Select)
             {
+                if (m_targets.Count > 0)
+                {
+                    if (Input.GetKeyDown(KeyCode.A)) { m_clickAction_left = ClickAction.Attack; return; }
+                }
+
                 if (Input.GetMouseButtonDown(0))
                 {
                     m_isTouching = true;
@@ -118,6 +155,19 @@ namespace stackRPG
                     Select(Physics2D.OverlapAreaAll(m_dragPoint_1, m_dragPoint_2, -1));
                 }
             }
+            else if(m_clickAction_left == ClickAction.Attack)
+            {
+                if (m_targets.Count == 0) { m_clickAction_left = ClickAction.Select; return; }
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    foreach (MUnit unit in m_targets)
+                    {
+                        unit.CommandAttackGround(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                    }                    
+                    m_clickAction_left = ClickAction.Select; return;
+                }
+            }
 
             if (m_clickAction_right == ClickAction.Move)
             {
@@ -125,7 +175,7 @@ namespace stackRPG
                 {
                     foreach (MUnit unit in m_targets)
                     {
-                        unit.SetAttackPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                        unit.CommandMoveGround(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                     }
                 }
             }
@@ -134,201 +184,15 @@ namespace stackRPG
             {
                 UnSelect();
             }
-
-            //TargetControll();
-            //RangeSelect();
-            //
-            //if (Input.GetKeyDown(KeyCode.Escape))
-            //{
-            //    SetTarget(null);
-            //    m_targets.Clear();
-            //    m_unitLinkedListNode = null;
-            //}
-            //
-            //if (Input.GetKeyDown(KeyCode.Tab))
-            //{
-            //    if (m_unitLinkedListNode == null)
-            //    {
-            //        if (m_target == null) { m_unitLinkedListNode = MGameManager.Instance.m_unitLinkedList.First; }
-            //        else
-            //        {
-            //            m_unitLinkedListNode = MGameManager.Instance.m_unitLinkedList.Find(m_target);
-            //
-            //            if (m_unitLinkedListNode.Next == null) { m_unitLinkedListNode = MGameManager.Instance.m_unitLinkedList.First; }
-            //            else { m_unitLinkedListNode = m_unitLinkedListNode.Next; }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (m_target != null && m_target != m_unitLinkedListNode.Value) { m_unitLinkedListNode = MGameManager.Instance.m_unitLinkedList.Find(m_target); }
-            //
-            //        if (m_unitLinkedListNode.Next == null) { m_unitLinkedListNode = MGameManager.Instance.m_unitLinkedList.First; }
-            //        else { m_unitLinkedListNode = m_unitLinkedListNode.Next; }
-            //    }
-            //
-            //    SetTarget(m_unitLinkedListNode.Value);
-            //}
-            //
-            //if(Input.GetMouseButtonDown(1) == true)
-            //{
-            //    Vector2 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //    Ray2D ray = new Ray2D(wp, Vector2.zero);
-            //    RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-            //
-            //    if (hit.collider == null) SetTarget(null);
-            //
-            //    if (hit.collider != null && hit.collider.CompareTag("Unit") == true)
-            //    {
-            //        SetTarget(hit.transform.GetComponent<MUnit>());
-            //    }
-            //}
-            //
-            //if (m_target == null) m_text.text = "Click! Mouse rightButton\n Press Tab!";
-            //if (m_target != null)
-            //{
-            //    Vector3 pos = m_target.transform.position;//Camera.main.WorldToScreenPoint(headSquare.m_transform.position + m_nickNamePosition);
-            //    pos.z = 0;
-            //    m_text.transform.position = pos;
-            //
-            //    m_text.text = m_target.m_state.ToString() + "\n" + m_target.m_action.ToString();
-            //}
         }
 
-        public bool m_isTouching = false;
-        float m_findRange;
-        Vector3 m_rangeCenterPosition;
-
-        Vector2 m_dragPoint_1;
-        Vector2 m_dragPoint_2;
-
-
-        float m_maxFindRange = 3;
-        float m_minFindRange = 1;
-
-        void RangeSelect()
-        {
-            if (m_target == null && m_targets.Count == 0)
-            {
-                //! 마우스 드레그 타게팅
-                if (m_isTouching == false && Input.GetMouseButtonDown(0))
-                {
-                    m_targets.Clear();
-                    m_isTouching = true;
-                    m_findRange = m_minFindRange;
-                }
-                else if (m_isTouching == true && Input.GetMouseButtonUp(0))
-                {
-                    //! 터치를 종료하면, 찾는다
-                    m_isTouching = false;
-
-                    Collider2D[] cols = Physics2D.OverlapCircleAll(m_rangeCenterPosition, m_findRange, -1);
-
-                    if(cols.Length == 1) SetTarget(cols[0].GetComponent<MUnit>());
-                    else
-                    {
-                        foreach (Collider2D col in cols)
-                        {
-                            if (col.CompareTag("Unit") == true) m_targets.Add(col.GetComponent<MUnit>());
-                        }
-                    }
-                }
-
-                if (m_isTouching == true)
-                {
-                    //! 터치중 범위를 늘린다.
-
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    Plane hPlane = new Plane(Vector3.forward, Vector3.zero);
-                    float distance = 0;
-                    if (hPlane.Raycast(ray, out distance))
-                    {
-                        m_rangeCenterPosition = ray.GetPoint(distance);
-                    }
-                    m_findRange += Time.deltaTime;
-                    if (m_findRange > m_maxFindRange) m_findRange = m_maxFindRange;
-                }
-            }
-        }
-
-        void TargetControll()
-        {
-            if(m_targets.Count > 1)
-            {
-                //! 타게팅된 녀석을 컨트롤한다.
-                if (m_isTouching == false && Input.GetMouseButtonDown(0))
-                {
-                    //! 터치시작시, 범위 초기화
-                    m_isTouching = true;
-                    m_findRange = 0;
-
-
-                }
-                else if (m_isTouching == true && Input.GetMouseButtonUp(0))
-                {
-                    //! 터치를 종료하면, 이동명령한다.
-                    m_isTouching = false;
-                    foreach(MUnit unit in m_targets)
-                    {
-                        unit.SetMoveRange(m_rangeCenterPosition, m_findRange);
-                    }
-                }
-
-                if (m_isTouching == true)
-                {
-                    //! 터치중 범위를 늘린다.
-
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    Plane hPlane = new Plane(Vector3.forward, Vector3.zero);
-                    float distance = 0;
-                    if (hPlane.Raycast(ray, out distance))
-                    {
-                        m_rangeCenterPosition = ray.GetPoint(distance);
-                    }
-                    m_findRange += Time.deltaTime;
-                }
-            }
-
-            if (m_target != null)
-            {
-                //! 타게팅된 녀석을 컨트롤한다.
-                if (m_isTouching == false && Input.GetMouseButtonDown(0))
-                {
-                    //! 터치시작시, 범위 초기화
-                    m_isTouching = true;
-                    m_findRange = m_target.m_minFindRange;
-
-
-                }
-                else if (m_isTouching == true && Input.GetMouseButtonUp(0))
-                {
-                    //! 터치를 종료하면, 이동명령한다.
-                    m_isTouching = false;
-                    m_target.SetMoveRange(m_rangeCenterPosition, m_findRange);
-                }
-
-                if (m_isTouching == true)
-                {
-                    //! 터치중 범위를 늘린다.
-
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    Plane hPlane = new Plane(Vector3.forward, Vector3.zero);
-                    float distance = 0;
-                    if (hPlane.Raycast(ray, out distance))
-                    {
-                        m_rangeCenterPosition = ray.GetPoint(distance);
-                    }
-                    m_findRange += Time.deltaTime;
-                    if (m_findRange > m_target.m_maxFindRange) m_findRange = m_target.m_maxFindRange;
-                }
-            }
-        }
+        
+        
 
         void OnDrawGizmos()
         {
             if(m_isTouching == true && m_clickAction_left == ClickAction.Select)
             {
-                //Gizmos.DrawLine(m_dragPoint_1, m_dragPoint_2);
-
                 Vector2 point3 = new Vector2(m_dragPoint_1.x, m_dragPoint_2.y);
                 Vector2 point4 = new Vector2(m_dragPoint_2.x, m_dragPoint_1.y);
 
@@ -337,6 +201,20 @@ namespace stackRPG
                 Gizmos.DrawLine(m_dragPoint_1, point4);
                 Gizmos.DrawLine(m_dragPoint_2, point3);
                 Gizmos.DrawLine(m_dragPoint_2, point4);
+            }
+
+            if(m_clickAction_left == ClickAction.Attack)
+            {
+                
+                Gizmos.color = new Color(1, 0, 0, 0.5f);
+                Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                point.z = 0;
+
+                Gizmos.DrawSphere(point, 0.1f);
+                Gizmos.DrawLine(point, point + Vector3.right * 0.2f);
+                Gizmos.DrawLine(point, point + Vector3.left * 0.2f);
+                Gizmos.DrawLine(point, point + Vector3.up * 0.2f);
+                Gizmos.DrawLine(point, point + Vector3.down * 0.2f);
             }
 
             if (m_targets.Count > 0)
