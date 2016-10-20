@@ -19,6 +19,17 @@ public static class MSettings
         Debug.LogError(text);
     }
 
+    public static void GizmoDrawRectByPoint(Vector2 pos1, Vector2 pos2)
+    {
+        Vector2 pos3 = new Vector2(pos1.x, pos2.y);
+        Vector2 pos4 = new Vector2(pos2.x, pos1.y);
+
+        Gizmos.DrawLine(pos1, pos3);
+        Gizmos.DrawLine(pos1, pos4);
+        Gizmos.DrawLine(pos2, pos3);
+        Gizmos.DrawLine(pos2, pos4);
+    }
+
 
     public static int Random(int min, int max)
     {

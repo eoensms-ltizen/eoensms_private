@@ -4,12 +4,17 @@ using System;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using CreativeSpore;
+using CreativeSpore.RpgMapEditor;
 
 namespace stackRPG
 {
     [RequireComponent(typeof(Text))]
     public class PlayerInfo : MonoBehaviour
     {
+        //! 임시
+        public AutoTileMap m_autoTileMap;
+        public Camera2DController m_camera2D;
+
         public MUnit m_target;
 
         [SerializeField]
@@ -36,15 +41,33 @@ namespace stackRPG
 
         public Vector2 m_dragPoint_1;
         public Vector2 m_dragPoint_2;
-
-
-        void Start()
+        
+        void OnEnable()
         {
             m_text = GetComponent<Text>();
-
             m_followObjectBehaviour = Camera.main.GetComponent<FollowObjectBehaviour>();
+
+            UnSelect();
         }
+
         
+
+        void Update()
+        {
+            TestCode();
+
+            DrawInfo();
+
+            UpdateKeyBoard();
+
+            UpdateMouseLeft();
+
+            UpdateMouseRight();
+
+            UpdateMouseWheel();
+        }
+
+
 
         void UnSelect()
         {
@@ -62,7 +85,12 @@ namespace stackRPG
             }
 
             if (m_targets.Count == 0) m_clickAction_right = ClickAction.MapMove;
-            else m_clickAction_right = ClickAction.Move;
+            else
+            {
+                m_clickAction_right = ClickAction.Move;
+
+
+            }
         }
 
         void SetTextPosition(Vector3 position)
@@ -71,11 +99,32 @@ namespace stackRPG
             m_text.transform.position = position;
         }
 
+        
+        
+
+        void TestCode()
+        {
+            if (Input.GetKey(KeyCode.T))
+            {
+                Vector2 mousePos = RpgMapHelper.GetMouseWorldPosition();
+                int tileIdx = RpgMapHelper.GetTileIdxByPosition(mousePos);
+                Debug.Log("tileIdx : " + tileIdx + ", mousePos : " + mousePos);
+
+                AutoTile autoTile = RpgMapHelper.GetAutoTileByPosition(mousePos, 0);
+
+                Debug.Log("Tile Pos : " + autoTile.TileX + " , " + autoTile.TileY + " centerPos : " + RpgMapHelper.GetTileCenterPosition(autoTile.TileX,autoTile.TileY));
+
+                Debug.Log("AutoTileMap.Instance.MapTile : " + AutoTileMap.Instance.MapTileWidth + " , " + AutoTileMap.Instance.MapTileHeight);
+
+                Debug.Log("AutoTileMap.Instance.GetAutotileCollisionAtPosition : " + AutoTileMap.Instance.GetAutotileCollisionAtPosition(mousePos));
+            }
+        }
+
         void DrawInfo()
         {
             if (m_targets.Count == 0)
             {
-                m_text.text = "Click! Mouse rightButton\n Press Tab!";
+                m_text.text = "Select : Drag Left! \nMove Camera : Drag Right!";
                
                 SetTextPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             }
@@ -99,9 +148,12 @@ namespace stackRPG
             }
         }
 
-        void Update()
+        void UpdateKeyBoard()
         {
-            DrawInfo();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                UnSelect();
+            }
 
             if (m_targets.Count > 0)
             {
@@ -128,84 +180,184 @@ namespace stackRPG
                         unit.CommandNone();
                     }
                 }
+
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    if (m_clickAction_left == ClickAction.Select)
+                    {
+                        m_clickAction_left = ClickAction.Attack;
+                    }
+                }
             }
-
-
+        }
+        void UpdateMouseLeft()
+        {
             if (m_clickAction_left == ClickAction.Select)
             {
-                if (m_targets.Count > 0)
-                {
-                    if (Input.GetKeyDown(KeyCode.A)) { m_clickAction_left = ClickAction.Attack; return; }
-                }
-
                 if (Input.GetMouseButtonDown(0))
                 {
                     m_isTouching = true;
                     m_dragPoint_1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 }
-                
-                if(m_isTouching == true)
+
+                if (Input.GetMouseButton(0) && m_isTouching == true)
                 {
                     m_dragPoint_2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 }
 
-                if(Input.GetMouseButtonUp(0))
+                if (Input.GetMouseButtonUp(0))
                 {
                     m_isTouching = false;
                     Select(Physics2D.OverlapAreaAll(m_dragPoint_1, m_dragPoint_2, -1));
                 }
             }
-            else if(m_clickAction_left == ClickAction.Attack)
+            else if (m_clickAction_left == ClickAction.Attack)
             {
                 if (m_targets.Count == 0) { m_clickAction_left = ClickAction.Select; return; }
-
-                if (Input.GetMouseButtonDown(0))
+                else
                 {
-                    foreach (MUnit unit in m_targets)
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        unit.CommandAttackGround(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                    }                    
-                    m_clickAction_left = ClickAction.Select; return;
+                        foreach (MUnit unit in m_targets)
+                        {
+                            unit.CommandAttackGround(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                        }
+                        m_clickAction_left = ClickAction.Select; return;
+                    }
                 }
             }
+        }
 
+        void UpdateMouseRight()
+        {
             if (m_clickAction_right == ClickAction.Move)
             {
                 if (Input.GetMouseButtonDown(1))
                 {
-                    foreach (MUnit unit in m_targets)
-                    {
-                        unit.CommandMoveGround(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                    }
+                    List<Vector2> canMovePositions;
+                    GetCanMovePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition), m_targets.Count, out canMovePositions);
+                    for (int i = 0; i < m_targets.Count; ++i) m_targets[i].CommandMoveGround(canMovePositions[i]);
                 }
             }
-
-            if (Input.GetKeyDown(KeyCode.Escape))
+            else if (m_clickAction_right == ClickAction.MapMove)
             {
-                UnSelect();
+                if (Input.GetMouseButtonDown(1))
+                {
+                    m_isTouching = true;
+                    m_dragPoint_1 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                }
+
+                if (Input.GetMouseButton(1) && m_isTouching == true)
+                {
+                    m_dragPoint_2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                    if (m_dragPoint_1 != m_dragPoint_2)
+                    {
+                        m_camera2D.transform.Translate(m_dragPoint_1 - m_dragPoint_2);
+                        m_dragPoint_1 = m_dragPoint_2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    }
+                }
+
+                if (Input.GetMouseButtonUp(1))
+                {
+                    m_isTouching = false;
+                }
+            }
+        }
+
+        void UpdateMouseWheel()
+        {
+            if (Input.GetAxis("Mouse ScrollWheel") < 0) // back
+            {
+                if (m_camera2D.Zoom > 1f)
+                    m_camera2D.Zoom = Mathf.Max(m_camera2D.Zoom - 1, 1);
+                else
+                    m_camera2D.Zoom = Mathf.Max(m_camera2D.Zoom / 2f, 0.05f);
+            }
+            else if (Input.GetAxis("Mouse ScrollWheel") > 0) // forward
+            {
+                if (m_camera2D.Zoom >= 1f)
+                    m_camera2D.Zoom = Mathf.Min(m_camera2D.Zoom + 1, 10);
+                else
+                    m_camera2D.Zoom *= 2f;
             }
         }
 
         
-        
+
+        void GetCanMovePosition(Vector2 center, int count, out List<Vector2> positions)
+        {
+            positions = new List<Vector2>();
+            AutoTile centerTile = RpgMapHelper.GetAutoTileByPosition(center, 0);
+
+            int index = 0;
+            while(positions.Count < count)
+            {
+                Vector2 pos = center;
+
+                if (GetNextPosition(centerTile, index++, ref pos) == false) continue;
+                if (IsCanMovePosition(pos) == false) continue;
+
+                positions.Add(pos);
+            }
+        }
+
+        bool IsCanMovePosition(Vector2 pos)
+        {   
+            //! 해당위치가 가능한지 안한지는, 한타일을 9등분해서 판단한다. 젠장 즉, 옆에는 서있을수있다는거다. -_-
+            if (AutoTileMap.Instance.GetAutotileCollisionAtPosition(pos) == eTileCollisionType.PASSABLE) return true;
+            return false;
+        }
+
+        int[] m_nearPositionCount = { 0, 1, 5, 13, 25, 41 };
+        bool GetNextPosition(AutoTile centerTile, int index, ref Vector2 pos)
+        {
+            //Debug.Log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+
+            //Debug.Log("GetNextPosition index : " + index);
+
+            int distance = -1;
+            int number = -1;
+            for(int i = 0;i<m_nearPositionCount.Length;i++)
+            {
+                if (m_nearPositionCount[i] > index)
+                {
+                    distance = i - 1;
+                    number = index - m_nearPositionCount[i - 1];
+                    break;
+                }
+            }
+
+            if (distance == -1) return false;
+
+            //Debug.Log("GetNextPosition distance : " + distance + " , number : " + number);
+
+            //! 왼쪽부터 오른쪽으로 검색하면서 찾는다.
+            int x = -distance + (number + 1) / 2;
+            int y = distance - Mathf.Abs(x);
+            if (number % 2 == 0) y *= -1;
+
+            //Debug.Log("GetNextPosition x : " + x + " , y : " + y);
+
+            pos = RpgMapHelper.GetTileCenterPosition(x + centerTile.TileX, y + centerTile.TileY);
+
+            //Debug.Log("GetNextPosition pos : " + pos);
+
+            return true;
+        }
+
+
 
         void OnDrawGizmos()
         {
             if(m_isTouching == true && m_clickAction_left == ClickAction.Select)
-            {
-                Vector2 point3 = new Vector2(m_dragPoint_1.x, m_dragPoint_2.y);
-                Vector2 point4 = new Vector2(m_dragPoint_2.x, m_dragPoint_1.y);
-
+            { 
                 Gizmos.color = new Color(1, 0, 0, 0.5f);
-                Gizmos.DrawLine(m_dragPoint_1, point3);
-                Gizmos.DrawLine(m_dragPoint_1, point4);
-                Gizmos.DrawLine(m_dragPoint_2, point3);
-                Gizmos.DrawLine(m_dragPoint_2, point4);
+                MSettings.GizmoDrawRectByPoint(m_dragPoint_1, m_dragPoint_2);
             }
 
             if(m_clickAction_left == ClickAction.Attack)
             {
-                
                 Gizmos.color = new Color(1, 0, 0, 0.5f);
                 Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 point.z = 0;
@@ -231,6 +383,35 @@ namespace stackRPG
                     Gizmos.color = new Color(0, 1, 0, 0.5f);
                     Gizmos.DrawSphere(center, range);
                 }
+            }
+        }
+
+
+        void OnGUI()
+        {
+            return;
+
+            if (Input.GetMouseButton(0))
+            {
+                AutoTile autoTile1 = RpgMapHelper.GetAutoTileByPosition(m_dragPoint_1, 0);
+                AutoTile autoTile2 = RpgMapHelper.GetAutoTileByPosition(m_dragPoint_2, 0);
+
+
+                int m_startDragTileX = autoTile1.TileX;
+                int m_startDragTileY = autoTile1.TileY;
+
+                int m_dragTileX = autoTile2.TileX;
+                int m_dragTileY = autoTile2.TileY;
+
+                Rect selRect = new Rect();
+                selRect.width = (Mathf.Abs(m_dragTileX - m_startDragTileX) + 1) * m_autoTileMap.Tileset.TileWidth * m_camera2D.Zoom;
+                selRect.height = (Mathf.Abs(m_dragTileY - m_startDragTileY) + 1) * m_autoTileMap.Tileset.TileHeight * m_camera2D.Zoom;
+                float worldX = Mathf.Min(m_startDragTileX, m_dragTileX) * m_autoTileMap.Tileset.TileWorldWidth;
+                float worldY = -Mathf.Min(m_startDragTileY, m_dragTileY) * m_autoTileMap.Tileset.TileWorldHeight;
+                Vector3 vScreen = m_camera2D.Camera.WorldToScreenPoint(new Vector3(worldX, worldY) + m_autoTileMap.transform.position);
+                selRect.position = new Vector2(vScreen.x, vScreen.y);
+                selRect.y = Screen.height - selRect.y;
+                UtilsGuiDrawing.DrawRectWithOutline(selRect, new Color(0f, 1f, 0f, 0.2f), new Color(0f, 1f, 0f, 1f));
             }
         }
     }

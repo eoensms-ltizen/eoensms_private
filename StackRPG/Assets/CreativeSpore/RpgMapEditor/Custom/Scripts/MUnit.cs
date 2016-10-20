@@ -238,7 +238,8 @@ namespace stackRPG
         public void Damage(MUnit enemy, Damage damage)
         {
             //! 때린놈을 기억한다.
-            AddAttackOnMeEnemy(enemy);
+            //! 나의 주변의 아군에게 내가 맞은 사실을 알린다.
+            BroadcastEnemy(enemy, 1, -1);
 
             m_hp -= damage.m_power;
             if(m_hp <= 0) { Dead(); }
@@ -299,6 +300,22 @@ namespace stackRPG
             }
         }
 
+        public void BroadcastEnemy(MUnit unit, float range, int layerMask)
+        {
+            Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, range, layerMask);
+
+            foreach (Collider2D col in cols)
+            {
+                if (col.CompareTag("Unit") == true)
+                {
+                    MUnit team = col.GetComponent<MUnit>();
+                    if (IsCanTargetingUnit(team) == false) continue;
+                    if (IsEnemy(team) == true) continue;
+
+                    team.AddAttackOnMeEnemy(unit);
+                }
+            }
+        }
 
         public void AddAttackOnMeEnemy(MUnit unit)
         {
@@ -342,6 +359,8 @@ namespace stackRPG
         //! 쫒아가라
         IEnumerator ChaseTarget(MUnit unit, Action end)
         {
+            yield return null;
+
             while (IsCanMove() == true && IsCanTargetingUnit(unit) == true && IsArrived(unit.transform.position, m_weapon.m_range) == false)
             {
                 PathMoveUpdate(unit.transform.position);
@@ -353,6 +372,8 @@ namespace stackRPG
         //! 이동해라
         IEnumerator PathMove(Vector3 point, Action end)
         {
+            yield return null;
+
             while (IsArrived(point, MinDistToReachTarget) == false)
             {
                 PathMoveUpdate(point);
@@ -385,18 +406,6 @@ namespace stackRPG
             UpdateAnimDir();
         }
 
-
-        IEnumerator FindEnemy(float range, int layerMask, Action<MUnit> end)
-        {
-            MUnit unit = null;
-            while(FindEnemy(ref unit, transform.position, range, layerMask) == false)
-            {
-                yield return null;
-            }
-            if (end != null) end(unit);
-        }
-
-
         bool AttackTarget(MUnit unit)
         {
             if (IsCanAttackUnit(unit) == false) return false;
@@ -410,10 +419,28 @@ namespace stackRPG
 
             return true;
         }
+
+
+        IEnumerator FindEnemy(float range, int layerMask, Action<MUnit> end)
+        {
+            yield return null;
+
+            MUnit unit = null;
+            while(FindEnemy(ref unit, transform.position, range, layerMask) == false)
+            {
+                yield return null;
+            }
+            if (end != null) end(unit);
+        }
+
+
+        
         
 
         IEnumerator AttackTarget(MUnit unit, Action end)
         {
+            yield return null;
+
             while (IsCanTargetingUnit(unit) == true)
             {
                 yield return StartCoroutine(ChaseTarget(unit, null));
@@ -422,14 +449,16 @@ namespace stackRPG
             if (end != null) end();
         }
 
-        IEnumerator FightingBack()
+        IEnumerator FightingBack(Action<MUnit> end)
         {
+            yield return null;
+
             MUnit unit;
             while(GetNearestAttackOnMeEnemy(out unit) == false)
             {
                 yield return null;   
             }
-            CommandAttackTarget(unit);
+            if (end != null) end(unit);
         }
 
         IEnumerator Stop(float time, Action end)
@@ -438,13 +467,17 @@ namespace stackRPG
             if (end != null) end();
         }
 
+
+
+
+
         public void SetCommand(Command command)
         {
             StopAllCoroutines();
 
             //! 이런게 더러운데..쩝;
             PathMoveStop();
-            Debug.Log("SetCommand : " + m_command + "-> " + command);
+            //Debug.Log(name + " ] SetCommand : " + m_command + "-> " + command);
             m_command = command;
         }
 
@@ -452,8 +485,8 @@ namespace stackRPG
         {
             //! 지속상태 선공격, 추격한다.
             SetCommand(Command.None);
-
-            StartCoroutine(FightingBack());
+            
+            StartCoroutine(FightingBack((unit)=> { CommandAttackTarget(unit); }));
             StartCoroutine(FindEnemy(m_weapon.m_range, -1, (unit) => { StartCoroutine(AttackTarget(unit, CommandHold)); }));
         }
         public void CommandHold()
@@ -477,22 +510,23 @@ namespace stackRPG
             //! 반격하지않고. 강제 이동만한다. 이동 이후 None으로 간다.
             SetCommand(Command.Move_Ground);
 
-            StartCoroutine(PathMove(point, ()=> { SetCommand(Command.None); }));
+            StartCoroutine(PathMove(point, CommandHold));
         }
 
         public void CommandAttackGround(Vector2 point)
         {
             //! 목표지역으로 이동한다. 이벤트(적발견, 공격당함) 발생시 AttackTarget으로 변경된다.
             SetCommand(Command.Attack_Ground);
-
+            
             StartCoroutine(PathMove(point, CommandNone));
+            StartCoroutine(FightingBack((unit) => { CommandAttackTarget(unit); }));
             StartCoroutine(FindEnemy(m_weapon.m_range, -1, CommandAttackTarget));
         }
         public void CommandAttackTarget(MUnit unit)
         {
             SetCommand(Command.Attack_Target);
 
-            StartCoroutine(AttackTarget(unit, () => { SetCommand(Command.None); }));
+            StartCoroutine(AttackTarget(unit, CommandNone));
         }
 
 
@@ -549,6 +583,13 @@ namespace stackRPG
                 }
             }
             return false;
+        }
+
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            MSettings.GizmoDrawRectByPoint(transform.position, transform.position + Vector3.one * 0.2f);
         }
     }
 }
