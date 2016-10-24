@@ -88,8 +88,6 @@ namespace stackRPG
             else
             {
                 m_clickAction_right = ClickAction.Move;
-
-
             }
         }
 
@@ -148,12 +146,22 @@ namespace stackRPG
             }
         }
 
+        public float m_screenScrollSpeed = 2.0f;
+
         void UpdateKeyBoard()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 UnSelect();
             }
+
+            Vector2 scrollSpeed = Vector2.zero;
+            if (Input.GetKey(KeyCode.DownArrow)) scrollSpeed += Vector2.down;            
+            if (Input.GetKey(KeyCode.UpArrow)) scrollSpeed += Vector2.up;
+            if (Input.GetKey(KeyCode.RightArrow)) scrollSpeed += Vector2.right;
+            if (Input.GetKey(KeyCode.LeftArrow)) scrollSpeed += Vector2.left;
+            m_camera2D.transform.Translate(scrollSpeed * m_screenScrollSpeed * m_camera2D.Camera.orthographicSize * m_camera2D.Zoom * Time.deltaTime);
+
 
             if (m_targets.Count > 0)
             {
@@ -208,7 +216,9 @@ namespace stackRPG
                 if (Input.GetMouseButtonUp(0))
                 {
                     m_isTouching = false;
-                    Select(Physics2D.OverlapAreaAll(m_dragPoint_1, m_dragPoint_2, -1));
+
+                    if (RpgMapHelper.GetTileIdxByPosition(m_dragPoint_1) == RpgMapHelper.GetTileIdxByPosition(m_dragPoint_2)) Select(Physics2D.OverlapPointAll(m_dragPoint_1));
+                    else Select(Physics2D.OverlapAreaAll(m_dragPoint_1, m_dragPoint_2, -1));
                 }
             }
             else if (m_clickAction_left == ClickAction.Attack)
@@ -216,12 +226,18 @@ namespace stackRPG
                 if (m_targets.Count == 0) { m_clickAction_left = ClickAction.Select; return; }
                 else
                 {
-                    if (Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButtonUp(0))
                     {
-                        foreach (MUnit unit in m_targets)
-                        {
-                            unit.CommandAttackGround(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                        }
+
+                        List<Vector2> canMovePositions;
+                        GetCanMovePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition), m_targets.Count, out canMovePositions);
+                        for (int i = 0; i < m_targets.Count; ++i) m_targets[i].CommandAttackGround(canMovePositions[i]);
+
+                        //foreach (MUnit unit in m_targets)
+                        //{
+                        //    unit.CommandAttackGround(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                        //}
+
                         m_clickAction_left = ClickAction.Select; return;
                     }
                 }
@@ -309,13 +325,10 @@ namespace stackRPG
             return false;
         }
 
-        int[] m_nearPositionCount = { 0, 1, 5, 13, 25, 41 };
+        int[] m_nearPositionCount = { 0, 1, 5, 13, 25, 41, 66, 107 };
+
         bool GetNextPosition(AutoTile centerTile, int index, ref Vector2 pos)
         {
-            //Debug.Log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-
-            //Debug.Log("GetNextPosition index : " + index);
-
             int distance = -1;
             int number = -1;
             for(int i = 0;i<m_nearPositionCount.Length;i++)
@@ -330,18 +343,12 @@ namespace stackRPG
 
             if (distance == -1) return false;
 
-            //Debug.Log("GetNextPosition distance : " + distance + " , number : " + number);
-
-            //! 왼쪽부터 오른쪽으로 검색하면서 찾는다.
+            
             int x = -distance + (number + 1) / 2;
             int y = distance - Mathf.Abs(x);
             if (number % 2 == 0) y *= -1;
 
-            //Debug.Log("GetNextPosition x : " + x + " , y : " + y);
-
             pos = RpgMapHelper.GetTileCenterPosition(x + centerTile.TileX, y + centerTile.TileY);
-
-            //Debug.Log("GetNextPosition pos : " + pos);
 
             return true;
         }

@@ -30,6 +30,18 @@ public static class MSettings
         Gizmos.DrawLine(pos2, pos4);
     }
 
+    public static void GetSidePointByRect(Rect rect, out Vector3 point1, out Vector3 point2)
+    {
+        float leftX = rect.x - rect.width * 0.5f;
+        float downY = rect.y - rect.height * 0.5f;
+
+        float rightX = rect.x + rect.width * 0.5f;
+        float upY = rect.y + rect.height * 0.5f;
+
+        point1 = new Vector3(leftX, downY);
+        point2 = new Vector3(rightX, upY);
+    }
+
 
     public static int Random(int min, int max)
     {

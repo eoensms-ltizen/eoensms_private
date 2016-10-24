@@ -156,14 +156,22 @@ namespace stackRPG
     //! 몬스터가 나오고 싸우기도 해야한다.
     [RequireComponent(typeof(MovingBehaviour))]
     [RequireComponent(typeof(MapPathFindingBehaviour))]
+    //[RequireComponent(typeof(PhysicCharBehaviour))]
+    
     public class MUnit : MonoBehaviour
     {
+        public string m_id;
+        public int m_price;
+        public int m_level;
+
         public float MinDistToReachTarget = 0.16f;
 
+        public SpriteRenderer m_spriteRenderer;
         public MovingBehaviour m_moving;
         public CharAnimationController m_animCtrl;
-        public SpriteRenderer m_spriteRenderer;
         public MapPathFindingBehaviour m_pathFindingBehaviour;
+        //public PhysicCharBehaviour m_physicCharBehaviour;
+        public Rigidbody2D m_rigidbody2d;
 
         public Guid m_guid;
         void Awake()
@@ -171,7 +179,10 @@ namespace stackRPG
             m_animCtrl = GetComponent<CharAnimationController>();
             m_moving = GetComponent<MovingBehaviour>();
             m_pathFindingBehaviour = GetComponent<MapPathFindingBehaviour>();
+            //m_physicCharBehaviour = GetComponent<PhysicCharBehaviour>();
+            m_rigidbody2d = GetComponent<Rigidbody2D>();
             m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
             m_guid = MGameManager.Instance.AddUnit(this);
         }
 
@@ -392,7 +403,10 @@ namespace stackRPG
         {
             point.z = transform.position.z;
             m_pathFindingBehaviour.TargetPos = point;
-            m_pathFindingBehaviour.enabled = IsCanMove();
+            bool isCanMove = IsCanMove();
+            m_pathFindingBehaviour.enabled = isCanMove;
+            //m_physicCharBehaviour.enabled = !isCanMove;
+            //m_rigidbody2d.isKinematic = isCanMove;
 
             UpdateAnimDir();
         }
@@ -400,6 +414,9 @@ namespace stackRPG
         private void PathMoveStop()
         {
             m_pathFindingBehaviour.enabled = false;
+            //m_physicCharBehaviour.enabled = true;
+            //m_rigidbody2d.isKinematic = false;
+
             m_moving.Acc = Vector3.zero;
             m_moving.Veloc = Vector3.zero;
 
@@ -586,10 +603,10 @@ namespace stackRPG
         }
 
 
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = new Color(1, 0, 0, 0.5f);
-            MSettings.GizmoDrawRectByPoint(transform.position, transform.position + Vector3.one * 0.2f);
-        }
+//         private void OnDrawGizmosSelected()
+//         {
+//             Gizmos.color = new Color(1, 0, 0, 0.5f);
+//             MSettings.GizmoDrawRectByPoint(transform.position, transform.position + Vector3.one * 0.2f);
+//         }
     }
 }
