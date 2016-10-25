@@ -293,7 +293,7 @@ namespace CreativeSpore.RpgMapEditor
 			{
 				if( m_camera2DFollowBehaviour )
 				{
-					m_camera2DFollowBehaviour.Target = null;
+					m_camera2DFollowBehaviour.m_target = null;
 				}
 				Vector3 vTemp = vGuiMouseDelta; vTemp.y = -vTemp.y;
 				m_camera2D.transform.position -= (vTemp/100)/m_camera2D.Zoom;
@@ -363,7 +363,7 @@ namespace CreativeSpore.RpgMapEditor
 					m_camera2D.transform.position = vPos;
 					if( m_camera2DFollowBehaviour )
 					{
-						m_camera2DFollowBehaviour.Target = null;
+						m_camera2DFollowBehaviour.m_target = null;
 					}
 				}
 			}
@@ -392,7 +392,7 @@ namespace CreativeSpore.RpgMapEditor
 						{
 							if( m_camera2DFollowBehaviour )
 							{
-								m_camera2DFollowBehaviour.Target = null;
+								m_camera2DFollowBehaviour.m_target = null;
 							}
 							m_camera2D.transform.position += (new Vector3(fHSpeed, fVSpeed, 0f)/30)/m_camera2D.Zoom;
 						}
@@ -749,10 +749,10 @@ namespace CreativeSpore.RpgMapEditor
 				UtilsGuiDrawing.DrawRectWithOutline( rMinimapCam, new Color(0, 0, 0, 0), Color.white );
 
 				// Draw player on minimap
-				if( m_camera2DFollowBehaviour != null && m_camera2DFollowBehaviour.Target != null )
+				if( m_camera2DFollowBehaviour != null && m_camera2DFollowBehaviour.m_target != null )
 				{
-                    int plyTileX = -1 + (int)(m_camera2DFollowBehaviour.Target.transform.position.x / m_autoTileMap.Tileset.TileWorldWidth);
-                    int plyTileY = -1 + (int)(-m_camera2DFollowBehaviour.Target.transform.position.y / m_autoTileMap.Tileset.TileWorldHeight);
+                    int plyTileX = -1 + (int)(m_camera2DFollowBehaviour.m_target.transform.position.x / m_autoTileMap.Tileset.TileWorldWidth);
+                    int plyTileY = -1 + (int)(-m_camera2DFollowBehaviour.m_target.transform.position.y / m_autoTileMap.Tileset.TileWorldHeight);
 					Rect rPlayer = new Rect(plyTileX, plyTileY, 3, 3);
                     rPlayer.position *= minimapScale;
 					rPlayer.position += m_rMinimapRect.position;

@@ -8,96 +8,22 @@ using CreativeSpore.RpgMapEditor;
 
 namespace stackRPG
 {
-    //! 성별 
-    public enum Sex
-    {
-        Men,
-        Women,
-        middle,
-    }
-
-    //! 림월드에서 중요도높음
-    //! 건강상태 (림월드에는 카테고리로써의 건강상태이고, 부위별로 상새 데이터가 있음 (오른발 : 물린흉터)
-    public enum Health
-    {
-        Top,
-        Middle,
-        Bottom,
-    }
-
-    //! 유년기
-    public enum Childhood
-    {
-        //! 앤지니어 따위?
-        //! 알바 뭐해봤냐?
-    }
-
-    //! 성년기
-    public enum Adulthood
-    {
-        //! 앤지니어 따위?
-        //! 직업이 뭐였냐?
-    }
-
-    //! 중요도 높음
-    //! 특성에따라 많은부분이 바뀐다.
-    public enum Traits
-    {
-       NightOwl,
-    }
-
     public enum State
     {
         Idle,
-        Stun,        
+        Stun,
         Dead,
-    }
-    public enum UnitAction
-    {   
-        None,
-        EquipWaepon,
-        AttackEnemy,        
-        FindEnemy,
-        ChaseTarget,
-        AvoidTarget,
-        AttackHold,
-        PathMove,
-    }
-
-    public enum Result
-    {
-        Play,
-        Pause,
-        Success,
-        Fail,
-        Cancel,
     }
 
     public enum Command
     {
-        None, //! 케릭터 특성에 따라 왠만하면 (Attack_Ground)
+        None, 
         Attack_Target,
         Attack_Ground,
         Move_Target,
         Move_Ground,
         Hold,
         Stop,
-    }
-
-
-
-    public enum Propensity
-    {
-        Avoid = 0,
-        Normal = 1,
-        Chase = 2,
-    }
-
-    public enum Type
-    {
-        Unit,
-        Weapon,
-        Tile,
     }
 
 
@@ -121,115 +47,77 @@ namespace stackRPG
         Magic,
     }
 
-    [Serializable]
-    public struct Weapon
-    {
-        public bool m_enable;
-        public WeaponType m_weaponType;
-        public GameObject m_effectPrefab;
-        public GameObject m_criticalEffectPrefab;
-        public float m_range;
-        //! 공격력
-        public int m_power;
-        //! 밀치는 능력
-        public float m_force;
-        //! 연사속도
-        public float m_delay;
-        //! 공격후 홀드 시간
-        public float m_holdTime;
-
-
-        public Weapon(bool enable, WeaponType weaponType, GameObject effectPrefab, GameObject criticalEffectPrefab, float range, int power, float force, float delay, float holdTime)
-        {
-            m_enable = enable;
-            m_weaponType = weaponType;
-            m_effectPrefab = effectPrefab;
-            m_criticalEffectPrefab = criticalEffectPrefab;
-            m_range = range;
-            m_power = power;
-            m_force = force;
-            m_delay = delay;
-            m_holdTime = holdTime;
-        }
-    }
-
     //! 몬스터가 나오고 싸우기도 해야한다.
     [RequireComponent(typeof(MovingBehaviour))]
     [RequireComponent(typeof(MapPathFindingBehaviour))]
-    //[RequireComponent(typeof(PhysicCharBehaviour))]
     
     public class MUnit : MonoBehaviour
     {
-        public string m_id;
-        public int m_price;
-        public int m_level;
-
-        public float MinDistToReachTarget = 0.16f;
+        public Guid m_guid;
 
         public SpriteRenderer m_spriteRenderer;
         public MovingBehaviour m_moving;
         public CharAnimationController m_animCtrl;
         public MapPathFindingBehaviour m_pathFindingBehaviour;
-        //public PhysicCharBehaviour m_physicCharBehaviour;
         public Rigidbody2D m_rigidbody2d;
 
-        public Guid m_guid;
+        public int m_level;
+        private Unit m_unit;
+
+        public int m_teamId;
+
+        public State m_state;
+        public Command m_command;
+
         void Awake()
         {
             m_animCtrl = GetComponent<CharAnimationController>();
             m_moving = GetComponent<MovingBehaviour>();
-            m_pathFindingBehaviour = GetComponent<MapPathFindingBehaviour>();
-            //m_physicCharBehaviour = GetComponent<PhysicCharBehaviour>();
+            m_pathFindingBehaviour = GetComponent<MapPathFindingBehaviour>();            
             m_rigidbody2d = GetComponent<Rigidbody2D>();
             m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-
             m_guid = MGameManager.Instance.AddUnit(this);
         }
-
-        void OnEnable()
+        
+        public void Init(Unit unit)
         {
+            //! 초기화
+            m_unit = unit;
+
             m_pathFindingBehaviour.TargetPos = transform.position;
             CommandNone();
-        }
 
-        void Start()
-        {
-            
+            m_hp = m_base_hp;
+            m_attackDamage = m_base_attackDamage;
+            m_attackCoolTime = m_base_attackCoolTime;
+            m_attackHoldTime = m_base_attackHoldTime;
+            m_attackRange = m_base_attackRange;
+            m_moveSpeed = m_base_moveSpeed;
+            m_minDisToReachTarg = m_base_minDisToReachTarg;
         }
+        //! 초기 능력치
         
-        public int m_teamId;
-        public State m_state;
-        public Command m_command;
+        public float m_base_hp { get { return m_unit.m_hp[m_level]; } }
+        public int m_base_attackDamage { get { return m_unit.m_attackDamage[m_level]; } }
+        public float m_base_attackCoolTime { get { return m_unit.m_attackCoolTime; } }
+        public float m_base_attackHoldTime { get { return m_unit.m_attackHoldTime; } }
+        public float m_base_attackRange { get { return m_unit.m_attackRange; } }
+        public float m_base_moveSpeed { get { return m_unit.m_moveSpeed; } }
+        public float m_base_minDisToReachTarg { get { return m_unit.m_minDisToReachTarg; } }
 
-        private string m_name;
-        private string m_firstname;
-        private long m_birthday;
-
-        private Sex m_sex;
-        private Traits m_traits;
-
-        private Childhood m_childhood;
-        private Adulthood m_adlthood;
-
-        public Propensity m_propensity;
-        public Weapon m_weapon;
-
-        //! 능력치들 (장비장착에 따라 달라질수 있다)
-        public float m_speed;
-        public float m_hp;
-        public float m_attackCoolTime;
+        //! 현 상태
         public float m_attackHoldTime;
+        public float m_attackRange;
+        public float m_moveSpeed;
+        public float m_minDisToReachTarg;
 
         //! 날때린 녀석        
+        public float m_hp;
+        public int m_attackDamage;
+        public float m_attackCoolTime;
         public Dictionary<Guid, MUnit> m_damage_enemys = new Dictionary<Guid, MUnit>();
         
-        public UnityAction m_changeStateDelegate;
-
-
-        void EquipWeapon(Weapon weapon)
-        {
-            m_weapon = weapon;
-        }
+        public UnityAction m_changeStateDelegate;        
 
         void ChangeState(State state)
         {
@@ -372,7 +260,7 @@ namespace stackRPG
         {
             yield return null;
 
-            while (IsCanMove() == true && IsCanTargetingUnit(unit) == true && IsArrived(unit.transform.position, m_weapon.m_range) == false)
+            while (IsCanMove() == true && IsCanTargetingUnit(unit) == true && IsArrived(unit.transform.position, m_attackRange) == false)
             {
                 PathMoveUpdate(unit.transform.position);
                 yield return null;
@@ -385,7 +273,7 @@ namespace stackRPG
         {
             yield return null;
 
-            while (IsArrived(point, MinDistToReachTarget) == false)
+            while (IsArrived(point, m_minDisToReachTarg) == false)
             {
                 PathMoveUpdate(point);
                 yield return null;
@@ -405,8 +293,6 @@ namespace stackRPG
             m_pathFindingBehaviour.TargetPos = point;
             bool isCanMove = IsCanMove();
             m_pathFindingBehaviour.enabled = isCanMove;
-            //m_physicCharBehaviour.enabled = !isCanMove;
-            //m_rigidbody2d.isKinematic = isCanMove;
 
             UpdateAnimDir();
         }
@@ -427,12 +313,12 @@ namespace stackRPG
         {
             if (IsCanAttackUnit(unit) == false) return false;
 
-            if (m_weapon.m_effectPrefab != null) Instantiate(m_weapon.m_effectPrefab, unit.transform.position, Quaternion.identity);
+            if (m_unit.m_attackPrefab != null) Instantiate(m_unit.m_attackPrefab, unit.transform.position, Quaternion.identity);
 
-            Damage damage = new Damage(m_weapon.m_power, (unit.transform.position - transform.position).normalized * m_weapon.m_force);
+            Damage damage = new Damage(m_attackDamage, (unit.transform.position - transform.position).normalized * m_unit.m_attackForce);
             unit.Damage(this, damage);
-            m_attackCoolTime = m_weapon.m_delay;
-            m_attackHoldTime = m_weapon.m_holdTime;
+            m_attackCoolTime = m_base_attackCoolTime;
+            m_attackHoldTime = m_base_attackHoldTime;
 
             return true;
         }
@@ -449,20 +335,21 @@ namespace stackRPG
             }
             if (end != null) end(unit);
         }
-
-
-        
         
 
         IEnumerator AttackTarget(MUnit unit, Action end)
         {
+            //! 유닛을 표적으로 쫒아가지만, 근처에 공격할수있는 다른적이 있다면 그 적을 공격한다.
             yield return null;
-
-            while (IsCanTargetingUnit(unit) == true)
+            
+            while(IsCanTargetingUnit(unit) == true)
             {
-                yield return StartCoroutine(ChaseTarget(unit, null));
-                AttackTarget(unit);
+                if (FindEnemy(ref unit, transform.position, m_attackRange, -1) == true) { PathMoveStop(); AttackTarget(unit); }
+                else PathMoveUpdate(unit.transform.position);
+
+                yield return null;
             }
+            PathMoveStop();
             if (end != null) end();
         }
 
@@ -490,6 +377,8 @@ namespace stackRPG
 
         public void SetCommand(Command command)
         {
+            //m_damage_enemys.Clear();
+
             StopAllCoroutines();
 
             //! 이런게 더러운데..쩝;
@@ -504,7 +393,7 @@ namespace stackRPG
             SetCommand(Command.None);
             
             StartCoroutine(FightingBack((unit)=> { CommandAttackTarget(unit); }));
-            StartCoroutine(FindEnemy(m_weapon.m_range, -1, (unit) => { StartCoroutine(AttackTarget(unit, CommandHold)); }));
+            StartCoroutine(FindEnemy(m_attackRange, -1, (unit) => { StartCoroutine(AttackTarget(unit, CommandHold)); }));
         }
         public void CommandHold()
         {
@@ -512,7 +401,7 @@ namespace stackRPG
             SetCommand(Command.Hold);
 
             //! 적을찾고, 찾으면 쏘고, 벗어나면, 다시 커멘드 홀드호출
-            StartCoroutine(FindEnemy(m_weapon.m_range, -1, (unit) => { StartCoroutine(AttackTarget(unit, CommandHold)); }));
+            StartCoroutine(FindEnemy(m_attackRange, -1, (unit) => { StartCoroutine(AttackTarget(unit, CommandHold)); }));
         }
 
         public void CommandStop()
@@ -537,7 +426,7 @@ namespace stackRPG
             
             StartCoroutine(PathMove(point, CommandNone));
             StartCoroutine(FightingBack((unit) => { CommandAttackTarget(unit); }));
-            StartCoroutine(FindEnemy(m_weapon.m_range, -1, CommandAttackTarget));
+            StartCoroutine(FindEnemy(m_attackRange, -1, (unit)=> { CommandAttackTarget(unit); }));
         }
         public void CommandAttackTarget(MUnit unit)
         {
@@ -564,7 +453,7 @@ namespace stackRPG
         private bool IsInAttackRange(MUnit unit)
         {
             if (unit == null) return false;
-            if((unit.transform.position - transform.position).magnitude > m_weapon.m_range) return false;
+            if((unit.transform.position - transform.position).magnitude > m_attackRange) return false;
             return true;
         }
 
@@ -587,26 +476,25 @@ namespace stackRPG
 
         private bool FindEnemy(ref MUnit enemy, Vector3 center, float range, int layerMask)
         {
+            bool result = false;
             Collider2D[] cols = Physics2D.OverlapCircleAll(center, range, layerMask);
+            float distance = range * range;
             foreach (Collider2D col in cols)
             {
                 if (col.CompareTag("Unit") == true)
                 {
                     MUnit unit = col.GetComponent<MUnit>();
                     if (IsCanTargetingUnit(unit) == false) continue;
-                    if (IsEnemy(unit) == false) continue;                    
+                    if (IsEnemy(unit) == false) continue;
+                    float newdistance = (unit.transform.position - center).sqrMagnitude;
+                    if (distance < newdistance) continue;
+
                     enemy = unit;
-                    return true;
+                    distance = newdistance;
+                    result = true;
                 }
             }
-            return false;
+            return result;
         }
-
-
-//         private void OnDrawGizmosSelected()
-//         {
-//             Gizmos.color = new Color(1, 0, 0, 0.5f);
-//             MSettings.GizmoDrawRectByPoint(transform.position, transform.position + Vector3.one * 0.2f);
-//         }
     }
 }

@@ -17,7 +17,8 @@ public class MApplicationManager : Singleton<MApplicationManager>
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            if (SceneManager.GetActiveScene().name == "MainMenu") Application.Quit();
+            else SceneManager.LoadScene("MainMenu"); 
         }
     }
 }

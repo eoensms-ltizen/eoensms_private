@@ -133,8 +133,6 @@ namespace stackRPG
                 m_text.text = "State : " + target.m_state;
                 m_text.text += "\nCommand : " + target.m_command;
                 m_text.text += "\nHp : " + target.m_hp;
-                m_text.text += "\nPower : " + target.m_weapon.m_power;
-                m_text.text += "\nCoolTime : " + target.m_attackCoolTime + " / " + target.m_weapon.m_delay;
                 
                 SetTextPosition(target.transform.position);
             }

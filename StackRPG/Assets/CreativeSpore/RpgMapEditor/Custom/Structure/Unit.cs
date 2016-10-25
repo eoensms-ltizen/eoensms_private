@@ -3,18 +3,23 @@ using System.Collections;
 using System;
 
 [Serializable]
-public struct Unit
+public class Unit
 {
-    public string m_characterId;
-    public string m_name;
-    public int m_price;
-    public int m_level;
+    public GameObject m_prefab;
+    public GameObject m_attackPrefab;
 
-    public Unit(string characterId, string name, int price, int level)
-    {
-        m_characterId = characterId;
-        m_name = name;        
-        m_price = price;
-        m_level = level;
-    }
+    public int m_id;
+    public string m_name;
+    public int m_openPrice;
+    public int m_makePrice;
+    public int[] m_upgradeCost;
+    public int[] m_hp;
+    public int[] m_attackDamage;
+    public float m_attackForce;
+    public float m_moveSpeed;
+    public float m_attackRange;
+    public float m_attackCoolTime;
+    public float m_attackHoldTime;
+
+    public float m_minDisToReachTarg;
 }
