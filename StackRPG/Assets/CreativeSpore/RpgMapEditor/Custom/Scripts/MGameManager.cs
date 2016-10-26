@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.SceneManagement;
 
 namespace stackRPG
 {
@@ -12,6 +13,8 @@ namespace stackRPG
         ChangeTurn,
         WaitReady,
         Play,
+        Result,
+        Finish,
     }
 
     public class MGameManager : Singleton<MGameManager>
@@ -29,9 +32,7 @@ namespace stackRPG
         public Action<GameState> m_changeGameState;
         public Action<int> m_changeStageNumber;
 
-        public List<MUser> m_userList = new List<MUser>();
-        public Dictionary<Guid, MUnit> m_units = new Dictionary<Guid, MUnit>();
-        public LinkedList<MUnit> m_unitLinkedList = new LinkedList<MUnit>();
+        public List<MUser> m_userList = new List<MUser>();        
 
         public bool m_isReadyManager { get; private set; }
 
@@ -96,13 +97,17 @@ namespace stackRPG
                     break;
                 case GameState.Play:
                     {
-                        //! UI 제거
-
-                        //! 전투 AI 작동
-
-                        //! 전투 종료(전장에 하나의 팀만 남았을경우 종료된다)
-
-                        StartCoroutine(Fight());
+                        StartCoroutine(Play());
+                    }
+                    break;
+                case GameState.Result:
+                    {
+                        StartCoroutine(Result());
+                    }
+                    break;
+                case GameState.Finish:
+                    {
+                        StartCoroutine(Finish());
                     }
                     break;
             }
@@ -110,6 +115,8 @@ namespace stackRPG
 
         IEnumerator StartStage(int stageNumber)
         {
+            if (stageNumber >= StageManager.Instance.m_stageDatas.Count) { ChangeGameState(GameState.Finish); yield break; }
+
             SetStage(stageNumber);
 
             yield return new WaitForSeconds(0.5f);
@@ -188,20 +195,6 @@ namespace stackRPG
             }
         }
 
-        public Guid AddUnit(MUnit unit)
-        {
-            Guid guid = Guid.NewGuid();
-            m_units.Add(guid, unit);
-            m_unitLinkedList.AddLast(unit);
-            return guid;
-        }
-
-        public void RemoveUnit(Guid guid)
-        {
-            m_unitLinkedList.Remove(m_units[guid]);
-            m_units.Remove(guid);
-        }     
-
         public void SetUser(MUser user)
         {
             m_user = user;
@@ -223,6 +216,7 @@ namespace stackRPG
             munit.Init(unit);
             m_user.MakeUnit(munit);
         }
+
         public bool UpgradeUnit(Unit unit)
         {
             int level = m_user.GetUnitLevel(unit.m_id);
@@ -264,9 +258,12 @@ namespace stackRPG
             return true;
         }
         
-        IEnumerator Fight()
+        IEnumerator Play()
         {
-            CommonLog.Instance.ShowLog("Total Unit : " + unitCount);
+            for (int i = 0; i < m_userList.Count; ++i)
+            {
+                m_userList[i].Play();
+            }
 
             //! 자기 위치에 해쳐모여
             for (int i = 0; i < m_userList.Count; ++i)
@@ -284,6 +281,43 @@ namespace stackRPG
 
                 m_userList[i].AttackGround(m_userList[targetIndex].m_startPoint);
             }
+
+            //! 유저의 유닛카운트가 0이면, 유저를 죽인다.
+            float playLimitTime = 60.0f;
+            while (playLimitTime > 0 && m_userList.Count > 1)
+            {
+                playLimitTime -= Time.deltaTime;
+
+                for (int i = 0; i < m_userList.Count; ++i)
+                {
+                    MUser user = m_userList[i];
+                    if (user.m_aliveUnits.Count == 0)
+                    {
+                        Debug.Log("user Die : " + user.m_id);
+                        user.Dead();
+                        m_userList.Remove(user);
+                        i--;
+                    }
+                    yield return null;
+                }
+            }
+
+            if (m_owner.m_state != UserState.Dead) ChangeGameState(GameState.StartStage);
+            else ChangeGameState(GameState.Result);
+        }
+
+        IEnumerator Result()
+        {
+            Debug.Log("You Record : " + m_stageNumber);
+            yield return new WaitForSeconds(2.0f);
+            SceneManager.LoadScene("MainMenu");
+        }
+
+        IEnumerator Finish()
+        {
+            Debug.Log("Victory!!");
+            yield return new WaitForSeconds(2.0f);
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }

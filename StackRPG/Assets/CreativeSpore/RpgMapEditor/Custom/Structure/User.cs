@@ -5,7 +5,7 @@ using System;
 [Serializable]
 public class User
 {
-    public bool m_isAuto;
+    public AIUserData m_userAI;
     public string m_id;
     public int m_teamId;
     public int m_gold;

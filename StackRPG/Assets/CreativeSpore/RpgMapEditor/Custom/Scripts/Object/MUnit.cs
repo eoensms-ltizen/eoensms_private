@@ -76,7 +76,7 @@ namespace stackRPG
             m_pathFindingBehaviour = GetComponent<MapPathFindingBehaviour>();            
             m_rigidbody2d = GetComponent<Rigidbody2D>();
             m_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-            m_guid = MGameManager.Instance.AddUnit(this);
+            m_guid = Guid.NewGuid();
         }
         
         public void Init(Unit unit)
@@ -117,21 +117,35 @@ namespace stackRPG
         public float m_attackCoolTime;
         public Dictionary<Guid, MUnit> m_damage_enemys = new Dictionary<Guid, MUnit>();
         
-        public UnityAction m_changeStateDelegate;        
+        public UnityAction<MUnit> m_changeStateDelegate;        
 
         void ChangeState(State state)
         {
             if (m_state == state) return;
             m_state = state;
-            if (m_changeStateDelegate != null) m_changeStateDelegate();
+            if (m_changeStateDelegate != null) m_changeStateDelegate(this);
+
+            switch(state)
+            {
+                case State.Idle:
+
+                    break;
+                case State.Dead:
+                    {
+                        Destroy(transform.gameObject);
+                    }
+                    break;
+                case State.Stun:
+                    {
+
+                    }
+                    break;
+            }
         }
 
         public void Dead()
         {
             ChangeState(State.Dead);
-
-            MGameManager.Instance.RemoveUnit(m_guid);
-            Destroy(transform.gameObject);
         }
         //! 주체, 데미지 타입, 데미지 크기 등이 있어야한다.
         public void Damage(MUnit enemy, Damage damage)

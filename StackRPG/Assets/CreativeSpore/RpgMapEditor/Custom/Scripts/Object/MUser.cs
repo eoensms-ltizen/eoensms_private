@@ -12,7 +12,7 @@ namespace stackRPG
         MakeUnit,
         Ready,
         Play,
-        Die,
+        Dead,
     }
 
     [Serializable]
@@ -29,19 +29,35 @@ namespace stackRPG
             m_level = level;
         }
     }
-    
+
+    public enum UserAction
+    {
+        Open,
+        Upgrade,
+        Make,        
+    }
+
+    public enum LastUserAction
+    {
+        Save,
+        Upgrade,
+        Make,
+    }
+
     public class MUser
     {
         public MUser(User user)
         {
-            m_isAuto = user.m_isAuto;
+            m_userAI = user.m_userAI == null ? null : user.m_userAI.m_aI;
             m_id = user.m_id;
             m_teamId = user.m_teamId;
             m_gold = user.m_gold;
             m_startPoint = user.m_startPoint;
+
+             m_aliveUnits = new List<MUnit>();
         }
 
-        public bool m_isAuto;
+        public AIUser m_userAI;
         public UserState m_state;
 
         public string m_id;
@@ -50,7 +66,7 @@ namespace stackRPG
         public int m_teamId;
         public Vector3 m_startPoint;
         public List<UnitLevelTable> m_haveUnit = new List<UnitLevelTable>();
-        private List<MUnit> m_aliveUnits = new List<MUnit>();
+        public List<MUnit> m_aliveUnits { get; private set; }
         
 
         public Action m_changeGoldEvent;
@@ -84,25 +100,38 @@ namespace stackRPG
 
         public IEnumerator Process()
         {
-            if (m_state == UserState.Die) yield break;
+            if (m_state == UserState.Dead) yield break;
             MakeUnit();
 
-            while (m_state != UserState.Ready)
+            if(m_userAI!=null)
             {
-                if(m_state == UserState.MakeUnit)
-                {
-                    if(m_isAuto)
-                    {
-                        if (MakeRandomUnit() == true) yield return null;//new WaitForSeconds(0.1f);
-                        else Ready(); 
-                    }
-                }
-                yield return null;
+                yield return MGameManager.Instance.StartCoroutine(MAIUser.Progress(m_userAI, this));
+                Ready();
             }
+            else
+            {
+                while (m_state != UserState.Ready) yield return null;
+            }
+
+            //while (m_state != UserState.Ready)
+            //{
+            //    if(m_state == UserState.MakeUnit)
+            //    {
+            //        if(m_userAI != null)
+            //        {
+            //            Action action;
+            //            if (action != null) { action(); yield return null; }
+            //            else Ready();
+            //        }
+            //    }
+            //    yield return null;
+            //}
         }
 
         bool MakeRandomUnit()
-        {
+        {   
+            //! 열만한 케릭터가 있느냐?
+
             //! 생산 가능한 유닛이 있느냐?
             if (m_haveUnit.Count == 0) return false;
 
@@ -201,6 +230,7 @@ namespace stackRPG
 
         public void MakeUnit(MUnit unit)
         {
+            unit.m_changeStateDelegate += (munit) => { m_aliveUnits.Remove(munit); };
             m_aliveUnits.Add(unit);
         }
 
@@ -251,6 +281,11 @@ namespace stackRPG
             {
                 m_aliveUnits[i].Dead();
             }
+        }
+
+        public void Dead()
+        {
+            ChangeState(UserState.Dead);
         }
     }
 }

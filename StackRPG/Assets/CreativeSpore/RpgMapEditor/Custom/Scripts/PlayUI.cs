@@ -145,7 +145,7 @@ namespace stackRPG
         public void SwitchAuto()
         {
             if (m_user == null) return;
-            m_user.m_isAuto = !m_user.m_isAuto;
+            //m_user.m_isAuto = !m_user.m_isAuto;
         }
     }
 }
