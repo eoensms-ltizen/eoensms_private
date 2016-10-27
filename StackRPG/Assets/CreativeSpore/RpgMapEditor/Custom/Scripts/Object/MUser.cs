@@ -65,6 +65,8 @@ namespace stackRPG
 
         public int m_teamId;
         public Vector3 m_startPoint;
+        public StartingPoint m_spawnPosition;
+
         public List<UnitLevelTable> m_haveUnit = new List<UnitLevelTable>();
         public List<MUnit> m_aliveUnits { get; private set; }
         
@@ -96,6 +98,11 @@ namespace stackRPG
         public void WaitTurn()
         {
             ChangeState(UserState.WaitTurn);
+        }
+
+        public void SetUnitPosition(StartingPoint spawnPosition)
+        {
+            m_spawnPosition = spawnPosition;
         }
 
         public IEnumerator Process()

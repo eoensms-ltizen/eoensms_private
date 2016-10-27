@@ -159,6 +159,11 @@ namespace stackRPG
             owner.WaitTurn();
             m_userList.Add(owner);
 
+            for(int i = 0;i<m_userList.Count;++i)
+            {
+                m_userList[i].SetUnitPosition(stage.m_makeUnitPositions[i]);
+            }
+
             ChangeGameState(GameState.ChangeTurn);
         }
         IEnumerator ChangeTurn()
