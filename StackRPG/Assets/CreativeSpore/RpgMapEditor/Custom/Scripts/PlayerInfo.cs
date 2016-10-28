@@ -249,7 +249,7 @@ namespace stackRPG
                 if (Input.GetMouseButtonDown(1))
                 {
                     List<Vector2> canMovePositions;
-                    GetCanMovePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition), m_targets.Count, out canMovePositions);
+                    GetCanMovePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition), m_targets.Count, out canMovePositions);                    
                     for (int i = 0; i < m_targets.Count; ++i) m_targets[i].CommandMoveGround(canMovePositions[i]);
                 }
             }

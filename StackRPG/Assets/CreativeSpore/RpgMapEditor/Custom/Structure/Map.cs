@@ -16,18 +16,9 @@ public class StartingPoint
 
 
 [Serializable]
-public class Stage
+public class Map
 {
-    /// <summary>
-    /// 스테이지 시작시 획득 골드
-    /// </summary>
-    public int m_gold;
-    
-    /// <summary>
-    ///  스테이지 출현 도전자 리스트
-    /// </summary>
-    public List<UserData> m_enemys;
-
+    public string m_name = "New Map";
     /// <summary>
     /// 맵데이터
     /// </summary>
@@ -39,6 +30,6 @@ public class Stage
     /// </summary>
     public int m_canMakeUnitCount = 10;
     public Vector2 m_attackPoint;
-    public List<StartingPoint> m_makeUnitPositions;
+    public List<StartingPoint> m_makeUnitPositions = new List<StartingPoint>();
 }
 

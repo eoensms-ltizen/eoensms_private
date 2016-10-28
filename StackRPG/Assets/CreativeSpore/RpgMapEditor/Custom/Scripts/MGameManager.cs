@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine.SceneManagement;
+using CreativeSpore.RpgMapEditor;
 
 namespace stackRPG
 {
@@ -17,16 +18,16 @@ namespace stackRPG
         Finish,
     }
 
+    //! 이녀석은 받은 맵, 유저로 게임을 진행시키는 놈이다.
+
     public class MGameManager : Singleton<MGameManager>
-    {
-        public string m_ownerID;
-        public UserData m_baseUserData;
+    {   
         public MUser m_owner;
 
         public GameState m_state;
         public int m_stageNumber;
         public int m_selectUserIndex;
-        public MUser m_user { get; private set; }
+        public MUser m_currentUser { get; private set; }
 
         public Action<MUser> m_changeUserEvent;
         public Action<GameState> m_changeGameState;
@@ -64,9 +65,8 @@ namespace stackRPG
         private void LoadOwnerData()
         {
             m_userList.Clear();
-            m_owner = new MUser(m_baseUserData.m_user);
+            m_owner = new MUser((ResourcesManager.Load("Owner") as UserData).m_user);               
             m_userList.Add(m_owner);
-            m_owner.m_id = m_ownerID;
         }
 
         private void ChangeGameState(GameState state)
@@ -78,7 +78,7 @@ namespace stackRPG
             {
                 case GameState.StartStage:
                     {
-                        StartCoroutine(StartStage(m_stageNumber + 1));
+                        StartCoroutine(StartStage());
                     }
                     break;                
                 case GameState.ChangeTurn:
@@ -113,21 +113,19 @@ namespace stackRPG
             }
         }
 
-        IEnumerator StartStage(int stageNumber)
+        IEnumerator StartStage()
         {
-            if (stageNumber >= StageManager.Instance.m_stageDatas.Count) { ChangeGameState(GameState.Finish); yield break; }
+            if (SingleGameManager.Instance.NextStage() == false) { ChangeGameState(GameState.Finish); yield break; }
 
-            SetStage(stageNumber);
+            Map map = SingleGameManager.Instance.m_currentMap;
 
-            yield return new WaitForSeconds(0.5f);
-
-            //! 맵, 유저 정리
+            //! 모든 유닛 제거
             for (int i = 0; i < m_userList.Count; ++i)
             {
                 m_userList[i].RemoveAllUnit();
 
                 //! 유저가아닌 녀석은 없앤다.
-                if (m_userList[i].m_id != m_ownerID)
+                if (m_userList[i].m_id != m_owner.m_id)
                 {
                     m_userList.RemoveAt(i);
                     i--;
@@ -136,34 +134,48 @@ namespace stackRPG
 
             yield return new WaitForSeconds(0.5f);
 
-            //! 다음스테이지 불러오기
-            Stage stage = StageManager.Instance.m_stageDatas[stageNumber].m_stage;
+            //! 맵생성
+            AutoTileMap autoTileMap = FindObjectOfType<AutoTileMap>();
+            if (autoTileMap == null) Debug.LogError("Not Found Object! [AutoTileMap]");
 
-            //! 보상주기
-            MUser owner = GetUser(m_ownerID);
-            if (owner != null) owner.SetGold(owner.m_gold + stage.m_gold);
+            autoTileMap.Tileset = map.m_autoTileset;
+            autoTileMap.MapData = map.m_autoTileMapData;
 
-            Debug.Log("보급품을 받았습니다. : $ " + stage.m_gold);
+            yield return new WaitForSeconds(0.5f);
+            
+
+            //! 보상주기            
+            m_owner.SetGold(m_owner.m_gold + SingleGameManager.Instance.m_currentRewordGold);
+            Debug.Log("보급품을 받았습니다. : $ " + SingleGameManager.Instance.m_currentRewordGold);
 
             yield return new WaitForSeconds(0.5f);
 
-            //! 다음 유저 진입
-            for (int i = 0; i < stage.m_enemys.Count; ++i)
-            {
-                m_userList.Add(new MUser(stage.m_enemys[i].m_user));
-                Debug.Log("새로운 도전자가 진입하였습니다. : " + stage.m_enemys[i].m_user.m_id);
-            }
+            //! 적진입
+            MUser enemy = new MUser(new User("enemy ID"," enemy NickName"));
+            enemy.SetGold(SingleGameManager.Instance.m_enemyGold);            
+            enemy.m_userAI = SingleGameManager.Instance.m_currentEnemy;
+            m_userList.Add(enemy);
+
+            yield return new WaitForSeconds(0.5f);
 
             //! 유저 순서정렬 및 초기화
-            m_userList.Remove(owner);
-            owner.WaitTurn();
-            m_userList.Add(owner);
+            m_userList.Remove(m_owner);
+            m_owner.WaitTurn();
+            m_userList.Add(m_owner);
 
-            for(int i = 0;i<m_userList.Count;++i)
+            //! 유저에게 스타팅 포인트 지급
+            //! 셔플
+            List<int> usedStartingPointIndex = new List<int>();
+            for (int i = 0; i < map.m_makeUnitPositions.Count;++i) usedStartingPointIndex.Add(i);
+            MSettings.Shuffle(usedStartingPointIndex);
+            //! 지급
+            for (int i = 0; i<m_userList.Count; ++i)
             {
-                m_userList[i].SetUnitPosition(stage.m_makeUnitPositions[i]);
+                int index = usedStartingPointIndex[i];
+                m_userList[i].Init(index, map.m_makeUnitPositions[index], map.m_attackPoint);
             }
 
+            //! 게임시작
             ChangeGameState(GameState.ChangeTurn);
         }
         IEnumerator ChangeTurn()
@@ -185,7 +197,7 @@ namespace stackRPG
 
         IEnumerator MakeProcess()
         {
-            yield return StartCoroutine(m_user.Process());
+            yield return StartCoroutine(m_currentUser.Process());
             ChangeGameState(GameState.ChangeTurn);
         }
 
@@ -202,8 +214,8 @@ namespace stackRPG
 
         public void SetUser(MUser user)
         {
-            m_user = user;
-            if (m_changeUserEvent != null) m_changeUserEvent(m_user);
+            m_currentUser = user;
+            if (m_changeUserEvent != null) m_changeUserEvent(m_currentUser);
         }
 
         int unitCount = 0;
@@ -212,29 +224,32 @@ namespace stackRPG
 
         public void MakeUnit(Unit unit)
         {
+            if (IsCanMakeUnit() == false) return;
             if (UseGold(unit.m_makePrice) == false) return;
 
             MUnit munit = MUnitManager.Instance.GetUnit(unit);            
-            munit.m_level = m_user.GetUnitLevel(unit.m_id);
-            munit.m_teamId = m_user.m_teamId;
-            munit.transform.position = m_user.m_startPoint;
+            munit.m_level = m_currentUser.GetUnitLevel(unit.m_id);
+            munit.m_teamId = m_currentUser.m_teamIndex;
+            Vector2 pos = m_currentUser.GetSpawnPoint();
+            munit.transform.position =  RpgMapHelper.GetTileCenterPosition((int)pos.x, (int)pos.y);
             munit.Init(unit);
-            m_user.MakeUnit(munit);
+
+            m_currentUser.MakeUnit(munit);
         }
 
         public bool UpgradeUnit(Unit unit)
         {
-            int level = m_user.GetUnitLevel(unit.m_id);
+            int level = m_currentUser.GetUnitLevel(unit.m_id);
             if (UseGold(unit.m_upgradeCost[level]) == false) return false;
 
-            m_user.UpgradeUnit(unit.m_id);
+            m_currentUser.UpgradeUnit(unit.m_id);
             return true;
         }
         public bool OpenUnit(Unit unit)
         {
             if (UseGold(unit.m_openPrice) == false) return false;
 
-            m_user.OpenUnit(unit.m_id);
+            m_currentUser.OpenUnit(unit.m_id);
             return true;
         }   
 
@@ -256,11 +271,17 @@ namespace stackRPG
 
         private bool UseGold(int value)
         {
-            if (m_user == null) return false;
-            if (m_user.m_gold < value) return false;
+            if (m_currentUser == null) return false;
+            if (m_currentUser.m_gold < value) return false;
 
-            m_user.SetGold(m_user.m_gold - value);
+            m_currentUser.SetGold(m_currentUser.m_gold - value);
             return true;
+        }
+
+        private bool IsCanMakeUnit()
+        {
+            if (m_currentUser == null) return false;
+            return m_currentUser.IsCanMakeUnit();
         }
         
         IEnumerator Play()
@@ -271,10 +292,10 @@ namespace stackRPG
             }
 
             //! 자기 위치에 해쳐모여
-            for (int i = 0; i < m_userList.Count; ++i)
-            {
-                m_userList[i].MoveGround(m_userList[i].m_startPoint);
-            }
+            //for (int i = 0; i < m_userList.Count; ++i)
+            //{
+            //    m_userList[i].MoveGround(m_userList[i].m_startPoint);
+            //}
 
             yield return new WaitForSeconds(1.0f);
 
@@ -283,8 +304,8 @@ namespace stackRPG
             {
                 int targetIndex = i + 1;
                 if (targetIndex >= m_userList.Count) targetIndex = 0;
-
-                m_userList[i].AttackGround(m_userList[targetIndex].m_startPoint);
+                Vector2 pos = m_userList[targetIndex].m_attackPoint;
+                m_userList[i].AttackGround(RpgMapHelper.GetTileCenterPosition((int)pos.x, (int)pos.y));
             }
 
             //! 유저의 유닛카운트가 0이면, 유저를 죽인다.

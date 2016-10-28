@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System;
 
-public class StageFactory : MonoBehaviour
+public class MapFactory : MonoBehaviour
 {   
-    public StageData m_stageData;
+    public MapData m_mapData;
 
     public List<StartingPoint> m_makeUnitPositions;
 }

@@ -8,26 +8,9 @@ namespace CreativeSpore
 
 		public float DampTime = 0.15f;
 		public Transform m_target;
-        public Transform m_positionTarget;
 		private Vector3 velocity = Vector3.zero;
         private Camera m_camera;
-
-        void Awake()
-        {
-            StartCoroutine(Init());
-        }
-
-        IEnumerator Init()
-        {
-            yield return StartCoroutine(MGameManager.Instance.WaitPrecess());
-            m_camera = GetComponent<Camera>();
-            MGameManager.Instance.m_changeUserEvent += OnChangeUser;
-        }
-		
-        void OnChangeUser(MUser user)
-        {
-            if (user != null) SetTarget(user.m_startPoint);
-        }
+        
 		// Update is called once per frame
 		void Update () 
 		{
@@ -43,12 +26,6 @@ namespace CreativeSpore
         public void SetTarget(Transform target)
         {
             m_target = target;
-        }
-
-        public void SetTarget(Vector3 position)
-        {
-            m_positionTarget.position = position;
-            SetTarget(m_positionTarget);
         }
 	}
 }

@@ -5,9 +5,12 @@ using System;
 [Serializable]
 public class User
 {
-    public AIUserData m_userAI;
     public string m_id;
-    public int m_teamId;
-    public int m_gold;
-    public Vector3 m_startPoint;
+    public string m_nickName;
+
+    public User(string id, string nickName)
+    {
+        m_id = id;
+        m_nickName = nickName;
+    }
 }

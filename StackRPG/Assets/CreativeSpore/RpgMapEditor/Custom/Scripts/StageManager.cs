@@ -6,5 +6,5 @@ using CreativeSpore.RpgMapEditor;
 
 public class StageManager : Singleton<StageManager>
 {
-    public List<StageData> m_stageDatas;
+    public List<MapData> m_mapDatas;
 }

@@ -48,28 +48,38 @@ namespace stackRPG
     {
         public MUser(User user)
         {
-            m_userAI = user.m_userAI == null ? null : user.m_userAI.m_aI;
-            m_id = user.m_id;
-            m_teamId = user.m_teamId;
-            m_gold = user.m_gold;
-            m_startPoint = user.m_startPoint;
-
-             m_aliveUnits = new List<MUnit>();
+            m_user = user;
         }
 
+        public void Init(int teamIndex, StartingPoint startingPoint, Vector2 attackPoint)
+        {
+            m_teamIndex = teamIndex;
+            m_startingPosition = startingPoint;
+            m_attackPoint = attackPoint;
+
+            m_state = UserState.WaitTurn;
+            m_aliveUnits = new List<MUnit>();
+        }
+
+        public User m_user;
         public AIUser m_userAI;
         public UserState m_state;
 
-        public string m_id;
+        public string m_id { get { return m_user.m_id; } }
+        public string m_nickName { get { return m_user.m_nickName; } }
         public int m_gold;
 
-        public int m_teamId;
-        public Vector3 m_startPoint;
-        public StartingPoint m_spawnPosition;
+        public int m_teamIndex;        
+        public StartingPoint m_startingPosition;
+        public Vector3 m_attackPoint;
 
         public List<UnitLevelTable> m_haveUnit = new List<UnitLevelTable>();
         public List<MUnit> m_aliveUnits { get; private set; }
-        
+
+        public Vector2 GetSpawnPoint()
+        {
+            return m_startingPosition.m_positions[m_aliveUnits.Count];
+        }
 
         public Action m_changeGoldEvent;
 
@@ -102,7 +112,7 @@ namespace stackRPG
 
         public void SetUnitPosition(StartingPoint spawnPosition)
         {
-            m_spawnPosition = spawnPosition;
+            m_startingPosition = spawnPosition;
         }
 
         public IEnumerator Process()
@@ -110,7 +120,9 @@ namespace stackRPG
             if (m_state == UserState.Dead) yield break;
             MakeUnit();
 
-            if(m_userAI!=null)
+            Debug.Log("Turn : " + m_id + " gold : " + m_gold);
+
+            if (m_userAI != null)
             {
                 yield return MGameManager.Instance.StartCoroutine(MAIUser.Progress(m_userAI, this));
                 Ready();
@@ -283,8 +295,9 @@ namespace stackRPG
         }
 
         public void RemoveAllUnit()
-        {   
-            for(int i = 0;i< m_aliveUnits.Count;++i)
+        {
+            if (m_aliveUnits == null) return;
+            for (int i = 0;i< m_aliveUnits.Count;++i)
             {
                 m_aliveUnits[i].Dead();
             }
@@ -293,6 +306,13 @@ namespace stackRPG
         public void Dead()
         {
             ChangeState(UserState.Dead);
+        }
+
+        public bool IsCanMakeUnit()
+        {
+            if (m_aliveUnits.Count >= m_startingPosition.m_positions.Count) return false;
+
+            return true;
         }
     }
 }

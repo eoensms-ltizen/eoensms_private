@@ -42,6 +42,18 @@ public static class MSettings
         point2 = new Vector3(rightX, upY);
     }
 
+    public static void Shuffle<T>(this IList<T> list)
+    {
+        int n = list.Count;        
+        while (n > 1)
+        {
+            int k = (Random(0, n) % n);
+            n--;
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+    }
 
     public static int Random(int min, int max)
     {

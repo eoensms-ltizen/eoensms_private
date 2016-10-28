@@ -18,7 +18,7 @@ namespace stackRPG
         public void SetUnit(Unit unit)
         {
             m_unit = unit;
-            UnitLevelTable unitLevelTable = MGameManager.Instance.m_user.GetUnitLevelTable(unit.m_id);
+            UnitLevelTable unitLevelTable = MGameManager.Instance.m_currentUser.GetUnitLevelTable(unit.m_id);
             int level = unitLevelTable.m_level;
 
             m_unitInfo.text = string.Format("Name : {0}[{1}] \nHP : {2}\nATK : {3}\nSPD : {4}", m_unit.m_name, level, m_unit.m_hp[level], m_unit.m_attackDamage[level], m_unit.m_moveSpeed);

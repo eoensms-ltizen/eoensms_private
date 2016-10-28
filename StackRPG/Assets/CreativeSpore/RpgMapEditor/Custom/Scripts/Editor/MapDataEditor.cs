@@ -5,12 +5,11 @@ using UnityEditor;
 using CreativeSpore.RpgMapEditor;
 using UnityEditorInternal;
 
-[CustomEditor(typeof(StageFactory))]
-public class StageFactoryEditor : Editor
-{   
-    StageFactory m_stageFactory { get { return (StageFactory)target; } }
-    StageData m_stageData { get { return m_stageFactory.m_stageData; } }
-
+[CustomEditor(typeof(MapData))]
+public class MapDataEditor : Editor
+{
+    public virtual MapData m_mapData { get { return (MapData)target; } }
+    
     AutoTileMap m_autoTileMap;
     ReorderableList m_layerList;
 
@@ -21,18 +20,15 @@ public class StageFactoryEditor : Editor
         m_autoTileMap = FindObjectOfType<AutoTileMap>();
         if (m_autoTileMap == null)
         {
-            string prefabPath = "Assets/CreativeSpore/RpgMapEditor/Custom/Prefabs/Stage/AutoTileMap.prefab";
+            string prefabPath = "Assets/CreativeSpore/RpgMapEditor/Custom/Prefabs/Stage/AutoTileMap.prefab";            
             Instantiate(AssetDatabase.LoadAssetAtPath(prefabPath, typeof(GameObject)));
             m_autoTileMap = FindObjectOfType<AutoTileMap>();
         }
 
-        m_autoTileMap.Tileset = m_stageData.m_stage.m_autoTileset;
-        m_autoTileMap.MapData = m_stageData.m_stage.m_autoTileMapData;
+        m_autoTileMap.Tileset = m_mapData.m_map.m_autoTileset;
+        m_autoTileMap.MapData = m_mapData.m_map.m_autoTileMapData;        
 
-        //! 이식
-        m_stageFactory.m_makeUnitPositions = m_stageData.m_stage.m_makeUnitPositions;
-
-        m_layerList = new ReorderableList(serializedObject, serializedObject.FindProperty("m_makeUnitPositions"), true, true, true, true);
+        m_layerList = new ReorderableList(serializedObject, serializedObject.FindProperty("m_map").FindPropertyRelative("m_makeUnitPositions"), true, true, true, true);
         m_layerList.drawElementCallback += _LayerList_DrawElementCallback;
         m_layerList.drawHeaderCallback = (Rect rect) =>
         {
@@ -40,15 +36,12 @@ public class StageFactoryEditor : Editor
         };
         m_layerList.onChangedCallback = (ReorderableList list) =>
         {
-            m_stageData.m_stage.m_makeUnitPositions = m_stageFactory.m_makeUnitPositions;
-            m_userIdx = m_layerList.index;
             serializedObject.ApplyModifiedProperties();
         };
         m_layerList.onAddCallback = (ReorderableList list) =>
-        {   
-
-            list.index = m_stageData.m_stage.m_makeUnitPositions.Count;
-            m_stageFactory.m_makeUnitPositions.Add(new StartingPoint());
+        {
+            list.index = m_mapData.m_map.m_makeUnitPositions.Count;
+            m_mapData.m_map.m_makeUnitPositions.Add(new StartingPoint());
         };
     }
 
@@ -88,10 +81,10 @@ public class StageFactoryEditor : Editor
     }
 
     void DrawPlayTab()
-    {
+    {   
         base.OnInspectorGUI();
     }
-
+        
 
     private void _LayerList_DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
     {
@@ -111,16 +104,15 @@ public class StageFactoryEditor : Editor
     }
 
     static EditType m_editType = EditType.AttackPoint;
-    
     void DrawEditTab()
-    {   
-        m_stageData.m_stage.m_canMakeUnitCount = EditorGUILayout.IntField("Unit Count", m_stageData.m_stage.m_canMakeUnitCount);
+    {
+        EditorGUILayout.LabelField("Player Count : " + m_mapData.m_map.m_makeUnitPositions.Count);
+        m_mapData.m_map.m_canMakeUnitCount = EditorGUILayout.IntField("Unit Count", m_mapData.m_map.m_canMakeUnitCount);
 
         m_layerList.DoLayoutList();
 
-        m_userIdx = Mathf.Max(m_layerList.index, 0);
-
-
+        m_userIdx = m_layerList.index;
+        
         EditorGUILayout.HelpBox(m_userIdx + " 유저의 [" + m_editType.ToString() + "] 을 찍으세요", MessageType.Info);
 
         string[] toolBarButtonNames = System.Enum.GetNames(typeof(EditType));
@@ -130,7 +122,7 @@ public class StageFactoryEditor : Editor
         {
             case EditType.AttackPoint:
                 {
-
+                    
                 }
                 break;
             case EditType.StartPoint:
@@ -143,22 +135,22 @@ public class StageFactoryEditor : Editor
 
     void AddUserPoint(int userID, Vector2 pos)
     {
-        if (m_stageData.m_stage.m_makeUnitPositions.Count <= userID) return;
+        if (m_mapData.m_map.m_makeUnitPositions.Count <= userID) return;
 
-        if (m_stageData.m_stage.m_makeUnitPositions[userID].m_positions.Count >= m_stageData.m_stage.m_canMakeUnitCount) return;
+        if (m_mapData.m_map.m_makeUnitPositions[userID].m_positions.Count >= m_mapData.m_map.m_canMakeUnitCount) return;
 
-        if (m_stageData.m_stage.m_makeUnitPositions[userID].m_positions.Contains(pos) == true) return;
+        if (m_mapData.m_map.m_makeUnitPositions[userID].m_positions.Contains(pos) == true) return;
 
-        m_stageData.m_stage.m_makeUnitPositions[userID].m_positions.Add(pos);
+        m_mapData.m_map.m_makeUnitPositions[userID].m_positions.Add(pos);
     }
 
     void RemoveUserPoint(int userID, Vector2 pos)
     {
-        if (m_stageData.m_stage.m_makeUnitPositions.Count <= userID) return;
+        if (m_mapData.m_map.m_makeUnitPositions.Count <= userID) return;
 
-        if (m_stageData.m_stage.m_makeUnitPositions[userID].m_positions.Contains(pos) == false) return;
+        if (m_mapData.m_map.m_makeUnitPositions[userID].m_positions.Contains(pos) == false) return;
 
-        m_stageData.m_stage.m_makeUnitPositions[userID].m_positions.Remove(pos);
+        m_mapData.m_map.m_makeUnitPositions[userID].m_positions.Remove(pos);
     }
 
     private int m_tilesetSelStart;
@@ -284,7 +276,7 @@ public class StageFactoryEditor : Editor
                         {
                             case EditType.AttackPoint:
                                 {
-                                    m_stageData.m_stage.m_attackPoint = new Vector2(m_prevMouseTileX, m_prevMouseTileY);
+                                    m_mapData.m_map.m_attackPoint = new Vector2(m_prevMouseTileX, m_prevMouseTileY);
                                 }
                                 break;
                             case EditType.StartPoint:
@@ -323,23 +315,15 @@ public class StageFactoryEditor : Editor
         Rect rAutoTileMap = new Rect(m_autoTileMap.transform.position.x, m_autoTileMap.transform.position.y, m_autoTileMap.MapTileWidth * m_autoTileMap.Tileset.TileWorldWidth, -m_autoTileMap.MapTileHeight * m_autoTileMap.Tileset.TileWorldHeight);
         UtilsGuiDrawing.DrawRectWithOutline(rAutoTileMap, new Color(0f, 0f, 0f, 0f), new Color(1f, 1f, 1f, 1f));
 
-        //! StartPoint        
-        for(int j = 0; j< m_stageData.m_stage.m_makeUnitPositions.Count;++j)
+        //! StartPoint
+        for (int i = 0; i < m_mapData.m_map.m_makeUnitPositions[m_userIdx].m_positions.Count; ++i)
         {
-            StartingPoint startingPoint = m_stageData.m_stage.m_makeUnitPositions[j];
-            if (startingPoint.m_visible == false) continue;
-            for (int i = 0; i < startingPoint.m_positions.Count; ++i)
-            {
-                Vector2 position = startingPoint.m_positions[i];
-                Color alphaColor = startingPoint.m_color;
-                alphaColor.a = 0.2f;
-                DrawTileWithOutline((int)position.x, (int)position.y, alphaColor, startingPoint.m_color);
-            }
+            Vector2 position = m_mapData.m_map.m_makeUnitPositions[m_userIdx].m_positions[i];
+            DrawTileWithOutline((int)position.x, (int)position.y, new Color(0f, 1f, 0f, 0.2f), new Color(0f, 1f, 0f, 1f));
         }
-        
 
         //! AttackPoint
-        DrawTileWithOutline((int)m_stageData.m_stage.m_attackPoint.x, (int)m_stageData.m_stage.m_attackPoint.y, Color.red, Color.red);
+        DrawTileWithOutline((int)m_mapData.m_map.m_attackPoint.x, (int)m_mapData.m_map.m_attackPoint.y, new Color(0f, 1f, 0f, 0.2f), new Color(0f, 1f, 0f, 1f));
     }
 
     void DrawTileWithOutline(int x, int y, Color color, Color lineColor)
@@ -409,5 +393,4 @@ public class StageFactoryEditor : Editor
             //m_isMouseMiddle = m_isMouseMiddleDown || ( Event.current.type == EventType.MouseDrag && Event.current.button == 2);
         }
     }
-
 }
