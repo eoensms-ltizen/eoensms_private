@@ -9,9 +9,10 @@ public class SingleGameManager : Singleton<SingleGameManager>
     public List<MapData> m_maps;
     public List<int> m_rewordGold;
     public AIUserData m_enemy;
+    public float m_goldPercentage;
 
     public Map m_currentMap { get { return m_maps[m_stageNumber].m_map; } }   
-    public AIUser m_currentEnemy { get { return m_enemy.m_aI; } }
+    public AIUser m_currentEnemy { get { return m_enemy == null ? null : m_enemy.m_aI; } }
     public int m_currentRewordGold { get { return m_rewordGold[m_stageNumber]; } }
     public int m_enemyGold
     {
@@ -22,7 +23,7 @@ public class SingleGameManager : Singleton<SingleGameManager>
             {
                 gold += m_rewordGold[i];
             }
-            return gold;
+            return (int)(gold * m_goldPercentage);
         }
     }
 

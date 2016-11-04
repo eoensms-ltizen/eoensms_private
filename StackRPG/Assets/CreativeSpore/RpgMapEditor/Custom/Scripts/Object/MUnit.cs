@@ -122,6 +122,9 @@ namespace stackRPG
         void ChangeState(State state)
         {
             if (m_state == state) return;
+
+            StopAllCoroutines();
+
             m_state = state;
             if (m_changeStateDelegate != null) m_changeStateDelegate(this);
 
@@ -131,7 +134,7 @@ namespace stackRPG
 
                     break;
                 case State.Dead:
-                    {
+                    {   
                         Destroy(transform.gameObject);
                     }
                     break;

@@ -13,12 +13,12 @@ public static class MAIUser
         GetGoldByAction(aiUser, totalGold, out canUseGoldByAction);
 
         //! 순서대로 연다.
-        int openGold = canUseGoldByAction[UserAction.Open];        
+        int openGold = canUseGoldByAction[UserAction.Open];         
         while (UseGoldToOpen(user, ref openGold)) yield return null;
 
         //! 렌덤으로 만듬
         int makeGold = canUseGoldByAction[UserAction.Make];        
-        while (UseGoldToMake(user, ref makeGold)) yield return null;
+        while (UseGoldToMake(user, ref makeGold)) yield return new WaitForSeconds(0.2f);
 
         //! 가지고있는것중 랜덤으로 업글
         int upgradeGold = canUseGoldByAction[UserAction.Upgrade];        
@@ -29,7 +29,7 @@ public static class MAIUser
         switch (aiUser.m_lastAction)
         {
             case LastUserAction.Make:
-                while (UseGoldToMake(user, ref totalGold)) yield return null;
+                while (UseGoldToMake(user, ref totalGold)) yield return new WaitForSeconds(0.2f);
                 break;
             case LastUserAction.Save:
                 
@@ -52,7 +52,7 @@ public static class MAIUser
                 if (gold > needGold)
                 {
                     gold -= needGold;
-                    MGameManager.Instance.OpenUnit(unit);
+                    MGameManager.Instance.OpenUnit(user.m_id, unit.m_id);
                     return true;
                 }
             }
@@ -67,7 +67,7 @@ public static class MAIUser
         if (canMakeUnits.Count == 0) return false;
 
         Unit ranUnit = canMakeUnits[MSettings.Random(0, canMakeUnits.Count)];
-        MGameManager.Instance.MakeUnit(ranUnit);
+        MGameManager.Instance.MakeUnit(user.m_id, ranUnit.m_id);
         gold -= ranUnit.m_makePrice;
         return true;
     }
@@ -81,7 +81,7 @@ public static class MAIUser
         Unit ranUnit = canUpgradeUnit[MSettings.Random(0, canUpgradeUnit.Count)];
         int level = user.GetUnitLevelTable(ranUnit.m_id).m_level;
         gold -= ranUnit.m_upgradeCost[level];
-        MGameManager.Instance.UpgradeUnit(ranUnit);
+        MGameManager.Instance.UpgradeUnit(user.m_id, ranUnit.m_id);
         return true;
     }
 

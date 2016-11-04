@@ -4,54 +4,24 @@ using System.Collections;
 namespace CreativeSpore
 {
 	[RequireComponent(typeof(Camera))]
-	public class Camera2DController : MonoBehaviour {
-
-
+	public class Camera2DController : MonoBehaviour
+    {
 		public Camera Camera{ get; private set; }
 
 		public float Zoom = 1f;
 		public float PixelToUnits = 100f;
         public bool KeepInsideMapBounds = true;
 
-        private Rect m_boundingBox;
-
 		// Use this for initialization
 		void Start () 
 		{
-			Camera = GetComponent<Camera>();
-            m_boundingBox = new Rect();
-            m_boundingBox.width = CreativeSpore.RpgMapEditor.AutoTileMap.Instance.MapTileWidth * CreativeSpore.RpgMapEditor.AutoTileMap.Instance.Tileset.TileWorldWidth;
-            m_boundingBox.height = CreativeSpore.RpgMapEditor.AutoTileMap.Instance.MapTileHeight * CreativeSpore.RpgMapEditor.AutoTileMap.Instance.Tileset.TileWorldHeight;
-            m_boundingBox.x = CreativeSpore.RpgMapEditor.AutoTileMap.Instance.transform.position.x;
-            m_boundingBox.y = CreativeSpore.RpgMapEditor.AutoTileMap.Instance.transform.position.y;
+			Camera = GetComponent<Camera>();            
 		}
 		
 		Vector3 m_vCamRealPos;
         void LateUpdate()
         {
-#if UNITY_ANDROID
-            if (Input.touchCount == 2)
-            {
-                // Store both touches.
-                Touch touchZero = Input.GetTouch(0);
-                Touch touchOne = Input.GetTouch(1);
 
-                // Find the position in the previous frame of each touch.
-                Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-                Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
-
-                // Find the magnitude of the vector (the distance) between the touches in each frame.
-                float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-                float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
-
-                // Find the difference in the distances between each frame.
-                float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
-
-                Zoom -= deltaMagnitudeDiff * Time.deltaTime;
-
-                CommonLog.Instance.ShowLog("Zoom : " + Zoom);
-            }
-#endif
 
             //Note: ViewCamera.orthographicSize is not a real zoom based on pixels. This is the formula to calculate the real zoom.
             Camera.orthographicSize = (Screen.height) / (2f * Zoom * PixelToUnits);
@@ -73,6 +43,8 @@ namespace CreativeSpore
         // Update is called once per frame
         void DoKeepInsideMapBounds()
         {
+            if (CreativeSpore.RpgMapEditor.AutoTileMap.Instance == null) return;
+
             Rect rCamera = new Rect();
             rCamera.width = Screen.width / (PixelToUnits * Zoom);
             rCamera.height = Screen.height / (PixelToUnits * Zoom);
@@ -103,31 +75,9 @@ namespace CreativeSpore
             m_vCamRealPos += vOffset;
         }
 
-        void DoKeepInsideBounds()
-        {
-            Rect rCamera = new Rect();
-            rCamera.width = Screen.width / (PixelToUnits * Zoom);
-            rCamera.height = Screen.height / (PixelToUnits * Zoom);
-            rCamera.center = Camera.transform.position;
-
-            Vector3 vOffset = Vector3.zero;
-            Rect rBoundingBox = m_boundingBox;
-            rBoundingBox.y -= rBoundingBox.height;
-
-            float right = (rCamera.x < rBoundingBox.x) ? rBoundingBox.x - rCamera.x : 0f;
-            float left = (rCamera.xMax > rBoundingBox.xMax) ? rBoundingBox.xMax - rCamera.xMax : 0f;
-            float down = (rCamera.y < rBoundingBox.y) ? rBoundingBox.y - rCamera.y : 0f;
-            float up = (rCamera.yMax > rBoundingBox.yMax) ? rBoundingBox.yMax - rCamera.yMax : 0f;
-
-            vOffset.x = (right != 0f && left != 0f) ? rBoundingBox.center.x - Camera.transform.position.x : right + left;
-            vOffset.y = (down != 0f && up != 0f) ? rBoundingBox.center.y - Camera.transform.position.y : up + down;
-
-            Camera.transform.position += vOffset;
-        }
-
 		void OnPostRender()
 		{
 			Camera.transform.position = m_vCamRealPos;
 		}
-	}
+    }
 }

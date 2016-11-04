@@ -18,9 +18,9 @@ namespace stackRPG
             }
         }
 
-        public MUnit GetUnit(Unit unit)
+        public MUnit GetMUnit(int id)
         {   
-            MUnit munit = ((GameObject)Instantiate(m_units[unit.m_id].m_prefab, Vector3.zero, Quaternion.identity)).GetComponent<MUnit>();            
+            MUnit munit = ((GameObject)Instantiate(m_units[id].m_prefab, Vector3.zero, Quaternion.identity)).GetComponent<MUnit>();            
             return munit;
         }
 

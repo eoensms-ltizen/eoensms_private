@@ -119,11 +119,9 @@ namespace stackRPG
         {
             if (m_state == UserState.Dead) yield break;
             MakeUnit();
-
-            Debug.Log("Turn : " + m_id + " gold : " + m_gold);
-
             if (m_userAI != null)
             {
+                yield return new WaitForSeconds(1.0f);
                 yield return MGameManager.Instance.StartCoroutine(MAIUser.Progress(m_userAI, this));
                 Ready();
             }
@@ -131,54 +129,21 @@ namespace stackRPG
             {
                 while (m_state != UserState.Ready) yield return null;
             }
-
-            //while (m_state != UserState.Ready)
-            //{
-            //    if(m_state == UserState.MakeUnit)
-            //    {
-            //        if(m_userAI != null)
-            //        {
-            //            Action action;
-            //            if (action != null) { action(); yield return null; }
-            //            else Ready();
-            //        }
-            //    }
-            //    yield return null;
-            //}
         }
-
-        bool MakeRandomUnit()
-        {   
-            //! 열만한 케릭터가 있느냐?
-
-            //! 생산 가능한 유닛이 있느냐?
-            if (m_haveUnit.Count == 0) return false;
-
-            List<Unit> units;
-            GetAllCanMakeUnitIndex(out units);
-            if (units.Count == 0) return false;
-
-            MGameManager.Instance.MakeUnit(units[MSettings.Random(0, units.Count)]);
-            return true;
-        }
-
         
-
-        void GetAllCanMakeUnitIndex(out List<Unit> ids)
-        {
-            ids = new List<Unit>();
-
-            for (int i = 0; i < m_haveUnit.Count; ++i)
-            {
-                Unit unit = MUnitManager.Instance.GetUnit(m_haveUnit[i].m_id);
-                if (m_gold >= unit.m_makePrice) ids.Add(unit);
-            }
-        }
 
         public void SetGold(int gold)
         {
             m_gold = gold;
             if (m_changeGoldEvent != null) m_changeGoldEvent();
+        }
+
+        public bool UseGold(int gold)
+        {
+            if (m_gold < gold) return false;
+
+            SetGold(m_gold - gold);
+            return true;
         }
 
         public void AttackGround(Vector3 position)
@@ -249,7 +214,10 @@ namespace stackRPG
 
         public void MakeUnit(MUnit unit)
         {
-            unit.m_changeStateDelegate += (munit) => { m_aliveUnits.Remove(munit); };
+            unit.m_changeStateDelegate += (munit) => 
+            {   
+                m_aliveUnits.Remove(munit);
+            };
             m_aliveUnits.Add(unit);
         }
 
@@ -272,7 +240,6 @@ namespace stackRPG
             {
                 if (m_haveUnit[i].m_id == id) { m_haveUnit[i].m_level += 1; return; }
             }
-            Debug.Log("UpgradeUnit : " + id + " not opend unit!");
         }
         public int GetUnitLevel(int id)
         {   
@@ -292,15 +259,6 @@ namespace stackRPG
             UnitLevelTable unitLevelTable = new UnitLevelTable(id, false, 0);
             m_haveUnit.Add(unitLevelTable);
             return unitLevelTable;
-        }
-
-        public void RemoveAllUnit()
-        {
-            if (m_aliveUnits == null) return;
-            for (int i = 0;i< m_aliveUnits.Count;++i)
-            {
-                m_aliveUnits[i].Dead();
-            }
         }
 
         public void Dead()
