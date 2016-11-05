@@ -96,7 +96,8 @@ namespace stackRPG
             m_minDisToReachTarg = m_base_minDisToReachTarg;
         }
         //! 초기 능력치
-        
+
+        public int m_id { get { return m_unit.m_id; } }
         public float m_base_hp { get { return m_unit.m_hp[m_level]; } }
         public int m_base_attackDamage { get { return m_unit.m_attackDamage[m_level]; } }
         public float m_base_attackCoolTime { get { return m_unit.m_attackCoolTime; } }
@@ -134,7 +135,8 @@ namespace stackRPG
 
                     break;
                 case State.Dead:
-                    {   
+                    {
+                        if (m_unit.m_deadPrefab != null) Instantiate(m_unit.m_deadPrefab, transform.position, Quaternion.identity);
                         Destroy(transform.gameObject);
                     }
                     break;
@@ -144,6 +146,12 @@ namespace stackRPG
                     }
                     break;
             }
+        }
+
+        public void LevelUp()
+        {
+            m_level += 1;
+            if (m_unit.m_levelUpPrefab != null) Instantiate(m_unit.m_levelUpPrefab, transform.position, Quaternion.identity);
         }
 
         public void Dead()

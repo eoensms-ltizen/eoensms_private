@@ -8,6 +8,26 @@ public class PinchZoom : MonoBehaviour
 
     void Update()
     {
+#if UNITY_EDITOR
+        float wheel = Input.GetAxis("Mouse ScrollWheel");
+
+        if (Camera.main.orthographic)
+        {
+            // ... change the orthographic size based on the change in distance between the touches.
+            Camera.main.orthographicSize += wheel * orthoZoomSpeed;
+
+            // Make sure the orthographic size never drops below zero.
+            Camera.main.orthographicSize = Mathf.Max(Camera.main.orthographicSize, 0.1f);
+        }
+        else
+        {
+            // Otherwise change the field of view based on the change in distance between the touches.
+            Camera.main.fieldOfView += wheel * perspectiveZoomSpeed;
+
+            // Clamp the field of view to make sure it's between 0 and 180.
+            Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, 0.1f, 179.9f);
+        }        
+#elif UNITY_ANDROID
         // If there are two touches on the device...
         if (Input.touchCount == 2)
         {
@@ -44,5 +64,6 @@ public class PinchZoom : MonoBehaviour
                 Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, 0.1f, 179.9f);
             }
         }
+#endif
     }
 }

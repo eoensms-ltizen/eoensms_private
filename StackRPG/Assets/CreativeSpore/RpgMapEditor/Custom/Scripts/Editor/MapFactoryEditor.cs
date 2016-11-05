@@ -6,6 +6,12 @@ using CreativeSpore.RpgMapEditor;
 using UnityEditorInternal;
 using System;
 
+public enum TabType
+{
+    Play,
+    Edit,
+}
+
 [CustomEditor(typeof(MapFactory))]
 public class MapFactoryEditor : Editor
 {
@@ -17,11 +23,7 @@ public class MapFactoryEditor : Editor
 
     int m_userIdx;
 
-    public enum TabType
-    {
-        Play,
-        Edit,
-    }
+    
 
     public enum EditType
     {

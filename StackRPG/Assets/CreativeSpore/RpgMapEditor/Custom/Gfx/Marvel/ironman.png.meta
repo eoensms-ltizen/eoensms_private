@@ -1,0 +1,384 @@
+fileFormatVersion: 2
+guid: 9907dbf77e8a5d44fbe8345240a7195f
+timeCreated: 1478314188
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: ironman_0
+    21300002: ironman_1
+    21300004: ironman_2
+    21300006: ironman_3
+    21300008: ironman_4
+    21300010: ironman_5
+    21300012: ironman_6
+    21300014: ironman_7
+    21300016: ironman_8
+    21300018: ironman_9
+    21300020: ironman_10
+    21300022: ironman_11
+    21300024: ironman_12
+    21300026: ironman_13
+    21300028: ironman_14
+    21300030: ironman_15
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: ironman_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 12, y: 23}
+        - {x: 8, y: 24}
+        - {x: -10, y: 24}
+        - {x: -13, y: 10}
+        - {x: -13, y: -13}
+        - {x: -8, y: -21}
+        - {x: -6, y: -24}
+        - {x: 7, y: -24}
+        - {x: 9, y: -21}
+        - {x: 14, y: -9}
+        - {x: 14, y: 5}
+    - name: ironman_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 23}
+        - {x: -12, y: 4}
+        - {x: -12, y: -12}
+        - {x: -9, y: -22}
+        - {x: -4, y: -24}
+        - {x: 6, y: -24}
+        - {x: 12, y: -21}
+        - {x: 12, y: 23}
+    - name: ironman_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 12, y: 23}
+        - {x: 8, y: 24}
+        - {x: -10, y: 24}
+        - {x: -13, y: 10}
+        - {x: -13, y: -13}
+        - {x: -8, y: -21}
+        - {x: -6, y: -24}
+        - {x: 7, y: -24}
+        - {x: 9, y: -21}
+        - {x: 14, y: -9}
+        - {x: 14, y: 5}
+    - name: ironman_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 23}
+        - {x: -6, y: 23}
+        - {x: -11, y: 21}
+        - {x: -11, y: -21}
+        - {x: -5, y: -24}
+        - {x: 9, y: -24}
+        - {x: 13, y: -13}
+        - {x: 13, y: 6}
+        - {x: 10, y: 20}
+    - name: ironman_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: 24}
+        - {x: -9, y: 23}
+        - {x: -9, y: -22}
+        - {x: -2, y: -24}
+        - {x: 7, y: -24}
+        - {x: 10, y: -21}
+        - {x: 10, y: 22}
+        - {x: 8, y: 24}
+    - name: ironman_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 23}
+        - {x: -4, y: 23}
+        - {x: -10, y: 22}
+        - {x: -10, y: -24}
+        - {x: 10, y: -24}
+        - {x: 11, y: -23}
+        - {x: 11, y: 19}
+    - name: ironman_6
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: 24}
+        - {x: -9, y: 23}
+        - {x: -9, y: -22}
+        - {x: -2, y: -24}
+        - {x: 7, y: -24}
+        - {x: 10, y: -21}
+        - {x: 10, y: 22}
+        - {x: 8, y: 24}
+    - name: ironman_7
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6, y: 23}
+        - {x: -10, y: 22}
+        - {x: -10, y: -24}
+        - {x: -1, y: -24}
+        - {x: 11, y: -21}
+        - {x: 11, y: 21}
+        - {x: 6, y: 23}
+    - name: ironman_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 24}
+        - {x: -10, y: -24}
+        - {x: 7, y: -24}
+        - {x: 9, y: -21}
+        - {x: 9, y: 19}
+        - {x: 8, y: 24}
+    - name: ironman_9
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 23}
+        - {x: -11, y: 19}
+        - {x: -11, y: -24}
+        - {x: 10, y: -24}
+        - {x: 10, y: 9}
+        - {x: 9, y: 19}
+        - {x: 7, y: 23}
+    - name: ironman_10
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 24}
+        - {x: -10, y: -24}
+        - {x: 7, y: -24}
+        - {x: 9, y: -21}
+        - {x: 9, y: 19}
+        - {x: 8, y: 24}
+    - name: ironman_11
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 23}
+        - {x: -11, y: 8}
+        - {x: -11, y: -20}
+        - {x: -4, y: -24}
+        - {x: 7, y: -24}
+        - {x: 10, y: -23}
+        - {x: 10, y: 20}
+        - {x: 8, y: 23}
+    - name: ironman_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 12, y: 23}
+        - {x: 8, y: 24}
+        - {x: -10, y: 24}
+        - {x: -13, y: 11}
+        - {x: -13, y: -13}
+        - {x: -6, y: -24}
+        - {x: 7, y: -24}
+        - {x: 9, y: -21}
+        - {x: 14, y: -9}
+        - {x: 14, y: 5}
+    - name: ironman_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 23}
+        - {x: -12, y: 10}
+        - {x: -12, y: -16}
+        - {x: -9, y: -22}
+        - {x: -4, y: -24}
+        - {x: 4, y: -24}
+        - {x: 13, y: -16}
+        - {x: 13, y: 14}
+        - {x: 10, y: 23}
+    - name: ironman_14
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 12, y: 23}
+        - {x: 8, y: 24}
+        - {x: -10, y: 24}
+        - {x: -13, y: 11}
+        - {x: -13, y: -13}
+        - {x: -6, y: -24}
+        - {x: 7, y: -24}
+        - {x: 9, y: -21}
+        - {x: 14, y: -9}
+        - {x: 14, y: 5}
+    - name: ironman_15
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 23}
+        - {x: -12, y: 10}
+        - {x: -12, y: -14}
+        - {x: -10, y: -20}
+        - {x: -4, y: -24}
+        - {x: 6, y: -24}
+        - {x: 10, y: -22}
+        - {x: 13, y: -15}
+        - {x: 13, y: 12}
+        - {x: 8, y: 23}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

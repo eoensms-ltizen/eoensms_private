@@ -7,6 +7,8 @@ public class Unit
 {
     public GameObject m_prefab;
     public GameObject m_attackPrefab;
+    public GameObject m_deadPrefab;
+    public GameObject m_levelUpPrefab;
 
     public int m_id;
     public string m_name;

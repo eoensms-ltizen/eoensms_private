@@ -1,0 +1,383 @@
+fileFormatVersion: 2
+guid: 396a6275172e8d44a8f11061112e1bdc
+timeCreated: 1478315264
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: thor_0
+    21300002: thor_1
+    21300004: thor_2
+    21300006: thor_3
+    21300008: thor_4
+    21300010: thor_5
+    21300012: thor_6
+    21300014: thor_7
+    21300016: thor_8
+    21300018: thor_9
+    21300020: thor_10
+    21300022: thor_11
+    21300024: thor_12
+    21300026: thor_13
+    21300028: thor_14
+    21300030: thor_15
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: thor_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 24}
+        - {x: -12, y: 20}
+        - {x: -15, y: -6}
+        - {x: -15, y: -19}
+        - {x: -10, y: -24}
+        - {x: 10, y: -24}
+        - {x: 16, y: -23}
+        - {x: 16, y: 22}
+        - {x: 10, y: 24}
+    - name: thor_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 24}
+        - {x: -9, y: 24}
+        - {x: -15, y: 2}
+        - {x: -15, y: -18}
+        - {x: -10, y: -24}
+        - {x: 15, y: -24}
+        - {x: 16, y: -23}
+        - {x: 16, y: 0}
+        - {x: 13, y: 19}
+    - name: thor_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 24}
+        - {x: -12, y: 20}
+        - {x: -15, y: -6}
+        - {x: -15, y: -19}
+        - {x: -10, y: -24}
+        - {x: 10, y: -24}
+        - {x: 16, y: -23}
+        - {x: 16, y: 22}
+        - {x: 10, y: 24}
+    - name: thor_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 24}
+        - {x: -7, y: 24}
+        - {x: -15, y: 20}
+        - {x: -15, y: -21}
+        - {x: -12, y: -22}
+        - {x: -11, y: -22}
+        - {x: -4, y: -24}
+        - {x: 5, y: -24}
+        - {x: 16, y: -20}
+        - {x: 16, y: 21}
+    - name: thor_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 24}
+        - {x: -11, y: 1}
+        - {x: -8, y: -20}
+        - {x: -5, y: -24}
+        - {x: 14, y: -24}
+        - {x: 14, y: 21}
+        - {x: 11, y: 24}
+    - name: thor_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8, y: 24}
+        - {x: -9, y: 24}
+        - {x: -11, y: 22}
+        - {x: -11, y: -22}
+        - {x: -7, y: -24}
+        - {x: 10, y: -24}
+        - {x: 16, y: -16}
+        - {x: 16, y: 0}
+        - {x: 14, y: 13}
+    - name: thor_6
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 24}
+        - {x: -11, y: 3}
+        - {x: -8, y: -20}
+        - {x: -5, y: -24}
+        - {x: 14, y: -24}
+        - {x: 14, y: 22}
+        - {x: 12, y: 24}
+    - name: thor_7
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 24}
+        - {x: -8, y: 24}
+        - {x: -11, y: 20}
+        - {x: -11, y: -24}
+        - {x: 10, y: -24}
+        - {x: 15, y: -20}
+        - {x: 15, y: 14}
+        - {x: 14, y: 23}
+    - name: thor_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 24}
+        - {x: -12, y: 22}
+        - {x: -14, y: 3}
+        - {x: -14, y: -17}
+        - {x: -8, y: -24}
+        - {x: 2, y: -24}
+        - {x: 10, y: -21}
+        - {x: 11, y: -11}
+        - {x: 11, y: 24}
+    - name: thor_9
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 24}
+        - {x: -15, y: 12}
+        - {x: -15, y: -21}
+        - {x: -13, y: -24}
+        - {x: 12, y: -24}
+        - {x: 12, y: 21}
+        - {x: 9, y: 24}
+    - name: thor_10
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 24}
+        - {x: -12, y: 22}
+        - {x: -14, y: 3}
+        - {x: -14, y: -17}
+        - {x: -8, y: -24}
+        - {x: 2, y: -24}
+        - {x: 10, y: -21}
+        - {x: 11, y: -11}
+        - {x: 11, y: 24}
+    - name: thor_11
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 24}
+        - {x: -15, y: 5}
+        - {x: -15, y: -23}
+        - {x: -10, y: -24}
+        - {x: 11, y: -24}
+        - {x: 11, y: 23}
+        - {x: 10, y: 24}
+    - name: thor_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12, y: 24}
+        - {x: -15, y: 23}
+        - {x: -15, y: -24}
+        - {x: 10, y: -24}
+        - {x: 16, y: -22}
+        - {x: 16, y: 11}
+        - {x: 14, y: 20}
+        - {x: 9, y: 24}
+    - name: thor_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 24}
+        - {x: -15, y: 12}
+        - {x: -15, y: -21}
+        - {x: -9, y: -24}
+        - {x: 5, y: -24}
+        - {x: 16, y: -22}
+        - {x: 16, y: 12}
+        - {x: 14, y: 24}
+    - name: thor_14
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12, y: 24}
+        - {x: -15, y: 23}
+        - {x: -15, y: -24}
+        - {x: 10, y: -24}
+        - {x: 16, y: -22}
+        - {x: 16, y: 11}
+        - {x: 14, y: 20}
+        - {x: 9, y: 24}
+    - name: thor_15
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 14, y: 23}
+        - {x: 11, y: 24}
+        - {x: -12, y: 24}
+        - {x: -15, y: 19}
+        - {x: -15, y: -19}
+        - {x: -11, y: -24}
+        - {x: 11, y: -24}
+        - {x: 15, y: -20}
+        - {x: 16, y: -18}
+        - {x: 16, y: 2}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

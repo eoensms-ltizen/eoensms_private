@@ -6,38 +6,44 @@ using stackRPG;
 
 public static class MAIUser
 {
+    static WaitForSeconds waitForAction = new WaitForSeconds(0.2f);
     public static IEnumerator Progress(AIUser aiUser, MUser user)
     {
-        int totalGold = user.m_gold;        
+        int totalGold = user.m_gold;                
         Dictionary <UserAction, int> canUseGoldByAction;
         GetGoldByAction(aiUser, totalGold, out canUseGoldByAction);
 
         //! 순서대로 연다.
-        int openGold = canUseGoldByAction[UserAction.Open];         
-        while (UseGoldToOpen(user, ref openGold)) yield return null;
+        int openGold = canUseGoldByAction[UserAction.Open];
+        while (UseGoldToOpen(user, ref openGold)) { Notice.Instance.BottomAppear("구입중..",NoticeEffect.None); yield return waitForAction; }
 
         //! 렌덤으로 만듬
-        int makeGold = canUseGoldByAction[UserAction.Make];        
-        while (UseGoldToMake(user, ref makeGold)) yield return new WaitForSeconds(0.2f);
+        int makeGold = canUseGoldByAction[UserAction.Make];
+        while (UseGoldToMake(user, ref makeGold)) { Notice.Instance.BottomAppear("배치중..", NoticeEffect.None); yield return waitForAction; }
 
         //! 가지고있는것중 랜덤으로 업글
-        int upgradeGold = canUseGoldByAction[UserAction.Upgrade];        
-        while (UserGoldToUpgrade(user, ref upgradeGold)) yield return null;
+        int upgradeGold = canUseGoldByAction[UserAction.Upgrade];
+        while (UserGoldToUpgrade(user, ref upgradeGold)) { Notice.Instance.BottomAppear("강화중..", NoticeEffect.None); yield return waitForAction; }
 
         //! 남은돈처리
-        totalGold = openGold + makeGold + upgradeGold;        
+        totalGold = openGold + makeGold + upgradeGold;
         switch (aiUser.m_lastAction)
         {
             case LastUserAction.Make:
-                while (UseGoldToMake(user, ref totalGold)) yield return new WaitForSeconds(0.2f);
+                while (UseGoldToMake(user, ref totalGold))
+                {
+                    Notice.Instance.BottomAppear("배치중..", NoticeEffect.None); yield return waitForAction;
+                }
                 break;
             case LastUserAction.Save:
                 
                 break;
             case LastUserAction.Upgrade:
-                while (UserGoldToUpgrade(user, ref totalGold)) yield return null;
+                while (UserGoldToUpgrade(user, ref totalGold)) { Notice.Instance.BottomAppear("강화중..", NoticeEffect.None); yield return waitForAction; }
                 break;
         }
+
+        Notice.Instance.ClearBottom();
     }
 
     static bool UseGoldToOpen(MUser user,ref int gold)

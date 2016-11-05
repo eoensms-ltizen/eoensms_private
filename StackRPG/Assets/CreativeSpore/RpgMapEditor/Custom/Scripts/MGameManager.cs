@@ -26,6 +26,7 @@ namespace stackRPG
         public MUser m_owner;
         public GameObject m_autoTileMapPrefab;
         public GameObject m_gameCameraPrefab;
+        public GameObject m_playUIPrefab;
 
         public GameState m_state;
         public int m_stageNumber;
@@ -62,6 +63,8 @@ namespace stackRPG
             //! 유저데이터 로드한다.
             InitOwner();
 
+            //! 유아이인잇
+            InitUI();
             
             ChangeGameState(GameState.LoadMap);
         }
@@ -91,6 +94,16 @@ namespace stackRPG
             m_userList.Add(m_owner);
         }
 
+        private void InitUI()
+        {
+            RectTransform rectTransform = (Instantiate(m_playUIPrefab) as GameObject).GetComponent<RectTransform>();
+            rectTransform.SetParent(FindObjectOfType<Canvas>().GetComponent<RectTransform>());
+            rectTransform.localScale = Vector3.one;
+            rectTransform.sizeDelta = Vector2.zero;
+            rectTransform.localPosition = Vector3.zero;
+            PlayUI.Instance.Init();
+        }
+
         private void ChangeGameState(GameState state)
         {
             m_state = state;
@@ -103,7 +116,6 @@ namespace stackRPG
                         StartCoroutine(LoadMap());
                     }
                     break;
-
                 case GameState.StartStage:
                     {
                         StartCoroutine(StartStage());
@@ -152,18 +164,21 @@ namespace stackRPG
         IEnumerator StartStage()
         {
             yield return StartCoroutine(MGameCamera.Instance.MapTour());
+
+            //! 적진입
+            MUser enemy = new MUser(SingleGameManager.Instance.m_currentUser);
+            enemy.SetGold(SingleGameManager.Instance.m_enemyGold);            
+            enemy.m_userAI = SingleGameManager.Instance.m_currentAI;
+            m_userList.Add(enemy);
+            
+            yield return StartCoroutine(Notice.Instance.Center("[" + enemy.m_nickName + "] 출현!! ", NoticeEffect.Fade, 5, 0));
+            yield return StartCoroutine(Notice.Instance.Center("[" + enemy.m_nickName + "] 출현!! ", NoticeEffect.Fade, 5, 0));
+            yield return StartCoroutine(Notice.Instance.Center("[" + enemy.m_nickName + "] 출현!! ", NoticeEffect.Fade, 5, 0));
+
             //! 보상주기            
             m_owner.SetGold(m_owner.m_gold + SingleGameManager.Instance.m_currentRewordGold);
-            Debug.Log("보급품을 받았습니다. : $ " + SingleGameManager.Instance.m_currentRewordGold);
+            yield return StartCoroutine(Notice.Instance.Center("$ " + SingleGameManager.Instance.m_currentRewordGold + " 지급", NoticeEffect.Typing, 1, 2));
 
-            yield return new WaitForSeconds(0.5f);
-            //! 적진입
-            MUser enemy = new MUser(new User("enemy ID"," enemy NickName"));
-            enemy.SetGold(SingleGameManager.Instance.m_enemyGold);            
-            enemy.m_userAI = SingleGameManager.Instance.m_currentEnemy;
-            m_userList.Add(enemy);
-
-            yield return new WaitForSeconds(0.5f);
             //! 유저 순서정렬 및 초기화
             m_userList.Remove(m_owner);
             m_owner.WaitTurn();
@@ -179,6 +194,9 @@ namespace stackRPG
                 int index = usedStartingPointIndex[i];
                 m_userList[i].Init(index, map.m_makeUnitPositions[index], map.m_attackPoint);
             }
+
+            //! 유저리스트 배치(Focus용)
+            PlayUI.Instance.ShowFocusToggle(true);
 
             //! 게임시작
             ChangeGameState(GameState.WaitReady);
@@ -198,13 +216,22 @@ namespace stackRPG
         {
             MUser user = GetWaitTurnUser();
             while (user != null)
-            {
-                Debug.Log(user.m_nickName + " ] 턴");
-                yield return new WaitForSeconds(1.0f);
+            {                                
                 SetUser(user);
+                MakeSquare(user.m_startingPosition);
+                yield return StartCoroutine(Notice.Instance.Center(user.m_nickName, NoticeEffect.Fade, 4, 2));
+                
+                //! 생성 패널 보이기
+                PlayUI.Instance.ShowMakeUnitPanel(user.m_id == m_owner.m_id);
+
                 yield return StartCoroutine(m_currentUser.Process());
+                MakeSquare(null);
                 user = GetWaitTurnUser();
             }
+
+            //! 생성 패널 감추기
+            PlayUI.Instance.ShowMakeUnitPanel(false);
+
             ChangeGameState(GameState.Play);
         }
 
@@ -212,11 +239,7 @@ namespace stackRPG
         {
             m_currentUser = user;
             if (m_changeUserEvent != null) m_changeUserEvent(m_currentUser);
-        }
-
-        int unitCount = 0;
-
-        
+        }        
 
         public void MakeUnit(string userID, int unitID)
         {
@@ -229,6 +252,7 @@ namespace stackRPG
             MUnit munit = MUnitManager.Instance.GetMUnit(unitID);            
             munit.m_level = user.GetUnitLevel(unit.m_id);
             munit.m_teamId = user.m_teamIndex;
+            munit.transform.FindChild("Sprite").FindChild("TeamCircle").GetComponent<SpriteRenderer>().color = user.m_startingPosition.m_color;
             Vector2 pos = user.GetSpawnPoint();
             munit.transform.position =  RpgMapHelper.GetTileCenterPosition((int)pos.x, (int)pos.y);
             munit.Init(unit);
@@ -357,6 +381,36 @@ namespace stackRPG
             Debug.Log("Victory!!");
             yield return new WaitForSeconds(2.0f);
             SceneManager.LoadScene("MainMenu");
+        }
+
+        List<GameObject> m_makeSquares = new List<GameObject>();
+        
+        public void MakeSquare(StartingPoint startingPoint)
+        {
+            if(startingPoint == null)
+            {
+                for (int i = 0; i < m_makeSquares.Count; ++i)
+                {
+                    m_makeSquares[i].SetActive(false);
+                }
+
+                return;
+            }
+
+            Color color = startingPoint.m_color;
+            color.a = 0.5f;
+            for (int i = 0;i<startingPoint.m_positions.Count;++i)
+            {
+                while (i >= m_makeSquares.Count)
+                {
+                    GameObject obj = Instantiate(ResourcesManager.Load("MakeSquare")) as GameObject;
+                    m_makeSquares.Add(obj);
+                }
+                m_makeSquares[i].SetActive(true);
+                m_makeSquares[i].GetComponent<SpriteRenderer>().color = color;
+                Vector2 position = startingPoint.m_positions[i];
+                m_makeSquares[i].transform.position = RpgMapHelper.GetTileCenterPosition((int)position.x, (int)position.y);
+            }
         }
     }
 }

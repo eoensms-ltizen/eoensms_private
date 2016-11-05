@@ -49,6 +49,12 @@ namespace stackRPG
         public MUser(User user)
         {
             m_user = user;
+
+            foreach(KeyValuePair<int,Unit> value in MUnitManager.Instance.m_units)
+            {
+                UnitLevelTable unitLevelTable = new UnitLevelTable(value.Value.m_id, false, 0);
+                m_haveUnit.Add(unitLevelTable);
+            }
         }
 
         public void Init(int teamIndex, StartingPoint startingPoint, Vector2 attackPoint)
@@ -89,7 +95,10 @@ namespace stackRPG
         {   
             m_state = state;
         }
-
+        public void Dead()
+        {
+            ChangeState(UserState.Dead);
+        }
         public void Ready()
         {
             ChangeState(UserState.Ready);
@@ -120,8 +129,7 @@ namespace stackRPG
             if (m_state == UserState.Dead) yield break;
             MakeUnit();
             if (m_userAI != null)
-            {
-                yield return new WaitForSeconds(1.0f);
+            {   
                 yield return MGameManager.Instance.StartCoroutine(MAIUser.Progress(m_userAI, this));
                 Ready();
             }
@@ -238,7 +246,12 @@ namespace stackRPG
         {
             for (int i = 0; i < m_haveUnit.Count; ++i)
             {
-                if (m_haveUnit[i].m_id == id) { m_haveUnit[i].m_level += 1; return; }
+                if (m_haveUnit[i].m_id == id) { m_haveUnit[i].m_level += 1; break; }
+            }
+
+            for(int i = 0;i<m_aliveUnits.Count;++i)
+            {
+                if (m_aliveUnits[i].m_id == id) m_aliveUnits[i].LevelUp();
             }
         }
         public int GetUnitLevel(int id)
@@ -261,10 +274,7 @@ namespace stackRPG
             return unitLevelTable;
         }
 
-        public void Dead()
-        {
-            ChangeState(UserState.Dead);
-        }
+        
 
         public bool IsCanMakeUnit()
         {

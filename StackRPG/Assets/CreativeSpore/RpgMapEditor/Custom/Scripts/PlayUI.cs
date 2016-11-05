@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 namespace stackRPG
 {
+    public enum NoticeType
+    {
+        Typing,
+        Stamp,
+        Infinite,
+    }
     public class PlayUI : MonoBehaviour
     {
         public static PlayUI Instance { get; private set; }
@@ -26,19 +32,19 @@ namespace stackRPG
         private RectTransform _cameraFocus;
         private GameObject _userToggle;
         private Dictionary<string, Toggle> m_focusToggles = new Dictionary<string, Toggle>();
+        
         void Awake()
         {
             if(Instance == null)
             {
                 Instance = this;
-                Init();
             }
             else if(Instance != this)
             {
                 Destroy(transform.gameObject);
             }
         }
-        void Init()
+        public void Init()
         {
             if(m_state != null)
             {
@@ -60,58 +66,51 @@ namespace stackRPG
             }
 
             m_user = null;
-            MGameManager.Instance.m_changeUserEvent += SetUser;
-            MGameManager.Instance.m_changeGameState += OnChangeGameState;
-            MGameManager.Instance.m_changeStageNumber += DrawStage;
+
+            ShowFocusToggle(false);
+            ShowMakeUnitPanel(false);
+
+            MGameManager.Instance.m_changeUserEvent += OnChangeUser;
         }
 
-        void OnChangeGameState(GameState state)
+        public void ShowMakeUnitPanel(bool value)
         {
-            switch(state)
+            m_readyPanel.gameObject.SetActive(value);
+            m_startStage.gameObject.SetActive(value);
+
+            if (value == true)
             {
-                case GameState.Init:
-                case GameState.LoadMap:
-                case GameState.StartStage:
-                case GameState.Result:
-                case GameState.Finish:
-                case GameState.ClearStage:
-                case GameState.Play:
-                    {
-                        m_startStage.gameObject.SetActive(false);
-                        m_readyPanel.gameObject.SetActive(false);
-                    }
-                    break;
-                case GameState.WaitReady:
-                    {
-                        //! 유저들 데이터는 여기서 결정나 있다.
-
-                        int userCount = MGameManager.Instance.m_userList.Count;
-                        _cameraFocus.sizeDelta = new Vector2(100, 150 * userCount);
-
-                        
-                        foreach(KeyValuePair<string, Toggle> value in m_focusToggles)
-                        {   
-                            Destroy(value.Value.gameObject);
-                        }
-                        m_focusToggles.Clear();
-                        MGameCamera.Instance.ClearCameraFocus();
-                        for (int i = 0; i < userCount; ++i)
-                        {   
-                            MUser user = MGameManager.Instance.m_userList[i];
-                            RectTransform rectTransform = Instantiate(_userToggle).GetComponent<RectTransform>();
-                            rectTransform.SetParent(_cameraFocus);
-                            rectTransform.localScale = Vector3.one;
-                            Toggle toggle = rectTransform.GetComponent<Toggle>();
-                            toggle.onValueChanged.RemoveAllListeners();
-                            toggle.onValueChanged.AddListener((value) => { MGameCamera.Instance.SetCameraFocus(user.m_id, value); });
-                            m_focusToggles.Add(user.m_id, toggle);
-                        }
-
-                        m_startStage.gameObject.SetActive(true);
-                        m_readyPanel.gameObject.SetActive(true);
-                    }
-                    break;
+                ClearScrollView();
+                InitScrollView();
             }
+        }
+
+        public void ShowFocusToggle(bool value)
+        {
+            if (value == true)
+            {
+                int userCount = MGameManager.Instance.m_userList.Count;
+                _cameraFocus.sizeDelta = new Vector2(100, 150 * userCount);
+                foreach (KeyValuePair<string, Toggle> obj in m_focusToggles)
+                {
+                    Destroy(obj.Value.gameObject);
+                }
+                m_focusToggles.Clear();
+                MGameCamera.Instance.ClearCameraFocus();
+                for (int i = 0; i < userCount; ++i)
+                {
+                    MUser user = MGameManager.Instance.m_userList[i];
+                    RectTransform rectTransform = Instantiate(_userToggle).GetComponent<RectTransform>();
+                    rectTransform.SetParent(_cameraFocus);
+                    rectTransform.localScale = Vector3.one;
+                    Toggle toggle = rectTransform.GetComponent<Toggle>();
+                    toggle.onValueChanged.RemoveAllListeners();
+                    toggle.onValueChanged.AddListener((_value) => { MGameCamera.Instance.SetCameraFocus(user.m_id, _value); });
+                    m_focusToggles.Add(user.m_id, toggle);
+                }
+            }
+
+            m_cameraFocus.SetActive(value);
         }
 
         public void SetCameraFocus(string id, bool value)
@@ -119,15 +118,13 @@ namespace stackRPG
             m_focusToggles[id].isOn = value;
         }
 
-        public void SetUser(MUser user)
+        public void OnChangeUser(MUser user)
         {
             RemoveUserStateChageEvent();
-            ClearScrollView();
-
+            
             m_user = user;
 
-            AddUserStateChageEvent();
-            InitScrollView();
+            AddUserStateChageEvent();            
         }
 
         private void RemoveUserStateChageEvent()

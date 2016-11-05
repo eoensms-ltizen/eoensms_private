@@ -1,9 +1,39 @@
 fileFormatVersion: 2
 guid: 33bdd8998e48a5f4bb12255e2c187cc2
-timeCreated: 1475718831
+timeCreated: 1478338641
 licenseType: Pro
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Light5_0
+    21300002: Light5_1
+    21300004: Light5_2
+    21300006: Light5_3
+    21300008: Light5_4
+    21300010: Light5_5
+    21300012: Light5_6
+    21300014: Light5_7
+    21300016: Light5_8
+    21300018: Light5_9
+    21300020: Light5_10
+    21300022: Light5_11
+    21300024: Light5_12
+    21300026: Light5_13
+    21300028: Light5_14
+    21300030: Light5_15
+    21300032: Light5_16
+    21300034: Light5_17
+    21300036: Light5_18
+    21300038: Light5_19
+    21300040: Light5_20
+    21300042: Light5_21
+    21300044: Light5_22
+    21300046: Light5_23
+    21300048: Light5_24
+    21300050: Light5_25
+    21300052: Light5_26
+    21300054: Light5_27
+    21300056: Light5_28
+    21300058: Light5_29
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -19,7 +49,7 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+  isReadable: 1
   grayScaleToAlpha: 0
   generateCubemap: 0
   cubemapConvolution: 0
@@ -40,16 +70,737 @@ TextureImporter:
   allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaIsTransparency: 1
-  textureType: 8
+  textureType: 5
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Light5_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 960
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -18, y: -58}
+        - {x: -25, y: -62}
+        - {x: -25, y: -74}
+        - {x: 27, y: -74}
+        - {x: 28, y: -73}
+        - {x: 28, y: -61}
+        - {x: 22, y: -58}
+      - - {x: -20, y: 96}
+        - {x: -20, y: 64}
+        - {x: -19, y: 60}
+        - {x: 5, y: 60}
+        - {x: 18, y: 62}
+        - {x: 22, y: 70}
+        - {x: 23, y: 81}
+        - {x: 23, y: 96}
+    - name: Light5_1
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 960
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 24, y: 60}
+        - {x: 23, y: 96}
+        - {x: -20, y: 96}
+        - {x: -22, y: 59}
+        - {x: -17, y: 33}
+        - {x: -6, y: 29}
+        - {x: -28, y: -60}
+        - {x: -28, y: -68}
+        - {x: -24, y: -72}
+        - {x: -15, y: -75}
+        - {x: 0, y: -86}
+        - {x: 5, y: -86}
+        - {x: 31, y: -69}
+        - {x: 31, y: -61}
+        - {x: 16, y: -53}
+    - name: Light5_2
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 960
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 22, y: 4}
+        - {x: 23, y: 96}
+        - {x: -31, y: 96}
+        - {x: -31, y: -82}
+        - {x: -22, y: -86}
+        - {x: 11, y: -86}
+        - {x: 31, y: -77}
+        - {x: 33, y: -71}
+        - {x: 33, y: -62}
+        - {x: 20, y: -55}
+    - name: Light5_3
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 960
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 22, y: -52}
+        - {x: 22, y: -31}
+        - {x: 24, y: 96}
+        - {x: -20, y: 96}
+        - {x: -22, y: 8}
+        - {x: -34, y: -34}
+        - {x: -34, y: -72}
+        - {x: -10, y: -86}
+        - {x: 13, y: -86}
+        - {x: 30, y: -75}
+        - {x: 39, y: -69}
+        - {x: 39, y: -61}
+    - name: Light5_4
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 960
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 96}
+        - {x: -20, y: -24}
+        - {x: -34, y: -57}
+        - {x: -34, y: -68}
+        - {x: -32, y: -74}
+        - {x: -9, y: -86}
+        - {x: -3, y: -88}
+        - {x: 15, y: -88}
+        - {x: 40, y: -71}
+        - {x: 40, y: -65}
+        - {x: 39, y: -60}
+        - {x: 23, y: 96}
+    - name: Light5_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 768
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -21, y: -5}
+        - {x: -20, y: -25}
+        - {x: -34, y: -57}
+        - {x: -34, y: -68}
+        - {x: -32, y: -74}
+        - {x: -8, y: -87}
+        - {x: 40, y: -87}
+        - {x: 40, y: 43}
+        - {x: 35, y: 96}
+        - {x: -20, y: 96}
+        - {x: -21, y: 92}
+    - name: Light5_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 768
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -27, y: 96}
+        - {x: -34, y: -21}
+        - {x: -34, y: -79}
+        - {x: -7, y: -96}
+        - {x: 16, y: -96}
+        - {x: 40, y: -75}
+        - {x: 40, y: -59}
+        - {x: 24, y: 96}
+    - name: Light5_7
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 768
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 23, y: 96}
+        - {x: -20, y: 96}
+        - {x: -22, y: 94}
+        - {x: -25, y: 72}
+        - {x: -34, y: 14}
+        - {x: -34, y: -79}
+        - {x: -25, y: -96}
+        - {x: 22, y: -96}
+        - {x: 40, y: -71}
+        - {x: 40, y: -59}
+    - name: Light5_8
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 768
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -48, y: 96}
+        - {x: -48, y: -75}
+        - {x: -27, y: -96}
+        - {x: 41, y: -96}
+        - {x: 52, y: -87}
+        - {x: 52, y: 75}
+        - {x: 25, y: 96}
+    - name: Light5_9
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 768
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 36, y: -54}
+        - {x: 23, y: 96}
+        - {x: -21, y: 96}
+        - {x: -68, y: -48}
+        - {x: -68, y: -96}
+        - {x: 26, y: -96}
+        - {x: 55, y: -86}
+        - {x: 58, y: -73}
+        - {x: 58, y: -62}
+        - {x: 44, y: -56}
+    - name: Light5_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -81, y: 96}
+        - {x: -81, y: -82}
+        - {x: -80, y: -83}
+        - {x: -37, y: -91}
+        - {x: 26, y: -91}
+        - {x: 63, y: -78}
+        - {x: 63, y: 62}
+        - {x: 25, y: 96}
+    - name: Light5_11
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -26, y: 96}
+        - {x: -93, y: -57}
+        - {x: -93, y: -96}
+        - {x: 69, y: -96}
+        - {x: 69, y: -31}
+        - {x: 29, y: 96}
+    - name: Light5_12
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 74, y: -60}
+        - {x: 64, y: -54}
+        - {x: 35, y: 96}
+        - {x: -31, y: 96}
+        - {x: -73, y: -17}
+        - {x: -73, y: -91}
+        - {x: -42, y: -96}
+        - {x: 28, y: -96}
+        - {x: 69, y: -82}
+        - {x: 74, y: -73}
+    - name: Light5_13
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -37, y: 96}
+        - {x: -86, y: -75}
+        - {x: -86, y: -79}
+        - {x: -34, y: -96}
+        - {x: 50, y: -96}
+        - {x: 80, y: -88}
+        - {x: 80, y: -10}
+        - {x: 41, y: 96}
+    - name: Light5_14
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 576
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 46, y: 96}
+        - {x: -43, y: 96}
+        - {x: -96, y: -71}
+        - {x: -96, y: -82}
+        - {x: -31, y: -96}
+        - {x: 34, y: -96}
+        - {x: 70, y: -81}
+        - {x: 79, y: -73}
+        - {x: 79, y: -23}
+    - name: Light5_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -47, y: 96}
+        - {x: -96, y: -51}
+        - {x: -96, y: -87}
+        - {x: -33, y: -96}
+        - {x: 58, y: -96}
+        - {x: 78, y: -87}
+        - {x: 78, y: -8}
+        - {x: 50, y: 96}
+    - name: Light5_16
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -96, y: -82}
+        - {x: -43, y: -95}
+        - {x: 43, y: -95}
+        - {x: 78, y: -92}
+        - {x: 78, y: 43}
+        - {x: 68, y: 96}
+        - {x: -50, y: 96}
+        - {x: -96, y: -51}
+    - name: Light5_17
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 56, y: 96}
+        - {x: -53, y: 96}
+        - {x: -73, y: -38}
+        - {x: -96, y: -69}
+        - {x: -96, y: -90}
+        - {x: 47, y: -90}
+        - {x: 76, y: -83}
+        - {x: 76, y: -61}
+        - {x: 61, y: -50}
+    - name: Light5_18
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -53, y: 96}
+        - {x: -53, y: 64}
+        - {x: -51, y: -81}
+        - {x: -44, y: -87}
+        - {x: 39, y: -87}
+        - {x: 51, y: -85}
+        - {x: 55, y: -80}
+        - {x: 58, y: 90}
+        - {x: 58, y: 96}
+    - name: Light5_19
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 384
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -52, y: 96}
+        - {x: -52, y: 50}
+        - {x: -50, y: -86}
+        - {x: -36, y: -87}
+        - {x: 52, y: -87}
+        - {x: 57, y: -75}
+        - {x: 57, y: 96}
+    - name: Light5_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -52, y: 75}
+        - {x: -50, y: -81}
+        - {x: -43, y: -87}
+        - {x: 43, y: -87}
+        - {x: 56, y: -82}
+        - {x: 56, y: 96}
+        - {x: -52, y: 96}
+    - name: Light5_21
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -52, y: 96}
+        - {x: -52, y: 50}
+        - {x: -50, y: -86}
+        - {x: -36, y: -87}
+        - {x: 52, y: -87}
+        - {x: 57, y: -75}
+        - {x: 57, y: 96}
+    - name: Light5_22
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -53, y: 96}
+        - {x: -53, y: 64}
+        - {x: -51, y: -81}
+        - {x: -44, y: -87}
+        - {x: 39, y: -87}
+        - {x: 51, y: -85}
+        - {x: 55, y: -80}
+        - {x: 58, y: 90}
+        - {x: 58, y: 96}
+    - name: Light5_23
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -53, y: 96}
+        - {x: -53, y: 64}
+        - {x: -51, y: -81}
+        - {x: -44, y: -87}
+        - {x: 39, y: -87}
+        - {x: 51, y: -85}
+        - {x: 55, y: -80}
+        - {x: 58, y: 90}
+        - {x: 58, y: 96}
+    - name: Light5_24
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 192
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 18, y: 10}
+        - {x: 16, y: 10}
+        - {x: 12, y: 6}
+        - {x: 8, y: 6}
+        - {x: 22, y: 16}
+        - {x: 22, y: 69}
+        - {x: 15, y: 87}
+        - {x: -19, y: 87}
+        - {x: -19, y: -25}
+        - {x: -12, y: -40}
+        - {x: -8, y: -40}
+        - {x: -4, y: -44}
+        - {x: -8, y: -41}
+        - {x: -10, y: -41}
+        - {x: -15, y: -44}
+        - {x: -16, y: -62}
+        - {x: -13, y: -66}
+        - {x: -1, y: -66}
+        - {x: 9, y: -64}
+        - {x: 18, y: -58}
+        - {x: 22, y: -14}
+        - {x: 22, y: 7}
+      - - {x: 4, y: 42}
+        - {x: 4, y: 22}
+        - {x: 11, y: 22}
+        - {x: 15, y: 23}
+        - {x: 19, y: 32}
+        - {x: 19, y: 38}
+        - {x: 17, y: 42}
+    - name: Light5_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -19, y: 90}
+        - {x: -19, y: -58}
+        - {x: -10, y: -65}
+        - {x: 5, y: -65}
+        - {x: 13, y: -63}
+        - {x: 18, y: -50}
+        - {x: 18, y: 75}
+        - {x: 3, y: 90}
+      - - {x: 14, y: 4}
+        - {x: 12, y: -1}
+        - {x: 12, y: -6}
+        - {x: 14, y: -8}
+        - {x: 17, y: -9}
+        - {x: 19, y: -9}
+        - {x: 22, y: -5}
+        - {x: 22, y: 1}
+        - {x: 19, y: 4}
+    - name: Light5_26
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 12}
+        - {x: 19, y: 14}
+        - {x: 19, y: 77}
+        - {x: 16, y: 86}
+        - {x: 5, y: 88}
+        - {x: -13, y: 88}
+        - {x: -15, y: 87}
+        - {x: -19, y: 77}
+        - {x: -19, y: 5}
+        - {x: -15, y: -51}
+        - {x: -9, y: -51}
+        - {x: -7, y: -50}
+        - {x: -7, y: -51}
+        - {x: -11, y: -52}
+        - {x: -13, y: -54}
+        - {x: -14, y: -61}
+        - {x: -10, y: -66}
+        - {x: 13, y: -66}
+        - {x: 19, y: -64}
+        - {x: 19, y: -14}
+        - {x: 12, y: 7}
+        - {x: 7, y: 17}
+      - - {x: 16, y: 0}
+        - {x: 13, y: -3}
+        - {x: 13, y: -9}
+        - {x: 17, y: -13}
+        - {x: 22, y: -11}
+        - {x: 23, y: -8}
+        - {x: 23, y: -4}
+        - {x: 19, y: 0}
+    - name: Light5_27
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 25}
+        - {x: 20, y: 40}
+        - {x: 20, y: 78}
+        - {x: 8, y: 85}
+        - {x: -11, y: 85}
+        - {x: -19, y: 76}
+        - {x: -19, y: -45}
+        - {x: -18, y: -58}
+        - {x: -5, y: -64}
+        - {x: 13, y: -64}
+        - {x: 20, y: -52}
+        - {x: 20, y: 23}
+        - {x: 15, y: 24}
+      - - {x: 15, y: -4}
+        - {x: 13, y: -6}
+        - {x: 13, y: -12}
+        - {x: 14, y: -16}
+        - {x: 19, y: -16}
+        - {x: 22, y: -13}
+        - {x: 22, y: -7}
+        - {x: 19, y: -4}
+    - name: Light5_28
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 16, y: 18}
+        - {x: 21, y: 21}
+        - {x: 21, y: 67}
+        - {x: 19, y: 84}
+        - {x: 4, y: 84}
+        - {x: 3, y: 83}
+        - {x: 0, y: 82}
+        - {x: 1, y: 82}
+        - {x: -3, y: 84}
+        - {x: -14, y: 84}
+        - {x: -19, y: 76}
+        - {x: -19, y: -18}
+        - {x: -14, y: -64}
+        - {x: 9, y: -64}
+        - {x: 13, y: -63}
+        - {x: 19, y: -53}
+        - {x: 21, y: -19}
+        - {x: 21, y: 14}
+      - - {x: 13, y: -18}
+        - {x: 14, y: -21}
+        - {x: 19, y: -21}
+        - {x: 22, y: -20}
+        - {x: 22, y: -15}
+        - {x: 18, y: -10}
+        - {x: 13, y: -12}
+      - - {x: -13, y: 8}
+        - {x: -13, y: 7}
+        - {x: -10, y: 4}
+        - {x: -7, y: 5}
+        - {x: -7, y: 9}
+        - {x: -9, y: 11}
+        - {x: -10, y: 11}
+    - name: Light5_29
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 192
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: -53}
+        - {x: 6, y: -55}
+        - {x: 6, y: -63}
+        - {x: 7, y: -66}
+        - {x: 16, y: -66}
+        - {x: 16, y: -57}
+        - {x: 12, y: -53}
+      - - {x: -11, y: 84}
+        - {x: -19, y: 74}
+        - {x: -19, y: -62}
+        - {x: 13, y: -62}
+        - {x: 17, y: -61}
+        - {x: 17, y: 84}
+      - - {x: 10, y: 14}
+        - {x: 6, y: 13}
+        - {x: 6, y: 3}
+        - {x: 15, y: 0}
+        - {x: 19, y: 0}
+        - {x: 21, y: 1}
+        - {x: 21, y: 10}
+        - {x: 20, y: 14}
+      - - {x: 15, y: 45}
+        - {x: 7, y: 45}
+        - {x: 4, y: 38}
+        - {x: 4, y: 27}
+        - {x: 8, y: 27}
+        - {x: 16, y: 31}
+        - {x: 19, y: 36}
+        - {x: 19, y: 41}
+        - {x: 17, y: 44}
+      - - {x: -10, y: 91}
+        - {x: -12, y: 88}
+        - {x: -12, y: 80}
+        - {x: -9, y: 79}
+        - {x: -5, y: 79}
+        - {x: -3, y: 83}
+        - {x: -3, y: 88}
+        - {x: -6, y: 91}
     outline: []
   spritePackingTag: 
   userData: 
