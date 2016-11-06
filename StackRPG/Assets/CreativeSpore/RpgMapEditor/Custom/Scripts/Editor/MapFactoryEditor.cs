@@ -123,6 +123,8 @@ public class MapFactoryEditor : Editor
     
     void DrawEditTab()
     {
+
+        EditorGUI.BeginChangeCheck();
         EditorGUILayout.HelpBox(m_userIdx + " 유저의 [" + m_editType.ToString() + "] 을 찍으세요", MessageType.Info);
 
         string[] toolBarButtonNames = System.Enum.GetNames(typeof(EditType));
@@ -131,6 +133,8 @@ public class MapFactoryEditor : Editor
         m_mapData.m_map.m_canMakeUnitCount = EditorGUILayout.IntField("Unit Count", m_mapData.m_map.m_canMakeUnitCount);
         m_layerList.DoLayoutList();
         m_userIdx = Mathf.Max(m_layerList.index, 0);
+        
+        if(EditorGUI.EndChangeCheck() == true) EditorUtility.SetDirty(target);
     }
 
     void SetAttackPoint(Vector2 pos)

@@ -136,7 +136,12 @@ namespace stackRPG
                     break;
                 case State.Dead:
                     {
-                        if (m_unit.m_deadPrefab != null) Instantiate(m_unit.m_deadPrefab, transform.position, Quaternion.identity);
+                        if (m_unit.m_deadPrefab != null)
+                        {
+                            GameObject obj = Instantiate(m_unit.m_deadPrefab, transform.position, Quaternion.identity) as GameObject;
+                            obj.GetComponent<SpriteRenderer>().sprite = m_spriteRenderer.sprite;
+                        }
+                        
                         Destroy(transform.gameObject);
                     }
                     break;

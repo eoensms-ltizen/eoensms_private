@@ -20,7 +20,7 @@ public class MapDataEditor : Editor
         m_autoTileMap = FindObjectOfType<AutoTileMap>();
         if (m_autoTileMap == null)
         {
-            string prefabPath = "Assets/CreativeSpore/RpgMapEditor/Custom/Prefabs/Stage/AutoTileMap.prefab";            
+            string prefabPath = "Assets/CreativeSpore/RpgMapEditor/Custom/Prefabs/Base/AutoTileMap.prefab";            
             Instantiate(AssetDatabase.LoadAssetAtPath(prefabPath, typeof(GameObject)));
             m_autoTileMap = FindObjectOfType<AutoTileMap>();
         }
