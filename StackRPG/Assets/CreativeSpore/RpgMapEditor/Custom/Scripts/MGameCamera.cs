@@ -60,7 +60,7 @@ namespace stackRPG
 
         void Init()
         {
-            m_camera = Camera.main;
+            m_camera = MGameManager.Instance.m_camera;
             m_camera.transform.position = m_camera.transform.position;
 
             MGameManager.Instance.m_changeUserEvent += OnChangeUser;
@@ -481,12 +481,23 @@ namespace stackRPG
             FullScreenAndCenter();
             float topY = m_mapTop;
             float bottomY = m_mapBottom;
-            m_camera.transform.position += new Vector3(0, topY, 0);
+            //m_camera.transform.position += new Vector3(0, topY, 0);
+
 
             float time = 0;
-            float duration = 2;
+            float duration = 1;
             Vector3 position = m_camera.transform.position;
 
+            while (time < duration)
+            {
+                yield return null;
+                position.y = m_mapCenter + Mathf.Lerp(0, topY, time / duration);
+                m_camera.transform.position = position;
+                time += Time.deltaTime;
+            }
+
+            time = 0;
+            duration = 2;
             while (time < duration)
             {
                 yield return null;

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MMainMenu : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("MPlay");
+        MLoading.Instance.LoadScene("MPlay");
     }
 }

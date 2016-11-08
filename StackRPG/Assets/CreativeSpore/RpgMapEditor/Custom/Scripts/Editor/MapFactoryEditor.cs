@@ -212,11 +212,8 @@ public class MapFactoryEditor : Editor
 
                         if (onDragAndTileChanged != null) onDragAndTileChanged(tile_x, tile_y);
                     }
-
                     m_prevMouseTileX = tile_x;
                     m_prevMouseTileY = tile_y;
-
-                    
                 }
                 else
                 {

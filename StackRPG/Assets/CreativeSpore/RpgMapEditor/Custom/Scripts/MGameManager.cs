@@ -24,6 +24,8 @@ namespace stackRPG
     public class MGameManager : Singleton<MGameManager>
     {
         public MUser m_owner;
+
+        public Camera m_camera;
         public GameObject m_autoTileMapPrefab;
         public GameObject m_gameCameraPrefab;
         public GameObject m_playUIPrefab;
@@ -156,13 +158,18 @@ namespace stackRPG
             AutoTileMap.Instance.Tileset = map.m_autoTileset;
             AutoTileMap.Instance.MapData = map.m_autoTileMapData;
 
-            yield return null;
-
             ChangeGameState(GameState.StartStage);
         }
 
         IEnumerator StartStage()
         {
+            yield return null;
+            yield return null;
+            MGameCamera.Instance.FullScreenAndCenter();
+            yield return null;
+            yield return null;
+            yield return StartCoroutine(MLoading.Instance.ReverseAnimation(m_camera));
+
             yield return StartCoroutine(MGameCamera.Instance.MapTour());
 
             //! 적진입
@@ -219,7 +226,7 @@ namespace stackRPG
             {                                
                 SetUser(user);
                 MakeSquare(user.m_startingPosition);
-                yield return StartCoroutine(Notice.Instance.Center(user.m_nickName, NoticeEffect.Fade, 4, 2));
+                yield return StartCoroutine(Notice.Instance.Center(user.m_nickName, NoticeEffect.Fade, 3, 1));
                 
                 //! 생성 패널 보이기
                 PlayUI.Instance.ShowMakeUnitPanel(user.m_id == m_owner.m_id);
@@ -325,6 +332,9 @@ namespace stackRPG
                 }
             }
             yield return null;
+
+            yield return StartCoroutine(MLoading.Instance.StandardAnimation(m_camera));
+
             ChangeGameState(GameState.LoadMap);
         }
         IEnumerator Play()
