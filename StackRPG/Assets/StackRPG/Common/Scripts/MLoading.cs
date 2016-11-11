@@ -13,13 +13,13 @@ public class MLoading : Singleton<MLoading>
     public float m_baseTime = 1.0f;
     public bool m_isUseDOTween;
     public Ease m_pixelEaseType = Ease.OutExpo;
-    public int m_pixelMax = 128;
-    public int m_pixelMin = 4;
+    public int m_pixelFrom = 128;
+    public int m_pixelTo = 4;
 
 
-    public Ease m_AddtiveEaseType = Ease.InSine;
-    public float m_addtiveMax = 1;
-    public float m_addtiveMin = 0;
+    public Ease m_effectEaseType = Ease.InSine;
+    public float m_effectTo = 1;
+    public float m_effectFrom = 0;
 
     private SpriteRenderer m_spriteRenderer;
     public Texture2D m_texture2D;
@@ -67,8 +67,8 @@ public class MLoading : Singleton<MLoading>
         {
             yield return TweenExtensions.WaitForCompletion(DOVirtual.Float(0, 1, m_baseTime, (_float) => 
             {
-                pixel._Offset = DOVirtual.EasedValue(m_pixelMax, m_pixelMin, _float, m_pixelEaseType);
-                screenOverlay.intensity = DOVirtual.EasedValue(m_addtiveMin, m_addtiveMax, _float, m_AddtiveEaseType);
+                pixel._Offset = (int)DOVirtual.EasedValue(m_pixelFrom, m_pixelTo, _float, m_pixelEaseType);
+                screenOverlay.intensity = DOVirtual.EasedValue(m_effectFrom, m_effectTo, _float, m_effectEaseType);
             }));
         }
         else
@@ -103,8 +103,8 @@ public class MLoading : Singleton<MLoading>
         {
             yield return TweenExtensions.WaitForCompletion(DOVirtual.Float(1, 0, m_baseTime, (_float) => 
             {
-                pixel._Offset = DOVirtual.EasedValue(m_pixelMax, m_pixelMin, _float, m_pixelEaseType);
-                screenOverlay.intensity = DOVirtual.EasedValue(m_addtiveMin, m_addtiveMax, _float, m_AddtiveEaseType);
+                pixel._Offset = (int)DOVirtual.EasedValue(m_pixelFrom, m_pixelTo, _float, m_pixelEaseType);
+                screenOverlay.intensity = DOVirtual.EasedValue(m_effectFrom, m_effectTo, _float, m_effectEaseType);
             }));            
         }
         else

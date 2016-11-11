@@ -3,19 +3,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MApplicationManager : Singleton<MApplicationManager>
-{
-    //! 어플리케이션 전반에 걸친 셋팅을 한다.
-    void Awake()
+{   
+    public static float width = 1280;
+    public static float height = 720;
+
+    void Start()
     {
         DontDestroyOnLoad(gameObject);
 
         Application.runInBackground = true;
         Application.targetFrameRate = 60;
+        Screen.SetResolution((int)width, (int)height, true);
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (SceneManager.GetActiveScene().name == "MainMenu") Application.Quit();
             else SceneManager.LoadScene("MainMenu"); 

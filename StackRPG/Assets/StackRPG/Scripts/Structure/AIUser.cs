@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using stackRPG;
 
 [Serializable]
@@ -10,5 +10,5 @@ public class AIUser
     public float m_useGold_upgrade;
     public float m_useGold_make;
 
-    public LastUserAction m_lastAction;
+    public List<LastUserAction> m_lastAction;
 }

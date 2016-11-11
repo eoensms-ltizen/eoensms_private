@@ -35,6 +35,8 @@ namespace CreativeSpore
 			Veloc += Acc;
 			Veloc.z = 0f;
 			LimitVect( ref Veloc, MaxSpeed );
+            //! 여기서 유닛 체크를 하면되긴하다.
+
 			transform.position += Veloc * Time.deltaTime;
 			Acc = Vector3.zero;
 		}

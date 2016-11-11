@@ -73,8 +73,6 @@ namespace stackRPG
             ShowFocusToggle(false);
             ShowMakeUnitPanel(false);
             ShowSkipButton(false);
-
-            MGameManager.Instance.m_changeUserEvent += OnChangeUser;
         }
 
 
@@ -158,7 +156,7 @@ namespace stackRPG
             m_gold.text = string.Format("Gold\n{0}", m_user !=null? m_user.m_gold : 0);
         }
 
-        void DrawStage(int stageNumber)
+        public void DrawStage(int stageNumber)
         {
             m_stage.text = string.Format("Stage\n{0}", stageNumber);
         }
@@ -196,14 +194,15 @@ namespace stackRPG
         }
 
         public void StartStage()
-        {
-            if (m_user == null) return;
+        {   
             m_user.Ready();
+            m_readyPanel.SetActive(false);
         }
 
         public void Skip()
         {
             MGameManager.Instance.m_currentUser.Skip();
+            m_skip.gameObject.SetActive(false);
         }
     }
 }

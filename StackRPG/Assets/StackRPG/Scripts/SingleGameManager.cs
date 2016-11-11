@@ -39,5 +39,14 @@ public class SingleGameManager : Singleton<SingleGameManager>
         m_stageNumber += 1;
         return true;
     }
+
+    public bool IsLastStage()
+    {
+        if (m_stageNumber + 1 >= m_maps.Count) return true;
+        if (m_stageNumber + 1 >= m_rewordGold.Count) return true;
+        if (m_stageNumber + 1 >= m_userTable.Count) return true;
+
+        return false;
+    }
 }
 

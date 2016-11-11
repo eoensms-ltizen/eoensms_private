@@ -30,16 +30,18 @@ public static class MSettings
         Gizmos.DrawLine(pos2, pos4);
     }
 
+    public static void GizmoDrawRect(Rect rect)
+    {
+        Vector3 point1;
+        Vector3 point2;
+        GetSidePointByRect(rect, out point1, out point2);
+        GizmoDrawRectByPoint(point1, point2);
+    }
+
     public static void GetSidePointByRect(Rect rect, out Vector3 point1, out Vector3 point2)
     {
-        float leftX = rect.x - rect.width * 0.5f;
-        float downY = rect.y - rect.height * 0.5f;
-
-        float rightX = rect.x + rect.width * 0.5f;
-        float upY = rect.y + rect.height * 0.5f;
-
-        point1 = new Vector3(leftX, downY);
-        point2 = new Vector3(rightX, upY);
+        point1 = new Vector3(rect.xMin, rect.yMin);
+        point2 = new Vector3(rect.xMax, rect.yMax);
     }
 
     public static void Shuffle<T>(this IList<T> list)

@@ -143,6 +143,7 @@ public class Notice : Singleton<Notice> {
                 for (int i = text.Length - 1; i >= 0; --i)
                 {
                     textObject.text = text.Remove(i);
+                    
                     yield return tickTime;
                 }
             }
@@ -158,6 +159,7 @@ public class Notice : Singleton<Notice> {
                     if (c >= 'ㄱ' && c <= 'ㅎ')
                     {
                         textObject.text = temp + c;
+                        
                         yield return reverseTickTime;
                     }
                     //완성된 문자를 입력했을때 검색패턴 쓰기
@@ -171,6 +173,7 @@ public class Notice : Singleton<Notice> {
                         {
                             string subTemp = info.chars[0].ToString();
                             textObject.text = temp + subTemp;
+                            
                             yield return reverseTickTime;
                         }
 
@@ -179,9 +182,11 @@ public class Notice : Singleton<Notice> {
                         {
                             string subTemp = HangulJaso.MergeJaso(info.chars[0].ToString(), info.chars[1].ToString(), "").ToString();
                             textObject.text = temp + subTemp;
+                            
                             yield return reverseTickTime;
                             subTemp = info.chars[0].ToString();
                             textObject.text = temp + subTemp;
+                            
                             yield return reverseTickTime;
                         }
                     }
@@ -201,6 +206,7 @@ public class Notice : Singleton<Notice> {
                     }
 
                     textObject.text = temp;
+                    
                     yield return reverseTickTime;
                 }            
             }

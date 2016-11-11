@@ -70,6 +70,7 @@ public class MapFactoryEditor : Editor
             m_mapData.m_map.m_makeUnitPositions = m_mapFactory.m_makeUnitPositions;
             m_userIdx = m_layerList.index;
             serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(m_mapData);
         };
         m_layerList.onAddCallback = (ReorderableList list) =>
         {

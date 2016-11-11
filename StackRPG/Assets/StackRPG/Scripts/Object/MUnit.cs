@@ -5,6 +5,7 @@ using System;
 using CreativeSpore;
 using UnityEngine.Events;
 using CreativeSpore.RpgMapEditor;
+using DG.Tweening;
 
 namespace stackRPG
 {
@@ -175,6 +176,9 @@ namespace stackRPG
             else
             {
                 m_moving.ApplyForce(damage.m_force);
+
+                //transform.DOMove(transform.position + (Vector3)damage.m_force, 0.5f);
+
                 m_animCtrl.StartCoroutine(DamageEffect(0.25f));
             }
         }
@@ -192,6 +196,9 @@ namespace stackRPG
         {
             if (m_attackCoolTime > 0) m_attackCoolTime -= Time.deltaTime;
             if (m_attackHoldTime > 0) m_attackHoldTime -= Time.deltaTime;
+
+            //! 최대 속도 조절
+            m_moving.MaxSpeed = m_moveSpeed;
 
             List<Guid> removeList = new List<Guid>();
             foreach(KeyValuePair<Guid,MUnit> value in m_damage_enemys)

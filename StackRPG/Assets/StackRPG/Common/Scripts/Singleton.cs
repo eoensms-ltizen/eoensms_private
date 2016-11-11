@@ -15,11 +15,17 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 if (_instance == null)
                 {   
                     GameObject obj = (GameObject)Instantiate(ResourcesManager.Load(typeof(T).ToString()));
+                    obj.name = typeof(T).ToString();
                     _instance = FindObjectOfType(typeof(T)) as T;
                 }
             }
             return _instance;
         }
+    }
+
+    public void Blink()
+    {
+
     }
 }
 

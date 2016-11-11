@@ -27,20 +27,23 @@ public static class MAIUser
 
         //! 남은돈처리
         totalGold = openGold + makeGold + upgradeGold;
-        switch (aiUser.m_lastAction)
+        for (int i = 0; i < aiUser.m_lastAction.Count; ++i)
         {
-            case LastUserAction.Make:
-                while (UseGoldToMake(user, ref totalGold))
-                {
-                    if (user.m_isSkip == false) { Notice.Instance.BottomAppear("배치중..", NoticeEffect.None); yield return waitForAction; }
-                }
-                break;
-            case LastUserAction.Save:
-                
-                break;
-            case LastUserAction.Upgrade:
-                while (UserGoldToUpgrade(user, ref totalGold)) { if (user.m_isSkip == false) { Notice.Instance.BottomAppear("강화중..", NoticeEffect.None); yield return waitForAction; } }
-                break;
+            switch (aiUser.m_lastAction[i])
+            {
+                case LastUserAction.Make:
+                    while (UseGoldToMake(user, ref totalGold))
+                    {
+                        if (user.m_isSkip == false) { Notice.Instance.BottomAppear("배치중..", NoticeEffect.None); yield return waitForAction; }
+                    }
+                    break;
+                case LastUserAction.Save:
+
+                    break;
+                case LastUserAction.Upgrade:
+                    while (UserGoldToUpgrade(user, ref totalGold)) { if (user.m_isSkip == false) { Notice.Instance.BottomAppear("강화중..", NoticeEffect.None); yield return waitForAction; } }
+                    break;
+            }
         }
 
         Notice.Instance.ClearBottom();

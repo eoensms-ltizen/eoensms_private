@@ -415,7 +415,7 @@ namespace stackRPG
                 float worldY = -Mathf.Min(m_startDragTileY, m_dragTileY) * m_autoTileMap.Tileset.TileWorldHeight;
                 Vector3 vScreen = m_camera2D.Camera.WorldToScreenPoint(new Vector3(worldX, worldY) + m_autoTileMap.transform.position);
                 selRect.position = new Vector2(vScreen.x, vScreen.y);
-                selRect.y = Screen.height - selRect.y;
+                selRect.y = MApplicationManager.height - selRect.y;
                 UtilsGuiDrawing.DrawRectWithOutline(selRect, new Color(0f, 1f, 0f, 0.2f), new Color(0f, 1f, 0f, 1f));
             }
         }
