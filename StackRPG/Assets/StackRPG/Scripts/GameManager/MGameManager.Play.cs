@@ -20,17 +20,8 @@ public partial class MGameManager : Singleton<MGameManager>
         }
 
         //! 유닛들 어택땅 (자동공격) 관련
-        if (m_isAutoTarget) StartCoroutine(AutoAttackGround(2.0f));
-        else
-        {
-            for (int i = 0; i < m_userList.Count; ++i)
-            {
-                int targetIndex = i + 1;
-                if (targetIndex >= m_userList.Count) targetIndex = 0;
-                Vector2 pos = m_userList[targetIndex].m_attackPoint;
-                m_userList[i].AttackGround(RpgMapHelper.GetTileCenterPosition((int)pos.x, (int)pos.y));
-            }
-        }
+        StartCoroutine(AutoAttackGround());
+        
 
         //! 유저 컨트롤
         StartCoroutine(UpdateUserControll());
@@ -81,12 +72,12 @@ public partial class MGameManager : Singleton<MGameManager>
     /// </summary>
     /// <param name="delay"></param>
     /// <returns></returns>
-    IEnumerator AutoAttackGround(float delay)
+    IEnumerator AutoAttackGround()
     {
         while (m_state == GameState.Play)
         {
             AutoAttackAllUser();
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSeconds(m_delayAttackGround);
         }
     }
     

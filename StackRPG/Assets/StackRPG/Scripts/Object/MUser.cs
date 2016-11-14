@@ -57,11 +57,10 @@ namespace stackRPG
             }
         }
 
-        public void Init(int teamIndex, StartingPoint startingPoint, Vector2 attackPoint)
+        public void Init(int teamIndex, StartingPoint startingPoint)
         {
             m_teamIndex = teamIndex;
             m_startingPosition = startingPoint;
-            m_attackPoint = attackPoint;
 
             m_state = UserState.WaitTurn;
             m_aliveUnits = new List<MUnit>();
@@ -76,8 +75,7 @@ namespace stackRPG
         public int m_gold;
 
         public int m_teamIndex;        
-        public StartingPoint m_startingPosition;
-        public Vector3 m_attackPoint;
+        public StartingPoint m_startingPosition;        
 
         public List<UnitLevelTable> m_haveUnit = new List<UnitLevelTable>();
         public List<MUnit> m_aliveUnits { get; private set; }

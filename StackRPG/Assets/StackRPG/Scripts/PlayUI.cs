@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 namespace stackRPG
 {
@@ -34,7 +35,14 @@ namespace stackRPG
         private RectTransform _cameraFocus;
         private GameObject _userToggle;
         private Dictionary<string, Toggle> m_focusToggles = new Dictionary<string, Toggle>();
-        
+
+
+        public GameObject m_unitPositionScrollbar;
+        private int m_unitpositionIndex;
+        private Scrollbar m_scrollbar;
+        private Button m_beforeButton;
+        private Button m_nextButton;
+
         void Awake()
         {
             if(Instance == null)
@@ -68,13 +76,45 @@ namespace stackRPG
                 _userToggle = ResourcesManager.Load("CameraFocusToggle") as GameObject;
             }
 
+            if(m_unitPositionScrollbar != null)
+            {
+                m_scrollbar = m_unitPositionScrollbar.GetComponentInChildren<Scrollbar>();
+                m_scrollbar.onValueChanged.RemoveAllListeners();
+                m_scrollbar.onValueChanged.AddListener(OnChangeUnitposition);
+
+                m_nextButton = m_unitPositionScrollbar.transform.FindChild("NextButton").GetComponent<Button>();
+                m_nextButton.onClick.RemoveAllListeners();
+                m_nextButton.onClick.AddListener(OnNextUnitPosition);
+
+                m_beforeButton = m_unitPositionScrollbar.transform.FindChild("BeforeButton").GetComponent<Button>();
+                m_beforeButton.onClick.RemoveAllListeners();
+                m_beforeButton.onClick.AddListener(OnBeforeUnitPosition);
+            }
+
             m_user = null;
 
             ShowFocusToggle(false);
             ShowMakeUnitPanel(false);
             ShowSkipButton(false);
+            ShowUnitPositionPanel(false);
         }
 
+        public void ShowUnitPositionPanel(bool value)
+        {
+            if (value == true)
+            {
+                m_unitpositionIndex = 0;
+                m_scrollbar.value = 0;
+                m_scrollbar.numberOfSteps = m_user.m_startingPosition.m_positions.Count;
+                OnChangeUnitposition(0);
+            }
+            else
+            {
+                MGameManager.Instance.UnMarkSquare();
+            }
+
+            m_unitPositionScrollbar.SetActive(value);
+        }
 
         public void ShowSkipButton(bool value)
         {
@@ -133,6 +173,7 @@ namespace stackRPG
             m_user = user;
 
             AddUserStateChageEvent();            
+            /*m_scrollbar.size = 1 / m_scrollbar.numberOfSteps;*/
         }
 
         private void RemoveUserStateChageEvent()
@@ -203,6 +244,25 @@ namespace stackRPG
         {
             MGameManager.Instance.m_currentUser.Skip();
             m_skip.gameObject.SetActive(false);
+        }
+
+        public void OnChangeUnitposition(float value)
+        {
+            m_unitpositionIndex = Convert.ToInt32(value / (1.0f / (float)(m_scrollbar.numberOfSteps - 1)));
+            
+            Vector2 tilePos = m_user.m_startingPosition.m_positions[m_unitpositionIndex];
+            MGameCamera.Instance.SetTarget((int)tilePos.x, (int)tilePos.y);
+            MGameManager.Instance.MarkSquare(m_user.m_startingPosition, (int)tilePos.x, (int)tilePos.y);
+
+        }
+        public void OnNextUnitPosition()
+        {   
+            m_scrollbar.value += 1.0f / ((float)m_scrollbar.numberOfSteps - 1);
+        }
+
+        public void OnBeforeUnitPosition()
+        {
+            m_scrollbar.value -= 1.0f / ((float)m_scrollbar.numberOfSteps - 1);
         }
     }
 }

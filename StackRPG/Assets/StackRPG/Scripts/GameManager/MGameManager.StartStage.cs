@@ -63,7 +63,7 @@ public partial class MGameManager : Singleton<MGameManager>
         for (int i = 0; i < m_userList.Count; ++i)
         {
             int index = usedStartingPointIndex[i];
-            m_userList[i].Init(index, map.m_makeUnitPositions[index], map.m_attackPoint);
+            m_userList[i].Init(index, map.m_makeUnitPositions[index]);
         }
     }
 }

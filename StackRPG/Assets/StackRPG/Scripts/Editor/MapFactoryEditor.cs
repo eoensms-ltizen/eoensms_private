@@ -22,15 +22,7 @@ public class MapFactoryEditor : Editor
     ReorderableList m_layerList;
 
     int m_userIdx;
-
     
-
-    public enum EditType
-    {
-        StartPoint,
-        AttackPoint,
-    }
-    static EditType m_editType = EditType.StartPoint;
     private static TabType m_tabType = TabType.Play;
 
     void OnEnable()
@@ -133,10 +125,7 @@ public class MapFactoryEditor : Editor
         m_mapData = (MapData)EditorGUILayout.ObjectField("Map", m_mapData, typeof(MapData), true);
         if (EditorGUI.EndChangeCheck() == true && m_mapData != null) ReloadData();
 
-        EditorGUILayout.HelpBox(m_userIdx + " 유저의 [" + m_editType.ToString() + "] 을 찍으세요", MessageType.Info);
-
-        string[] toolBarButtonNames = System.Enum.GetNames(typeof(EditType));
-        m_editType = (EditType)GUILayout.Toolbar((int)m_editType, toolBarButtonNames);
+        EditorGUILayout.HelpBox(m_userIdx + " 유저의 [StartingPoint] 을 찍으세요", MessageType.Info);
 
         m_mapData.m_map.m_canMakeUnitCount = EditorGUILayout.IntField("Unit Count", m_mapData.m_map.m_canMakeUnitCount);
         m_layerList.DoLayoutList();
@@ -144,11 +133,7 @@ public class MapFactoryEditor : Editor
         
         if(GUILayout.Button("Save") == true) EditorUtility.SetDirty(target);
     }
-
-    void SetAttackPoint(Vector2 pos)
-    {
-        m_mapData.m_map.m_attackPoint = pos;
-    }
+    
     void AddUserPoint(int userID, Vector2 pos)
     {
         if (m_mapData.m_map.m_makeUnitPositions.Count <= userID) return;
@@ -297,19 +282,11 @@ public class MapFactoryEditor : Editor
 
                     if (Event.current.button == 0)
                     {
-                        switch (m_editType)
-                        {
-                            case EditType.AttackPoint: SetAttackPoint(pos); break;
-                            case EditType.StartPoint: RemoveUserPoint(m_userIdx, pos); break;
-                        }
+                        RemoveUserPoint(m_userIdx, pos);
                     }
                     else if (Event.current.button == 1)
                     {
-                        switch (m_editType)
-                        {
-                            case EditType.AttackPoint:SetAttackPoint(pos);break;
-                            case EditType.StartPoint: AddUserPoint(m_userIdx, pos); break;
-                        }       
+                        AddUserPoint(m_userIdx, pos);
                     }
                 };
 
@@ -342,9 +319,6 @@ public class MapFactoryEditor : Editor
                 DrawTileWithOutline((int)position.x, (int)position.y, alphaColor, startingPoint.m_color);
             }
         }
-
-        //! AttackPoint
-        DrawTileWithOutline((int)m_mapData.m_map.m_attackPoint.x, (int)m_mapData.m_map.m_attackPoint.y, Color.red, Color.red);
     }
 
     void DrawTileWithOutline(int x, int y, Color color, Color lineColor)

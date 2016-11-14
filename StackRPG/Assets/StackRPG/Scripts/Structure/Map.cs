@@ -29,7 +29,6 @@ public class Map
     /// 유저당 생산유닛갯수, 스타팅포인트, 어택포인트
     /// </summary>
     public int m_canMakeUnitCount = 10;
-    public Vector2 m_attackPoint;
     public List<StartingPoint> m_makeUnitPositions = new List<StartingPoint>();
 }
 

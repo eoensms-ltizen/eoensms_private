@@ -20,7 +20,7 @@ public enum GameState
 
 public partial class MGameManager : Singleton<MGameManager>
 {
-    public bool m_isAutoTarget;
+    public float m_delayAttackGround = 2.0f;
     public bool m_isCanControllUser;
 
     public MUser m_owner;
@@ -133,5 +133,19 @@ public partial class MGameManager : Singleton<MGameManager>
             Vector2 position = startingPoint.m_positions[i];
             m_makeSquares[i].transform.position = RpgMapHelper.GetTileCenterPosition((int)position.x, (int)position.y);
         }
+    }
+
+    GameObject m_markSquare = null;
+    public void MarkSquare(StartingPoint startingPoint, int tileX, int tileY)
+    {
+        if(m_markSquare == null) m_markSquare = Instantiate(ResourcesManager.Load("MarkSquare")) as GameObject;
+
+        m_markSquare.GetComponent<SpriteRenderer>().color = startingPoint.m_color;
+        m_markSquare.transform.position = RpgMapHelper.GetTileCenterPosition(tileX, tileY);
+        m_markSquare.SetActive(true);
+    }
+    public void UnMarkSquare()
+    {
+        if (m_markSquare != null) m_markSquare.SetActive(false);
     }
 }

@@ -32,10 +32,6 @@ public class Notice : Singleton<Notice> {
             rectTransform.localPosition = Vector3.zero;
         }
         else Debug.LogError("Not Found Canvas"); 
-
-        
-
-        
     }
 
     public void ClearCenter()

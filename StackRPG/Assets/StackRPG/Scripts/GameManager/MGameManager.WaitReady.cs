@@ -34,18 +34,20 @@ public partial class MGameManager : Singleton<MGameManager>
                 yield return StartCoroutine(Notice.Instance.Center("$ " + SingleGameManager.Instance.m_currentRewordGold + " 지급", NoticeEffect.Typing, 2, 1));
                 m_owner.SetGold(m_owner.m_gold + SingleGameManager.Instance.m_currentRewordGold);
             }
-
+            
             PlayUI.Instance.ShowSkipButton(!isOwner);
             PlayUI.Instance.ShowMakeUnitPanel(isOwner);
+            PlayUI.Instance.ShowUnitPositionPanel(isOwner);
             MGameCamera.Instance.SetPivot(isOwner ? MGameCamera.m_pivotLeft : MGameCamera.m_pivotCenter);
 
             yield return StartCoroutine(m_currentUser.Process());
 
             MakeSquare(null);
         }
-
+        
         PlayUI.Instance.ShowSkipButton(false);
         PlayUI.Instance.ShowMakeUnitPanel(false);
+        PlayUI.Instance.ShowUnitPositionPanel(false);
         MGameCamera.Instance.SetPivot(MGameCamera.m_pivotCenter);
 
         ChangeGameState(GameState.Play);
@@ -79,7 +81,8 @@ public partial class MGameManager : Singleton<MGameManager>
 
         user.MakeUnit(munit);
 
-        MGameCamera.Instance.SetTarget(munit.transform.position);
+        PlayUI.Instance.OnNextUnitPosition();
+        //MGameCamera.Instance.SetTarget(munit.transform.position);
     }
 
     public bool UpgradeUnit(string userID, int unitID)

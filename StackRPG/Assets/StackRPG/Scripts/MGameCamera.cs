@@ -167,12 +167,18 @@ public class MGameCamera : MonoBehaviour
 
     public void SetTarget(Vector3 position)
     {
-        //m_target = position;
+        FocusTarget focusTarget = new FocusTarget();
+        focusTarget.m_target = position;
+        focusTarget.m_speed = 1;
+        focusTarget.m_zoom = 2;
+        focusTarget.m_onfinish = () => { Debug.Log(" SetTarget 종료"); };
+
+        m_testScript.OnChangeCameraType(focusTarget);
     }
 
-    public void SetTarget(int x, int y)
+    public void SetTarget(int tileX, int tileY)
     {
-        //m_target = RpgMapHelper.GetTileCenterPosition(x, y);
+        SetTarget(RpgMapHelper.GetTileCenterPosition(tileX, tileY));
     }
 
     private void GetCenterPosition(List<Vector2> positions, ref Vector3 position)

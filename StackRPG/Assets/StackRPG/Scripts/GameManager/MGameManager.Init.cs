@@ -45,7 +45,10 @@ public partial class MGameManager : Singleton<MGameManager>
     private void InitOwner()
     {
         m_userList.Clear();
-        m_owner = new MUser((ResourcesManager.Load("Owner") as UserData).m_user);
+        User user = (ResourcesManager.Load("Owner") as UserData).m_user;
+        user.m_nickName = MSettings.GetNickname();
+        m_owner = new MUser(user);
+
         m_userList.Add(m_owner);
     }
 

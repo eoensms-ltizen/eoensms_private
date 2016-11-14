@@ -56,12 +56,6 @@ public class MapDataEditor : Editor
         Edit,
     }
 
-    public enum EditType
-    {
-        StartPoint,
-        AttackPoint,
-    }
-
     private static TabType m_tabType = TabType.Play;
     public override void OnInspectorGUI()
     {
@@ -102,8 +96,7 @@ public class MapDataEditor : Editor
         elemX += elemWidth; elemWidth = Mathf.Clamp(Screen.width - 500, 50, 240);
         EditorGUIUtility.labelWidth = savedLabelWidth;
     }
-
-    static EditType m_editType = EditType.AttackPoint;
+    
     void DrawEditTab()
     {
         EditorGUILayout.LabelField("Player Count : " + m_mapData.m_map.m_makeUnitPositions.Count);
@@ -113,24 +106,7 @@ public class MapDataEditor : Editor
 
         m_userIdx = m_layerList.index;
         
-        EditorGUILayout.HelpBox(m_userIdx + " 유저의 [" + m_editType.ToString() + "] 을 찍으세요", MessageType.Info);
-
-        string[] toolBarButtonNames = System.Enum.GetNames(typeof(EditType));
-        m_editType = (EditType)GUILayout.Toolbar((int)m_editType, toolBarButtonNames);
-
-        switch (m_editType)
-        {
-            case EditType.AttackPoint:
-                {
-                    
-                }
-                break;
-            case EditType.StartPoint:
-                break;
-                {
-
-                }
-        }
+        EditorGUILayout.HelpBox(m_userIdx + " 유저의 [startingPoint] 을 찍으세요", MessageType.Info);        
     }
 
     void AddUserPoint(int userID, Vector2 pos)
@@ -272,19 +248,7 @@ public class MapDataEditor : Editor
                 {
                     if (m_autoTileMap.IsValidAutoTilePos(m_prevMouseTileX, m_prevMouseTileY))
                     {
-                        switch (m_editType)
-                        {
-                            case EditType.AttackPoint:
-                                {
-                                    m_mapData.m_map.m_attackPoint = new Vector2(m_prevMouseTileX, m_prevMouseTileY);
-                                }
-                                break;
-                            case EditType.StartPoint:
-                                {
-                                    AddUserPoint(m_userIdx, new Vector2(m_prevMouseTileX, m_prevMouseTileY));
-                                }
-                                break;
-                        }
+                        AddUserPoint(m_userIdx, new Vector2(m_prevMouseTileX, m_prevMouseTileY));
                     }
                 }
 
@@ -320,10 +284,7 @@ public class MapDataEditor : Editor
         {
             Vector2 position = m_mapData.m_map.m_makeUnitPositions[m_userIdx].m_positions[i];
             DrawTileWithOutline((int)position.x, (int)position.y, new Color(0f, 1f, 0f, 0.2f), new Color(0f, 1f, 0f, 1f));
-        }
-
-        //! AttackPoint
-        DrawTileWithOutline((int)m_mapData.m_map.m_attackPoint.x, (int)m_mapData.m_map.m_attackPoint.y, new Color(0f, 1f, 0f, 0.2f), new Color(0f, 1f, 0f, 1f));
+        }        
     }
 
     void DrawTileWithOutline(int x, int y, Color color, Color lineColor)
