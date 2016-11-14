@@ -76,7 +76,7 @@ public static class MAIUser
         if (canMakeUnits.Count == 0) return false;
 
         Unit ranUnit = canMakeUnits[MSettings.Random(0, canMakeUnits.Count)];
-        MGameManager.Instance.MakeUnit(user.m_id, ranUnit.m_id);
+        MGameManager.Instance.MakeUnit(user.m_id, ranUnit.m_id, user.GetSpawnPoint());
         gold -= ranUnit.m_makePrice;
         return true;
     }

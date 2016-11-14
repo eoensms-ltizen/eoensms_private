@@ -19,9 +19,9 @@ public class MGameCamera : MonoBehaviour
 {
     public static MGameCamera Instance { get; private set; }
 
-    public CameraController m_testScript;
+    public CameraController m_cameraController;
 
-    public Camera m_camera { get { return m_testScript.m_camera; } }
+    public Camera m_camera { get { return m_cameraController.m_camera; } }
 
     public float PixelToUnits = 100f;
 
@@ -49,19 +49,19 @@ public class MGameCamera : MonoBehaviour
         mapRect.y = CreativeSpore.RpgMapEditor.AutoTileMap.Instance.transform.position.y;
         mapRect.y -= mapRect.height;
 
-        m_testScript.Init(MApplicationManager.width, MApplicationManager.height, mapRect, PixelToUnits);
-        m_testScript.SetPivot(new Vector2(0.5f,0.5f));
+        m_cameraController.Init(MApplicationManager.width, MApplicationManager.height, mapRect, PixelToUnits);
+        m_cameraController.SetPivot(new Vector2(0.5f,0.5f));
     }
 
 
     public void FullScreenAndCenter()
     {
-        m_testScript.FullScreenAndCenter();
+        m_cameraController.FullScreenAndCenter();
     }
 
     public IEnumerator MapTour()
     {
-        yield return StartCoroutine(m_testScript.MapTour());
+        yield return StartCoroutine(m_cameraController.MapTour());
     }
 
     public void SetPlayCamera()
@@ -84,17 +84,17 @@ public class MGameCamera : MonoBehaviour
         followGroup.m_zoom = 2;
         followGroup.m_onfinish = () => { Debug.Log("FollowGroup 완료"); };
 
-        m_testScript.OnChangeCameraType(followGroup);
+        ChangeCameraType(followGroup);
     }
 
     public void GameOver()
     {
-        m_testScript.SetGrayScale(1, 0.5f);
+        m_cameraController.SetGrayScale(1, 0.5f);
     }
 
     public void Finish()
     {
-        m_testScript.SetMotionBlur();
+        m_cameraController.SetMotionBlur();
     }
 
     public void ClearCameraFocus()
@@ -147,7 +147,7 @@ public class MGameCamera : MonoBehaviour
         focusGroup.m_speed = 1;
         focusGroup.m_zoom = 2;
         focusGroup.m_onfinish = () => { Debug.Log(user.m_nickName + " 포커싱 완료"); };
-        m_testScript.OnChangeCameraType(focusGroup);
+        ChangeCameraType(focusGroup);
     }
 
     public List<Vector2> GetTileCenterPositions(List<Vector2> tilePositions)
@@ -162,7 +162,7 @@ public class MGameCamera : MonoBehaviour
 
     public void SetPivot(Vector2 pivot)
     {
-        m_testScript.SetPivot(pivot);
+        m_cameraController.SetPivot(pivot);
     }
 
     public void SetTarget(Vector3 position)
@@ -173,12 +173,37 @@ public class MGameCamera : MonoBehaviour
         focusTarget.m_zoom = 2;
         focusTarget.m_onfinish = () => { Debug.Log(" SetTarget 종료"); };
 
-        m_testScript.OnChangeCameraType(focusTarget);
+        ChangeCameraType(focusTarget);
     }
 
     public void SetTarget(int tileX, int tileY)
     {
         SetTarget(RpgMapHelper.GetTileCenterPosition(tileX, tileY));
+    }
+
+    private CameraModeClass m_lastCameraModeClass;
+    bool m_isForceFreeMove;
+    public void SetFreeMove(bool value)
+    {
+        if (m_isForceFreeMove == value) return;
+        
+        if (value == true)
+        {
+            m_lastCameraModeClass = m_cameraController.m_cameraModeClass;
+            ChangeCameraType(new FreeMove());
+            m_isForceFreeMove = true;
+        }
+        else
+        {
+            m_isForceFreeMove = false;
+            ChangeCameraType(m_lastCameraModeClass);
+        }
+    }
+
+    private void ChangeCameraType(CameraModeClass cameraModeClass)
+    {
+        if (m_isForceFreeMove == true) { m_lastCameraModeClass = cameraModeClass; }
+        else { m_cameraController.OnChangeCameraType(cameraModeClass); }
     }
 
     private void GetCenterPosition(List<Vector2> positions, ref Vector3 position)

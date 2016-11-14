@@ -33,15 +33,20 @@ namespace stackRPG
 
         public GameObject m_cameraFocus;
         private RectTransform _cameraFocus;
-        private GameObject _userToggle;
-        private Dictionary<string, Toggle> m_focusToggles = new Dictionary<string, Toggle>();
-
+        private GameObject _userButton;
+        private Dictionary<string, Button> m_focusToggles = new Dictionary<string, Button>();
 
         public GameObject m_unitPositionScrollbar;
         private int m_unitpositionIndex;
         private Scrollbar m_scrollbar;
         private Button m_beforeButton;
         private Button m_nextButton;
+
+        public GameObject m_freeMove;
+        private Toggle m_freeMovetoggle;
+
+        public GameObject m_unitPanel;
+        private UnitPanel _unitPanel;
 
         void Awake()
         {
@@ -60,7 +65,7 @@ namespace stackRPG
             {
                 m_stage = m_state.transform.FindChild("Stage").GetComponentInChildren<Text>();
                 m_gold = m_state.transform.FindChild("Gold").GetComponentInChildren<Text>();
-                m_startStage = m_state.transform.FindChild("StartStage").GetComponent<Button>();
+                m_startStage = m_state.transform.FindChild("Ready").GetComponent<Button>();
                 m_skip = m_state.transform.FindChild("Skip").GetComponent<Button>();
             }
 
@@ -73,7 +78,7 @@ namespace stackRPG
             if(m_cameraFocus != null)
             {
                 _cameraFocus = m_cameraFocus.GetComponent<RectTransform>();
-                _userToggle = ResourcesManager.Load("CameraFocusToggle") as GameObject;
+                _userButton = ResourcesManager.Load("CameraFocusButton") as GameObject;
             }
 
             if(m_unitPositionScrollbar != null)
@@ -91,9 +96,21 @@ namespace stackRPG
                 m_beforeButton.onClick.AddListener(OnBeforeUnitPosition);
             }
 
+            if(m_freeMove != null)
+            {
+                m_freeMovetoggle = m_freeMove.GetComponentInChildren<Toggle>();
+                m_freeMovetoggle.onValueChanged.RemoveAllListeners();
+                m_freeMovetoggle.onValueChanged.AddListener((value)=>{ MGameManager.Instance.SetFreeMove(value); });
+            }
+
+            if(m_unitPanel!=null)
+            {
+                _unitPanel = m_unitPanel.GetComponent<UnitPanel>();                
+            }
+
             m_user = null;
 
-            ShowFocusToggle(false);
+            ShowFocusButton(false);
             ShowMakeUnitPanel(false);
             ShowSkipButton(false);
             ShowUnitPositionPanel(false);
@@ -101,18 +118,6 @@ namespace stackRPG
 
         public void ShowUnitPositionPanel(bool value)
         {
-            if (value == true)
-            {
-                m_unitpositionIndex = 0;
-                m_scrollbar.value = 0;
-                m_scrollbar.numberOfSteps = m_user.m_startingPosition.m_positions.Count;
-                OnChangeUnitposition(0);
-            }
-            else
-            {
-                MGameManager.Instance.UnMarkSquare();
-            }
-
             m_unitPositionScrollbar.SetActive(value);
         }
 
@@ -123,23 +128,30 @@ namespace stackRPG
 
         public void ShowMakeUnitPanel(bool value)
         {
-            m_readyPanel.gameObject.SetActive(value);
+            //m_readyPanel.gameObject.SetActive(value);
             m_startStage.gameObject.SetActive(value);
+            m_unitPanel.SetActive(value);
 
             if (value == true)
             {
-                ClearScrollView();
-                InitScrollView();
+                //ClearScrollView();
+                //InitScrollView();
+                InitUnitPanel();
             }
         }
 
-        public void ShowFocusToggle(bool value)
+        public void ShowFreeMoveToggle(bool value)
+        {
+            m_freeMove.SetActive(value);
+        }
+
+        public void ShowFocusButton(bool value)
         {
             if (value == true)
             {
                 int userCount = MGameManager.Instance.m_userList.Count;
-                _cameraFocus.sizeDelta = new Vector2(100, 150 * userCount);
-                foreach (KeyValuePair<string, Toggle> obj in m_focusToggles)
+                //_cameraFocus.sizeDelta = new Vector2(100, 150 * userCount);
+                foreach (KeyValuePair<string, Button> obj in m_focusToggles)
                 {
                     Destroy(obj.Value.gameObject);
                 }
@@ -148,22 +160,29 @@ namespace stackRPG
                 for (int i = 0; i < userCount; ++i)
                 {
                     MUser user = MGameManager.Instance.m_userList[i];
-                    RectTransform rectTransform = Instantiate(_userToggle).GetComponent<RectTransform>();
+
+                    //! 기본 설정
+                    RectTransform rectTransform = Instantiate(_userButton).GetComponent<RectTransform>();
                     rectTransform.SetParent(_cameraFocus);
                     rectTransform.localScale = Vector3.one;
-                    Toggle toggle = rectTransform.GetComponent<Toggle>();
-                    toggle.onValueChanged.RemoveAllListeners();
-                    toggle.onValueChanged.AddListener((_value) => { MGameCamera.Instance.SetCameraFocus(user.m_id, _value); });
-                    m_focusToggles.Add(user.m_id, toggle);
+
+                    Button button = rectTransform.GetComponent<Button>();
+
+                    //! 이벤트
+                    button.onClick.RemoveAllListeners();
+                    button.onClick.AddListener(() => { MGameCamera.Instance.OnFocusUserStartingPosition(user);});
+
+                    //! 디자인
+                    //button.image.color = user.m_startingPosition.m_color;
+                    Text text = button.GetComponentInChildren<Text>();
+                    text.text = user.m_nickName;
+                    text.color = user.m_startingPosition.m_color;
+
+                    m_focusToggles.Add(user.m_id, button);
                 }
             }
 
             m_cameraFocus.SetActive(value);
-        }
-
-        public void SetCameraFocus(string id, bool value)
-        {
-            m_focusToggles[id].isOn = value;
         }
 
         public void OnChangeUser(MUser user)
@@ -172,8 +191,9 @@ namespace stackRPG
             
             m_user = user;
 
-            AddUserStateChageEvent();            
-            /*m_scrollbar.size = 1 / m_scrollbar.numberOfSteps;*/
+            AddUserStateChageEvent();
+
+            InitMarkUnit();
         }
 
         private void RemoveUserStateChageEvent()
@@ -201,6 +221,16 @@ namespace stackRPG
         {
             m_stage.text = string.Format("Stage\n{0}", stageNumber);
         }
+        private void InitMarkUnit()
+        {
+            if (m_user == null) return;
+
+            m_unitpositionIndex = 0;
+            m_scrollbar.value = 0;
+            m_scrollbar.numberOfSteps = m_user.m_startingPosition.m_positions.Count;
+            OnChangeUnitposition(0);
+        }
+
         private void ClearScrollView()
         {
             while(m_makeUnitPanels.Count > 0)
@@ -211,6 +241,13 @@ namespace stackRPG
             }
         }
 
+        private void InitUnitPanel()
+        {
+            if(m_user == null) return;
+
+            _unitPanel.Init(m_user);
+
+        }
         private void InitScrollView()
         {
             if (m_user == null) return;
@@ -248,12 +285,9 @@ namespace stackRPG
 
         public void OnChangeUnitposition(float value)
         {
-            m_unitpositionIndex = Convert.ToInt32(value / (1.0f / (float)(m_scrollbar.numberOfSteps - 1)));
-            
-            Vector2 tilePos = m_user.m_startingPosition.m_positions[m_unitpositionIndex];
-            MGameCamera.Instance.SetTarget((int)tilePos.x, (int)tilePos.y);
-            MGameManager.Instance.MarkSquare(m_user.m_startingPosition, (int)tilePos.x, (int)tilePos.y);
-
+            m_unitpositionIndex = Convert.ToInt32(value / (1.0f / (float)(m_scrollbar.numberOfSteps - 1)));            
+                        
+            MGameManager.Instance.MarkIndex(m_user, m_unitpositionIndex);
         }
         public void OnNextUnitPosition()
         {   
@@ -263,6 +297,48 @@ namespace stackRPG
         public void OnBeforeUnitPosition()
         {
             m_scrollbar.value -= 1.0f / ((float)m_scrollbar.numberOfSteps - 1);
+        }
+
+        GameObject m_markSquare = null;
+        public void MarkSquare(Color color, Vector3 position)
+        {
+            if (m_markSquare == null) m_markSquare = Instantiate(ResourcesManager.Load("MarkSquare")) as GameObject;
+
+            m_markSquare.GetComponent<SpriteRenderer>().color = color;
+            m_markSquare.transform.position = position;
+            m_markSquare.SetActive(true);
+        }
+        public void RemoveMarkSquare()
+        {
+            if (m_markSquare != null) m_markSquare.SetActive(false);
+        }
+
+        List<GameObject> m_makeSquares = new List<GameObject>();
+
+        public void MakeSquare(List<Vector3> positions, Color color)
+        {
+            RemoveMakeSquare();
+            
+            for (int i = 0; i < positions.Count; ++i)
+            {
+                while (i >= m_makeSquares.Count)
+                {
+                    GameObject obj = Instantiate(ResourcesManager.Load("MakeSquare")) as GameObject;
+                    m_makeSquares.Add(obj);
+                }
+
+                m_makeSquares[i].SetActive(true);
+                m_makeSquares[i].GetComponent<SpriteRenderer>().color = color;                
+                m_makeSquares[i].transform.position = positions[i]; 
+            }
+        }
+
+        public void RemoveMakeSquare()
+        {
+            for (int i = 0; i < m_makeSquares.Count; ++i)
+            {
+                m_makeSquares[i].SetActive(false);
+            }
         }
     }
 }

@@ -57,6 +57,38 @@ public static class MSettings
         }
     }
 
+
+    public class CompareVectorVertical : IComparer<Vector2>
+    {
+        // decending order by vector y value
+        public int Compare(Vector2 a, Vector2 b)
+        {
+            if (a.y > b.y) return 1;            // if wanna change to ascending order, change compare option, greater than to less than
+            else if (a.y < b.y) return -1;   // if wanna change to ascending order, change compare option, less than to greater than 
+            else
+            {
+                if (a.x > b.x) return 1;
+                else if (a.x < b.x) return -1;
+                return 0;
+            }
+        }
+    }
+
+    public class CompareVectorHorizonal : IComparer<Vector2>
+    {
+        // decending order by vector y value
+        public int Compare(Vector2 a, Vector2 b)
+        {
+            if (a.x > b.x) return 1;            // if wanna change to ascending order, change compare option, greater than to less than
+            else if (a.x < b.x) return -1;   // if wanna change to ascending order, change compare option, less than to greater than 
+            {
+                if (a.y > b.y) return 1;            
+                else if (a.y < b.y) return -1;
+                return 0;
+            }
+        }
+    }
+
     public static int Random(int min, int max)
     {
         return UnityEngine.Random.Range(min, max);

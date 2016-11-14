@@ -5,12 +5,20 @@ using stackRPG;
 using System;
 using CreativeSpore.RpgMapEditor;
 
+
+public enum OrderType
+{
+    Vertical,
+    Horizontal,
+}
+
 [Serializable]
 public class StartingPoint
 {
     public bool m_visible = true;
     public Color m_color = Color.green;
     public List<Vector2> m_positions = new List<Vector2>();
+    public OrderType m_orderType = OrderType.Vertical;
 }
 
 

@@ -104,48 +104,5 @@ public partial class MGameManager : Singleton<MGameManager>
             if (m_userList[i].m_id == id) return m_userList[i];
         }
         return null;
-    }    
-
-    List<GameObject> m_makeSquares = new List<GameObject>();
-    public void MakeSquare(StartingPoint startingPoint)
-    {
-        if (startingPoint == null)
-        {
-            for (int i = 0; i < m_makeSquares.Count; ++i)
-            {
-                m_makeSquares[i].SetActive(false);
-            }
-
-            return;
-        }
-
-        Color color = startingPoint.m_color;
-        color.a = 0.5f;
-        for (int i = 0; i < startingPoint.m_positions.Count; ++i)
-        {
-            while (i >= m_makeSquares.Count)
-            {
-                GameObject obj = Instantiate(ResourcesManager.Load("MakeSquare")) as GameObject;
-                m_makeSquares.Add(obj);
-            }
-            m_makeSquares[i].SetActive(true);
-            m_makeSquares[i].GetComponent<SpriteRenderer>().color = color;
-            Vector2 position = startingPoint.m_positions[i];
-            m_makeSquares[i].transform.position = RpgMapHelper.GetTileCenterPosition((int)position.x, (int)position.y);
-        }
-    }
-
-    GameObject m_markSquare = null;
-    public void MarkSquare(StartingPoint startingPoint, int tileX, int tileY)
-    {
-        if(m_markSquare == null) m_markSquare = Instantiate(ResourcesManager.Load("MarkSquare")) as GameObject;
-
-        m_markSquare.GetComponent<SpriteRenderer>().color = startingPoint.m_color;
-        m_markSquare.transform.position = RpgMapHelper.GetTileCenterPosition(tileX, tileY);
-        m_markSquare.SetActive(true);
-    }
-    public void UnMarkSquare()
-    {
-        if (m_markSquare != null) m_markSquare.SetActive(false);
-    }
+    }       
 }

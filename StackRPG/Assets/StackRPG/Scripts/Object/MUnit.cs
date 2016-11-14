@@ -63,7 +63,7 @@ namespace stackRPG
         public Rigidbody2D m_rigidbody2d;
 
         public int m_level;
-        private Unit m_unit;
+        public Unit m_unit { get; private set; }
 
         public int m_teamId;
 

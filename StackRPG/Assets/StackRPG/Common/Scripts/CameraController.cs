@@ -7,7 +7,7 @@ using UnityStandardAssets.ImageEffects;
 
 public enum CameraType
 {
-    Free,
+    FreeMove,
     FocusTarget,
     FocusGroup,
     FollowTarget,
@@ -19,6 +19,12 @@ public enum CameraType
 public class CameraModeClass
 {
     public CameraType m_type { get; protected set; }
+}
+
+[Serializable]
+public class FreeMove : CameraModeClass
+{
+    public FreeMove() { m_type = CameraType.FreeMove; }
 }
 
 [Serializable]
@@ -90,7 +96,7 @@ public class CameraController : MonoBehaviour
     private Vector3 velocity;
 
     public Camera m_camera;
-    private CameraModeClass m_cameraModeClass;
+    public CameraModeClass m_cameraModeClass { get; private set; }
 
     public float DampTime = 0.15f;        
     private Vector3 m_center = new Vector3(0.5f, 0.5f, 0);
@@ -147,7 +153,7 @@ public class CameraController : MonoBehaviour
 
         switch (m_cameraModeClass.m_type)
         {
-            case CameraType.Free:
+            case CameraType.FreeMove:
 
                 break;
             case CameraType.FocusTarget:
@@ -177,7 +183,7 @@ public class CameraController : MonoBehaviour
         {
             switch (m_cameraModeClass.m_type)
             {
-                case CameraType.Free:
+                case CameraType.FreeMove:
                     UpdateFree();
                     break;
                 case CameraType.FocusTarget:
@@ -579,8 +585,8 @@ public class CameraController : MonoBehaviour
 
     void SetCameraZoom(float zoom)
     {
-        if (zoom < m_minZoom) zoom = m_minZoom;
-        if (zoom > m_maxZoom) zoom = m_maxZoom;
+        //if (zoom < m_minZoom) zoom = m_minZoom;
+        //if (zoom > m_maxZoom) zoom = m_maxZoom;
         Zoom = zoom;
 
     }

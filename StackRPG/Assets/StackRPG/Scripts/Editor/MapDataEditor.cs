@@ -71,6 +71,8 @@ public class MapDataEditor : Editor
 
         serializedObject.ApplyModifiedProperties();
 
+        EditorUtility.SetDirty(target);
+
         SceneView.RepaintAll();
     }
 

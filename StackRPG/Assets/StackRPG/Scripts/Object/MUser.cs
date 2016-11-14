@@ -64,6 +64,13 @@ namespace stackRPG
 
             m_state = UserState.WaitTurn;
             m_aliveUnits = new List<MUnit>();
+
+            //! 초기화
+            m_makeUnitState = new Dictionary<Point2D, MUnit>();
+            for(int i = 0;i<startingPoint.m_positions.Count;++i)
+            {
+                m_makeUnitState.Add(new Point2D(startingPoint.m_positions[i]), null);
+            }
         }
 
         public User m_user;
@@ -74,17 +81,20 @@ namespace stackRPG
         public string m_nickName { get { return m_user.m_nickName; } }
         public int m_gold;
 
-        public int m_teamIndex;        
-        public StartingPoint m_startingPosition;        
+        //! 유닛 생성관련된 데이터
+        public int m_teamIndex;
+        public StartingPoint m_startingPosition;
+        public Dictionary<Point2D, MUnit> m_makeUnitState = new Dictionary<Point2D, MUnit>();
+        public int m_makePointIndex;
 
         public List<UnitLevelTable> m_haveUnit = new List<UnitLevelTable>();
         public List<MUnit> m_aliveUnits { get; private set; }
 
         public bool m_isSkip { get; private set; }
 
-        public Vector2 GetSpawnPoint()
+        public Point2D GetSpawnPoint()
         {
-            return m_startingPosition.m_positions[m_aliveUnits.Count];
+            return new Point2D(m_startingPosition.m_positions[m_aliveUnits.Count]);
         }
 
         public Action m_changeGoldEvent;
@@ -230,13 +240,15 @@ namespace stackRPG
             return false;
         }
 
-        public void MakeUnit(MUnit unit)
+        public void MakeUnit(MUnit unit, Point2D point)
         {
             unit.m_changeStateDelegate += (munit) => 
             {   
-                m_aliveUnits.Remove(munit);
+                if(munit.m_state == State.Dead) m_aliveUnits.Remove(munit);
             };
             m_aliveUnits.Add(unit);
+
+            m_makeUnitState[point] = unit;
         }
 
         public void OpenUnit(int id)
@@ -284,11 +296,25 @@ namespace stackRPG
             return unitLevelTable;
         }
 
-        
+        public void SetMakePointIndex(int index)
+        {
+            m_makePointIndex = index;
+        }
+
+
 
         public bool IsCanMakeUnit()
         {
             if (m_aliveUnits.Count >= m_startingPosition.m_positions.Count) return false;
+
+            return true;
+        }
+
+        public bool IsEmptyPoint(Point2D point)
+        {
+            if (m_makeUnitState.ContainsKey(point) == false) return false;
+
+            if (m_makeUnitState[point] != null) return false;
 
             return true;
         }

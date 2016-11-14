@@ -113,7 +113,12 @@ public class MapFactoryEditor : Editor
         EditorGUI.TextArea(
             new Rect(elemX, rect.y, elemWidth, EditorGUIUtility.singleLineHeight), 
             m_mapData.m_map.m_makeUnitPositions[index].m_positions.Count + "/" + m_mapData.m_map.m_canMakeUnitCount);
-        elemX += elemWidth; elemWidth = Mathf.Clamp(Screen.width - 500, 50, 240);
+        elemX += elemWidth; elemWidth = Mathf.Clamp(Screen.width - 500, 50, 240);        
+        EditorGUI.PropertyField(
+                new Rect(elemX, rect.y, elemWidth, EditorGUIUtility.singleLineHeight),
+                element.FindPropertyRelative("m_orderType"), GUIContent.none);
+        //elemX += elemWidth; elemWidth = Mathf.Clamp(Screen.width - 500, 50, 240);
+
         EditorGUIUtility.labelWidth = savedLabelWidth;
     }
 
@@ -130,8 +135,23 @@ public class MapFactoryEditor : Editor
         m_mapData.m_map.m_canMakeUnitCount = EditorGUILayout.IntField("Unit Count", m_mapData.m_map.m_canMakeUnitCount);
         m_layerList.DoLayoutList();
         m_userIdx = Mathf.Max(m_layerList.index, 0);
-        
-        if(GUILayout.Button("Save") == true) EditorUtility.SetDirty(target);
+
+        if (GUILayout.Button("Save") == true)
+        {
+            //EditorUtility.SetDirty(target);
+
+            for (int i = 0; i < m_mapData.m_map.m_makeUnitPositions.Count; ++i)
+            {
+                StartingPoint startingPoint = m_mapData.m_map.m_makeUnitPositions[i];
+
+                switch(startingPoint.m_orderType)
+                {
+                    case OrderType.Horizontal: startingPoint.m_positions.Sort(new MSettings.CompareVectorHorizonal());break;
+                    case OrderType.Vertical: startingPoint.m_positions.Sort(new MSettings.CompareVectorVertical()); break;
+                }
+                
+            }
+        }
     }
     
     void AddUserPoint(int userID, Vector2 pos)
@@ -317,6 +337,8 @@ public class MapFactoryEditor : Editor
                 Color alphaColor = startingPoint.m_color;
                 alphaColor.a = 0.2f;
                 DrawTileWithOutline((int)position.x, (int)position.y, alphaColor, startingPoint.m_color);
+
+                Handles.Label(RpgMapHelper.GetTileCenterPosition((int)position.x, (int)position.y), "" + i);
             }
         }
     }

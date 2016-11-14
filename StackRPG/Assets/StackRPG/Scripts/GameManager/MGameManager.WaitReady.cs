@@ -22,6 +22,7 @@ public partial class MGameManager : Singleton<MGameManager>
             m_currentUser = muser;
             
             PlayUI.Instance.OnChangeUser(muser);
+            MarkIndex(muser, 0);
             MakeSquare(muser.m_startingPosition);
             MGameCamera.Instance.OnFocusUserStartingPosition(muser);
 
@@ -42,12 +43,16 @@ public partial class MGameManager : Singleton<MGameManager>
 
             yield return StartCoroutine(m_currentUser.Process());
 
+            PlayUI.Instance.ShowSkipButton(false);
             MakeSquare(null);
+            PlayUI.Instance.RemoveMarkSquare();
         }
         
         PlayUI.Instance.ShowSkipButton(false);
         PlayUI.Instance.ShowMakeUnitPanel(false);
         PlayUI.Instance.ShowUnitPositionPanel(false);
+        PlayUI.Instance.ShowFocusButton(false);
+        MGameCamera.Instance.SetFreeMove(false);
         MGameCamera.Instance.SetPivot(MGameCamera.m_pivotCenter);
 
         ChangeGameState(GameState.Play);
@@ -63,10 +68,12 @@ public partial class MGameManager : Singleton<MGameManager>
         return null;
     }
 
-    public void MakeUnit(string userID, int unitID)
+    public void MakeUnit(string userID, int unitID, Point2D point)
     {
         MUser user = GetUser(userID);
         if (user.IsCanMakeUnit() == false) return;
+
+        if (user.IsEmptyPoint(point) == false) return;
 
         Unit unit = MUnitManager.Instance.GetUnit(unitID);
         if (user.UseGold(unit.m_makePrice) == false) return;
@@ -74,12 +81,11 @@ public partial class MGameManager : Singleton<MGameManager>
         MUnit munit = MUnitManager.Instance.GetMUnit(unitID);
         munit.m_level = user.GetUnitLevel(unit.m_id);
         munit.m_teamId = user.m_teamIndex;
-        munit.transform.FindChild("Sprite").FindChild("TeamCircle").GetComponent<SpriteRenderer>().color = user.m_startingPosition.m_color;
-        Vector2 pos = user.GetSpawnPoint();
-        munit.transform.position = RpgMapHelper.GetTileCenterPosition((int)pos.x, (int)pos.y);
+        munit.transform.FindChild("Sprite").FindChild("TeamCircle").GetComponent<SpriteRenderer>().color = user.m_startingPosition.m_color;        
+        munit.transform.position = RpgMapHelper.GetTileCenterPosition(point.X, point.Y);
         munit.Init(unit);
 
-        user.MakeUnit(munit);
+        user.MakeUnit(munit, point);
 
         PlayUI.Instance.OnNextUnitPosition();
         //MGameCamera.Instance.SetTarget(munit.transform.position);
@@ -104,5 +110,41 @@ public partial class MGameManager : Singleton<MGameManager>
 
         user.OpenUnit(unitID);
         return true;
-    }        
+    }
+
+    public void MakeSquare(StartingPoint startingPoint)
+    {
+        if(startingPoint == null) { PlayUI.Instance.RemoveMakeSquare(); return; }
+
+        List<Vector3> positions = new List<Vector3>();
+        for (int i = 0; i < startingPoint.m_positions.Count; ++i)
+        {
+            Vector3 position = startingPoint.m_positions[i];
+            positions.Add(RpgMapHelper.GetTileCenterPosition((int)position.x, (int)position.y));
+        }
+
+        PlayUI.Instance.MakeSquare(positions, startingPoint.m_color);
+        
+    }
+
+    public void MarkIndex(MUser user, int index)
+    {
+        user.SetMakePointIndex(index);
+
+        Vector2 tilePos = user.m_startingPosition.m_positions[index];
+        Point2D point = new Point2D(tilePos);
+
+        //! 카메라 포커싱
+        MGameCamera.Instance.SetTarget(point.X, point.Y);
+
+        //! 위치 표시
+        PlayUI.Instance.MarkSquare(user.m_startingPosition.m_color, RpgMapHelper.GetTileCenterPosition(point.X, point.Y));
+    }
+
+    bool m_isForceFreeMove = false;
+    public void SetFreeMove(bool value)
+    {
+        m_isForceFreeMove = value;
+        MGameCamera.Instance.SetFreeMove(value);
+    }
 }

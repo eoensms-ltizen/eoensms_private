@@ -26,7 +26,7 @@ public partial class MGameManager : Singleton<MGameManager>
 
         AllocateRandomStartingPoint();
         
-        PlayUI.Instance.ShowFocusToggle(true);
+        PlayUI.Instance.ShowFocusButton(true);
 
         //! 게임시작
         ChangeGameState(GameState.WaitReady);

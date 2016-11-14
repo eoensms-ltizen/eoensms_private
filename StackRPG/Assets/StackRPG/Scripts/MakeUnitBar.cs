@@ -43,7 +43,7 @@ namespace stackRPG
             m_makeButton.onClick.RemoveAllListeners();
             m_makeButton.onClick.AddListener(() => 
             {
-                if (unitLevelTable.m_isOpend) MGameManager.Instance.MakeUnit(m_user.m_id, m_unit.m_id);
+                if (unitLevelTable.m_isOpend) MGameManager.Instance.MakeUnit(m_user.m_id, m_unit.m_id, new Point2D(m_user.m_startingPosition.m_positions[m_user.m_makePointIndex]));
                 else { MGameManager.Instance.OpenUnit(m_user.m_id, m_unit.m_id); SetUnit(m_unit); }
             });
         }
