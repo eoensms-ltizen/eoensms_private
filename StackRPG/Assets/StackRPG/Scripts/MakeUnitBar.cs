@@ -9,7 +9,7 @@ namespace stackRPG
         public MUser m_user;
         public Unit m_unit;
 
-        public Image m_icon;
+        public CharAnimationControllerUI m_charAnimationControllerUI;
         public Text m_unitInfo;
         public Button m_upgradeButton;
         public Text m_upgradecostText;
@@ -23,7 +23,13 @@ namespace stackRPG
             UnitLevelTable unitLevelTable = m_user.GetUnitLevelTable(unit.m_id);
             int level = unitLevelTable.m_level;
 
-            if(level < m_unit.m_upgradeCost.Length - 1)
+            m_charAnimationControllerUI.SetUnit(unit);
+            m_charAnimationControllerUI.TargetImage.SetNativeSize();
+            RectTransform rectTransform = m_charAnimationControllerUI.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition3D = new Vector3(rectTransform.sizeDelta.x * 0.5f + 5, 0, 0);
+            m_charAnimationControllerUI.transform.localScale = new Vector3(2, 2, 1);
+
+            if (level < m_unit.m_upgradeCost.Length - 1)
             {
                 if(unitLevelTable.m_isOpend == true) m_unitInfo.text = string.Format("Name : {0}[{1}] \nHP : {2} -> {3}\nATK : {4} -> {5}\nSPD : {6}", m_unit.m_name, level, m_unit.m_hp[level], m_unit.m_hp[level + 1], m_unit.m_attackDamage[level], m_unit.m_attackDamage[level + 1], m_unit.m_moveSpeed);
                 else m_unitInfo.text = string.Format("Name : {0}[{1}] \nHP : {2}\nATK : {3}\nSPD : {4}", m_unit.m_name, level, m_unit.m_hp[level], m_unit.m_attackDamage[level], m_unit.m_moveSpeed);
