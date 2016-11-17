@@ -13,8 +13,6 @@ namespace stackRPG
         NonListView,
     }
 
-
-
     public class PlayUI : MonoBehaviour
     {
         public static PlayUI Instance { get; private set; }
@@ -64,6 +62,34 @@ namespace stackRPG
                 Destroy(transform.gameObject);
             }
         }
+
+        void Update()
+        {
+            //! 임시로 셀랙하는 녀석으로 사용한다.
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector2 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Ray2D ray = new Ray2D(wp, Vector2.zero);
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+                if (hit.collider != null)
+                {
+                    if (hit.collider.CompareTag("MakeSquare")) { SetUnitPosition(m_makeSquares.IndexOf(hit.transform.gameObject)); }
+                    else if (hit.collider.CompareTag("Unit"))
+                    {
+                        SetMakePanel(MakeUX.NonListView);
+                        MUnit munit = hit.transform.GetComponent<MUnit>();
+                        _unitPanel.SetUnit(munit);                        
+                    }
+                }
+            }
+            
+            if(Input.GetMouseButtonUp(0))
+            {
+                if (_unitPanel.m_state == UnitPanelState.EnemyUnit) _unitPanel.UnSetUnit();
+            }
+        }
+
         public void Init()
         {
             if(m_state != null)
@@ -185,6 +211,13 @@ namespace stackRPG
             }
         }
 
+        public void SetMakePanel(MakeUX makeUX)
+        {
+            if (m_makeUX == makeUX) return;
+
+            SwitchMakePanel();
+        }
+
         public void ShowFreeMoveToggle(bool value)
         {
             m_freeMove.SetActive(value);
@@ -200,8 +233,7 @@ namespace stackRPG
                 {
                     Destroy(obj.Value.gameObject);
                 }
-                m_focusToggles.Clear();
-                MGameCamera.Instance.ClearCameraFocus();
+                m_focusToggles.Clear();                
                 for (int i = 0; i < userCount; ++i)
                 {
                     MUser user = MGameManager.Instance.m_userList[i];
@@ -325,6 +357,10 @@ namespace stackRPG
             m_skip.gameObject.SetActive(false);
         }
 
+        public void SetUnitPosition(int index)
+        {
+            m_scrollbar.value = index / ((float)m_scrollbar.numberOfSteps - 1);
+        }
         public void OnChangeUnitposition(float value)
         {
             m_unitpositionIndex = Convert.ToInt32(value / (1.0f / (float)(m_scrollbar.numberOfSteps - 1)));            

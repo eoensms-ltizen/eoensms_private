@@ -202,8 +202,6 @@ public class CameraController : MonoBehaviour
 
                     break;
             }
-
-            
         }
 
         DoKeepInsideMapBounds();

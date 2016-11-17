@@ -66,6 +66,7 @@ namespace stackRPG
         public Unit m_unit { get; private set; }
 
         public int m_teamId;
+        public Color m_teamColor;        
 
         public State m_state;
         public Command m_command;

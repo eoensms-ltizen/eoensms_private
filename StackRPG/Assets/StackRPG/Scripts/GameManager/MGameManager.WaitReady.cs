@@ -81,7 +81,8 @@ public partial class MGameManager : Singleton<MGameManager>
         MUnit munit = MUnitManager.Instance.GetMUnit(unitID);
         munit.m_level = user.GetUnitLevel(unit.m_id);
         munit.m_teamId = user.m_teamIndex;
-        munit.transform.FindChild("Sprite").FindChild("TeamCircle").GetComponent<SpriteRenderer>().color = user.m_startingPosition.m_color;        
+        munit.m_teamColor = user.m_startingPosition.m_color;
+        munit.transform.FindChild("Sprite").FindChild("TeamCircle").GetComponent<SpriteRenderer>().color = munit.m_teamColor;        
         munit.transform.position = RpgMapHelper.GetTileCenterPosition(point.X, point.Y);
         munit.Init(unit);
 
