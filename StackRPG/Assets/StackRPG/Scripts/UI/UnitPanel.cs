@@ -22,6 +22,7 @@ public class UnitPanel : MonoBehaviour
     public CharAnimationControllerUI m_charAnimationControllerUI;
     private UnitLevelTable m_unitLevelTable;
 
+    public float m_imageSize = 2.5f;
 
     public Image m_unitInfoBackground;
     public Text m_unitInfoText;
@@ -49,9 +50,9 @@ public class UnitPanel : MonoBehaviour
         m_user = user;
 
         m_units.Clear();
-        for (int i = 0;i< MUnitManager.Instance.m_unitDatas.Count;++i)
+        for (int i = 0;i< user.m_haveUnit.Count;++i)
         {
-            m_units.Add(MUnitManager.Instance.m_unitDatas[i].m_unitData);
+            m_units.Add(MUnitManager.Instance.GetUnit(user.m_haveUnit[i].m_id));
         }
 
         m_currentIndex = 0;
@@ -132,6 +133,9 @@ public class UnitPanel : MonoBehaviour
         m_charAnimationControllerUI.SpriteCharSet = charAnimationController.SpriteCharSet;
         m_charAnimationControllerUI.CharsetType = (CharAnimationControllerUI.eCharSetType)charAnimationController.CharsetType;
         m_charAnimationControllerUI.CreateSpriteFrames();
+
+        m_charAnimationControllerUI.TargetImage.SetNativeSize();
+        m_charAnimationControllerUI.TargetImage.rectTransform.sizeDelta *= m_imageSize;
     }
 
     public void Next()

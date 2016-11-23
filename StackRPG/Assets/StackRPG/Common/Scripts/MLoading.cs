@@ -42,8 +42,19 @@ public class MLoading : Singleton<MLoading>
 
     IEnumerator LoadingAnimation(string sceneName)
     {
+        SoundManager.Instance.PlayBGM(GetBGMName(sceneName));
         yield return StartCoroutine(StandardAnimation(Camera.main));
         SceneManager.LoadScene(sceneName);
+    }
+
+    private string GetBGMName(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case "MainMenu": return "bathhouse";
+            case "MPlay": return "gameroom";
+            default: return "";
+        }
     }
 
     public IEnumerator StandardAnimation(Camera original)

@@ -50,11 +50,18 @@ namespace stackRPG
         {
             m_user = user;
 
-            foreach(KeyValuePair<int,Unit> value in MUnitManager.Instance.m_units)
+            for(int i = 0;i< user.m_haveUnit.Count;++i)
             {
-                UnitLevelTable unitLevelTable = new UnitLevelTable(value.Value.m_id, false, 0);
+                UnitLevelTable unitLevelTable = new UnitLevelTable(user.m_haveUnit[i], false, 0);
                 m_haveUnit.Add(unitLevelTable);
             }
+
+//! 모든유닛 다오픈
+//             foreach(KeyValuePair<int,Unit> value in MUnitManager.Instance.m_units)
+//             {
+//                 UnitLevelTable unitLevelTable = new UnitLevelTable(value.Value.m_id, false, 0);
+//                 m_haveUnit.Add(unitLevelTable);
+//             }
         }
 
         public void Init(int teamIndex, StartingPoint startingPoint)
@@ -176,68 +183,18 @@ namespace stackRPG
 
         public void AttackGround(Vector3 position)
         {
-            List<Vector2> canMovePositions;
-            GetCanMovePosition(position, m_aliveUnits.Count, out canMovePositions);
-            for (int i = 0; i < m_aliveUnits.Count; ++i) m_aliveUnits[i].CommandAttackGround(canMovePositions[i]);
+            MHelper.AttackGround(m_aliveUnits, position);
+            //List<Vector2> canMovePositions;
+            //MHelper.GetCanMovePosition(position, m_aliveUnits.Count, out canMovePositions);
+            //for (int i = 0; i < m_aliveUnits.Count; ++i) m_aliveUnits[i].CommandAttackGround(canMovePositions[i]);
         }
 
         public void MoveGround(Vector3 position)
         {
-            List<Vector2> canMovePositions;
-            GetCanMovePosition(position, m_aliveUnits.Count, out canMovePositions);
-            for (int i = 0; i < m_aliveUnits.Count; ++i) m_aliveUnits[i].CommandMoveGround(canMovePositions[i]);
-        }
-
-        void GetCanMovePosition(Vector2 center, int count, out List<Vector2> positions)
-        {
-            positions = new List<Vector2>();
-            AutoTile centerTile = RpgMapHelper.GetAutoTileByPosition(center, 0);
-
-            int index = 0;
-            while (positions.Count < count)
-            {
-                Vector2 pos = center;
-
-                if (GetNextPosition(centerTile, index++, ref pos) == false) continue;
-                if (IsCanMovePosition(pos) == false) continue;
-
-                positions.Add(pos);
-            }
-        }
-
-        
-
-        bool GetNextPosition(AutoTile centerTile, int index, ref Vector2 pos)
-        {
-            int distance = -1;
-            int number = -1;
-            for (int i = 0; i < m_nearPositionCount.Length; i++)
-            {
-                if (m_nearPositionCount[i] > index)
-                {
-                    distance = i - 1;
-                    number = index - m_nearPositionCount[i - 1];
-                    break;
-                }
-            }
-
-            if (distance == -1) return false;
-
-
-            int x = -distance + (number + 1) / 2;
-            int y = distance - Mathf.Abs(x);
-            if (number % 2 == 0) y *= -1;
-
-            pos = RpgMapHelper.GetTileCenterPosition(x + centerTile.TileX, y + centerTile.TileY);
-
-            return true;
-        }
-
-        bool IsCanMovePosition(Vector2 pos)
-        {
-            //! 해당위치가 가능한지 안한지는, 한타일을 9등분해서 판단한다. 젠장 즉, 옆에는 서있을수있다는거다. -_-
-            if (AutoTileMap.Instance.GetAutotileCollisionAtPosition(pos) == eTileCollisionType.PASSABLE) return true;
-            return false;
+            MHelper.MoveGround(m_aliveUnits, position);
+            //List<Vector2> canMovePositions;
+            //MHelper.GetCanMovePosition(position, m_aliveUnits.Count, out canMovePositions);
+            //for (int i = 0; i < m_aliveUnits.Count; ++i) m_aliveUnits[i].CommandMoveGround(canMovePositions[i]);
         }
 
         public void MakeUnit(MUnit unit, Point2D point)

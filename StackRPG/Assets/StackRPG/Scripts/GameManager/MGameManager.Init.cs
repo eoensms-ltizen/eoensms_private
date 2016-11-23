@@ -33,7 +33,7 @@ public partial class MGameManager : Singleton<MGameManager>
 
     private void InitCamera()
     {
-        MGameCamera.Instance.Init();
+        
     }
 
     private void InitAutoTileMap()
@@ -45,10 +45,8 @@ public partial class MGameManager : Singleton<MGameManager>
     private void InitOwner()
     {
         m_userList.Clear();
-        User user = (ResourcesManager.Load("Owner") as UserData).m_user;
-        user.m_nickName = MSettings.GetNickname();
+        User user = MUserManager.Instance.m_userData.m_user;        
         m_owner = new MUser(user);
-
         m_userList.Add(m_owner);
     }
 

@@ -89,6 +89,20 @@ public static class MSettings
         }
     }
 
+    public static void LookAt2D(Transform from, Transform target, int digree = 0)
+    {
+        LookAt2D(from, target.position, digree);
+    }
+
+    public static void LookAt2D(Transform from, Vector3 target, int digree = 0)
+    {
+        Vector3 diff = target - from.position;
+        diff.Normalize();
+
+        float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+        from.rotation = Quaternion.Euler(0f, 0f, rot_z - digree);
+    }
+
     public static int Random(int min, int max)
     {
         return UnityEngine.Random.Range(min, max);

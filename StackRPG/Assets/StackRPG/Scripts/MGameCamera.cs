@@ -34,11 +34,6 @@ public class MGameCamera : MonoBehaviour
         else if (Instance != this) Destroy(transform.gameObject);
     }
 
-    public void Init()
-    {   
-        MGameManager.Instance.m_changeGameState += OnChangeGameState;
-    }
-
     //! 맵이 바뀔때마다, 셋팅하는것
     public void InitMapData()
     {
@@ -66,9 +61,6 @@ public class MGameCamera : MonoBehaviour
 
     public void SetPlayCamera()
     {
-        //! 유저의 스타팅포인트가 포커싱이 되도록한다.
-        FollowGroup followGroup = new FollowGroup();
-
         List<Transform> targets = new List<Transform>();
         for(int i = 0;i<MGameManager.Instance.m_userList.Count;++i)
         {
@@ -79,6 +71,12 @@ public class MGameCamera : MonoBehaviour
             }
         }
 
+        SetFollowGroup(targets);
+    }
+
+    public void SetFollowGroup(List<Transform> targets)
+    {
+        FollowGroup followGroup = new FollowGroup();
         followGroup.m_target = targets;
         followGroup.m_speed = 1;
         followGroup.m_zoom = 2;
@@ -95,27 +93,6 @@ public class MGameCamera : MonoBehaviour
     public void Finish()
     {
         m_cameraController.SetMotionBlur();
-    }
-    
-    void OnChangeGameState(GameState gameState)
-    {
-        switch (gameState)
-        {
-            case GameState.Init:
-            case GameState.LoadMap:
-                {
-                    //! 아직 로딩중이다.
-                }
-                break;
-            case GameState.StartStage:
-                {
-                    //! 로딩완료후 연출은 MGameManager에서 한다.
-                }
-                break;
-            case GameState.WaitReady:  break;
-            case GameState.Play: ; break;
-            default:  break;
-        }
     }
 
     public void OnFocusUserStartingPosition(MUser user)

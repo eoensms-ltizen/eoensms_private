@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MApplicationManager : Singleton<MApplicationManager>
@@ -21,7 +20,16 @@ public class MApplicationManager : Singleton<MApplicationManager>
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (SceneManager.GetActiveScene().name == "MainMenu") Application.Quit();
-            else SceneManager.LoadScene("MainMenu"); 
+            else MLoading.Instance.LoadScene("MainMenu");
+        }
+    }
+    
+    void OnApplicationQuit()
+    {
+        if (MUserManager.Instance.m_isChangeData == true)
+        {
+            Application.CancelQuit();
+            MUserManager.Instance.ShowSaveDialog(() => { Application.Quit(); });
         }
     }
 }

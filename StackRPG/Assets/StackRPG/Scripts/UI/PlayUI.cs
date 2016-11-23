@@ -326,9 +326,9 @@ namespace stackRPG
 
             if (m_user == null) return;
             
-            for (int i = 0; i< MUnitManager.Instance.m_unitDatas.Count;++i)
+            for (int i = 0; i< m_user.m_haveUnit.Count;++i)
             {
-                Unit unit = MUnitManager.Instance.m_unitDatas[i].m_unitData;
+                Unit unit = MUnitManager.Instance.GetUnit(m_user.m_haveUnit[i].m_id);
                 RectTransform rectTransform = Instantiate(m_makeUnitBar).GetComponent<RectTransform>();
                 rectTransform.SetParent(m_scrollRect.content);
                 rectTransform.localScale = Vector3.one;

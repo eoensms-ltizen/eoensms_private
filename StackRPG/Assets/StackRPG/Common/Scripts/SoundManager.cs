@@ -86,38 +86,59 @@ public class SoundManager : MonoBehaviour
 
         Init();
 
+        //LoadBGM();
+        //LoadSound();
+    }
+
+    void LoadBGM()
+    {
+        Object[] objs = Resources.LoadAll("BGM", typeof(AudioClip));
+
+        foreach (Object obj in objs)
+        {
+            AudioClip audioClip = (AudioClip)obj;
+            AudioSource audioSource = gameObject.AddComponent<AudioSource>() as AudioSource;
+            audioSource.clip = audioClip;
+            audioSource.loop = true;
+
+            m_bgmMap.Add(audioClip.name.GetHashCode(), audioSource);
+        }
+    }
+
+    void LoadBGM(string clipName)
+    {
+        Object obj = Resources.Load("BGM/" + clipName, typeof(AudioClip));
+
+        AudioClip audioClip = (AudioClip)obj;
+        AudioSource audioSource = gameObject.AddComponent<AudioSource>() as AudioSource;
+        audioSource.clip = audioClip;
+        audioSource.loop = true;
+
+        m_bgmMap.Add(audioClip.name.GetHashCode(), audioSource);
+    }
+
+    void LoadSound()
+    {
         Object[] objs = Resources.LoadAll("Sound", typeof(AudioClip));
 
         foreach (Object obj in objs)
         {
             AudioClip audioClip = (AudioClip)obj;
-            
-            if (audioClip.name.Contains("bg_") == true)
+            Audio audio = new Audio();
+            audio.m_clipName = audioClip.name;
+            audio.m_audioClip = audioClip;
+
+            int i;
+            for (i = 0; i < 2; i++)
             {
                 AudioSource audioSource = gameObject.AddComponent<AudioSource>() as AudioSource;
                 audioSource.clip = audioClip;
-                audioSource.loop = true;
+                audioSource.loop = false;
 
-                m_bgmMap.Add(audioClip.name.GetHashCode(), audioSource);
+                audio.m_audioSource.Add(audioSource);
             }
-            else
-            {
-                Audio audio = new Audio();
-                audio.m_clipName = audioClip.name;
-                audio.m_audioClip = audioClip;
 
-                int i;
-                for (i = 0; i < 2; i++)
-                {
-                    AudioSource audioSource = gameObject.AddComponent<AudioSource>() as AudioSource;
-                    audioSource.clip = audioClip;
-                    audioSource.loop = false;
-
-                    audio.m_audioSource.Add(audioSource);
-                }
-
-                m_audioMap.Add(audio.m_clipName.GetHashCode(), audio);
-            }
+            m_audioMap.Add(audio.m_clipName.GetHashCode(), audio);
         }
     }
 
@@ -184,7 +205,10 @@ public class SoundManager : MonoBehaviour
 
     public void PlayBGM(string clipName)
     {
-        PlayBGM(clipName.GetHashCode());
+        int bgmHash = clipName.GetHashCode();
+        if (m_bgmMap.ContainsKey(bgmHash) == false) LoadBGM(clipName);
+
+        PlayBGM(bgmHash);
     }
 
     public void PlayBGM(int clipNameHash)

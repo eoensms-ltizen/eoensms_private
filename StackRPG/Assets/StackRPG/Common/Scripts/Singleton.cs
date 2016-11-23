@@ -23,6 +23,9 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
+    //! 임시로 한다.
+    public static bool m_isAlive { get { return _instance == null ? false : true; } }
+
     public void Blink()
     {
 

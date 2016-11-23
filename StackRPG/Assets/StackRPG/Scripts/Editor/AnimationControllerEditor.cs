@@ -12,9 +12,16 @@ public class AnimationControllerEditor : Editor
     static TabType m_tabType;
     List<Texture2D> m_textures = new List<Texture2D>();
     float m_currAnimFrame;
+    float m_totalAnimFrame;
+    static bool m_isShowFileName;
 
     System.Diagnostics.Stopwatch m_stopwatch = new System.Diagnostics.Stopwatch();
     long m_lastMiliseconds = 0;
+
+    //void Awake()
+    //{
+    //    m_animationController.m_spriteRenderer = m_animationController.GetComponentInChildren<SpriteRenderer>();
+    //}
 
     void OnEnable()
     {
@@ -29,7 +36,7 @@ public class AnimationControllerEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        //serializedObject.Update();
+        serializedObject.Update();
 
         string[] toolBarButtonNames = System.Enum.GetNames(typeof(TabType));
         m_tabType = (TabType)GUILayout.Toolbar((int)m_tabType, toolBarButtonNames);
@@ -40,7 +47,8 @@ public class AnimationControllerEditor : Editor
             case TabType.Edit: DrawEditTab(); break;
         }
 
-        //serializedObject.ApplyModifiedProperties();
+        serializedObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(target);
         //SceneView.RepaintAll();
     }
 
@@ -51,7 +59,7 @@ public class AnimationControllerEditor : Editor
             ReloadData();
         }
         EditorGUILayout.HelpBox("folderPaht", MessageType.Info);
-        m_animationController.m_folderPath = GUILayout.TextArea(m_animationController.m_folderPath);
+        m_animationController.m_folderPath = EditorGUILayout.TextField(m_animationController.m_folderPath);
         EditorGUILayout.HelpBox("Input multiple sprite fileName", MessageType.Info);
         m_animationController.m_fileName = EditorGUILayout.TextField(m_animationController.m_fileName);
 
@@ -69,7 +77,7 @@ public class AnimationControllerEditor : Editor
             m_animationController.m_startIndex = 0;
             m_animationController.m_endIndex = sprites.Length - 1;
 
-            LoadSprite(sprites);
+            LoadSprite(sprites, true);
             ReloadSpriteFrame();
         }
 
@@ -78,13 +86,33 @@ public class AnimationControllerEditor : Editor
             string imagePath = m_animationController.m_folderPath + m_animationController.m_fileName + ".png";
             Sprite[] sprites = AssetDatabase.LoadAllAssetsAtPath(imagePath).OfType<Sprite>().ToArray();
 
-            LoadSprite(sprites);
+            LoadSprite(sprites, true);
             ReloadSpriteFrame();
         }
+
+        if (GUILayout.Button("range Add") == true)
+        {
+            string imagePath = m_animationController.m_folderPath + m_animationController.m_fileName + ".png";
+            Sprite[] sprites = AssetDatabase.LoadAllAssetsAtPath(imagePath).OfType<Sprite>().ToArray();
+
+            LoadSprite(sprites, false);
+            ReloadSpriteFrame();
+        }
+
+
         m_animationController.m_startIndex = EditorGUILayout.IntField(m_animationController.m_startIndex);
         m_animationController.m_endIndex = EditorGUILayout.IntField(m_animationController.m_endIndex);
 
         GUILayout.EndHorizontal();
+
+        m_isShowFileName = EditorGUILayout.Toggle("ShowFileName", m_isShowFileName);
+        if (m_isShowFileName)
+        {
+            for (int i = 0; i < m_animationController.SpriteFrames.Count; ++i)
+            {
+                EditorGUILayout.LabelField(m_animationController.SpriteFrames[i].name);
+            }
+        }
 
         EditorGUILayout.LabelField("Animation");        
         GUILayout.BeginHorizontal();
@@ -92,18 +120,34 @@ public class AnimationControllerEditor : Editor
         if (m_textures.Count > 0)
         {
             float afterAnimFrame = m_currAnimFrame + m_animationController.AnimSpeed * (m_stopwatch.ElapsedMilliseconds - m_lastMiliseconds) * 0.001f;
+            m_totalAnimFrame += m_animationController.AnimSpeed * (m_stopwatch.ElapsedMilliseconds - m_lastMiliseconds) * 0.001f;
 
             m_lastMiliseconds = m_stopwatch.ElapsedMilliseconds;
+            if (m_animationController.m_IsPingPong == false)
+            {
+                while (afterAnimFrame >= m_textures.Count)
+                    afterAnimFrame -= m_textures.Count;
 
-            while (afterAnimFrame >= m_textures.Count)
-                afterAnimFrame -= m_textures.Count;
+            }
+            else
+            {
+                float loopFrame = m_textures.Count * 2 - 1;
 
+                while (m_totalAnimFrame >= loopFrame)
+                    m_totalAnimFrame -= loopFrame;
+
+                if (m_totalAnimFrame < loopFrame * 0.5f)
+                    afterAnimFrame = m_totalAnimFrame;
+                else
+                    afterAnimFrame = m_textures.Count - 1 - (m_totalAnimFrame - loopFrame * 0.5f);
+                
+            }
             if (m_currAnimFrame != afterAnimFrame)
             {
                 m_currAnimFrame = afterAnimFrame;
                 Texture2D texture = m_textures[m_animationController.m_IsReverse ? m_textures.Count - 1 - (int)m_currAnimFrame : (int)m_currAnimFrame];
 
-
+                m_animationController.ShowSprite((int)m_currAnimFrame);
                 //EditorGUI.DrawPreviewTexture(new Rect(0, 0, texture.width, texture.height), texture);
 
                 GUIStyle tilesetStyle = new GUIStyle(GUI.skin.box);            
@@ -121,6 +165,11 @@ public class AnimationControllerEditor : Editor
         m_animationController.AnimSpeed = EditorGUILayout.FloatField(m_animationController.AnimSpeed);
         EditorGUILayout.LabelField("Reverse");
         m_animationController.m_IsReverse = EditorGUILayout.Toggle(m_animationController.m_IsReverse);
+        EditorGUILayout.LabelField("PingPong");
+        m_animationController.m_IsPingPong = EditorGUILayout.Toggle(m_animationController.m_IsPingPong);
+        EditorGUILayout.LabelField("AnimType");
+        m_animationController.AnimType = (AnimationController.eAnimType)EditorGUILayout.EnumPopup(m_animationController.AnimType);
+        
         GUILayout.EndVertical();
 
         GUILayout.EndHorizontal();
@@ -145,23 +194,37 @@ public class AnimationControllerEditor : Editor
         }
     }
 
-    void LoadSprite(Sprite[] sprites)
+    void LoadSprite(Sprite[] sprites,bool isClear)
     {
-        m_animationController.SpriteFrames.Clear();
+        if(isClear == true) m_animationController.SpriteFrames.Clear();
 
         if (sprites == null || sprites.Length == 0) Debug.Log("Not Found multiple Sprites : " + m_animationController.m_folderPath);
         else
         {
-
-            for (int i = m_animationController.m_startIndex; i <= m_animationController.m_endIndex; ++i)
+            if (m_animationController.m_startIndex < m_animationController.m_endIndex)
             {
-                m_animationController.SpriteFrames.Add(sprites[i]);
+                for (int i = m_animationController.m_startIndex; i <= m_animationController.m_endIndex; ++i)
+                {
+                    m_animationController.SpriteFrames.Add(sprites[i]);
+                }
+            }
+            else if (m_animationController.m_startIndex > m_animationController.m_endIndex)
+            {
+                for (int i = m_animationController.m_startIndex; i >= m_animationController.m_endIndex; --i)
+                {
+                    m_animationController.SpriteFrames.Add(sprites[i]);
+                }
+            }
+            else
+            {
+                m_animationController.SpriteFrames.Add(sprites[m_animationController.m_startIndex]);
             }
         }
     }
 
     void ReloadData()
     {
+        m_animationController.m_folderPath = "Assets/StackRPG/Gfx/Rpg Maker VX-Ace/";
         string[] temp = m_animationController.SpriteFrames[0].name.Split('_');
         m_animationController.m_fileName = temp[0].ToString();
         m_animationController.m_startIndex = int.Parse(temp[1].ToString());

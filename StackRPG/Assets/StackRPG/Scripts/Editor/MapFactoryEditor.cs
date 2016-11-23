@@ -337,7 +337,7 @@ public class MapFactoryEditor : Editor
                 Color alphaColor = startingPoint.m_color;
                 alphaColor.a = 0.2f;
                 DrawTileWithOutline((int)position.x, (int)position.y, alphaColor, startingPoint.m_color);
-
+                
                 Handles.Label(RpgMapHelper.GetTileCenterPosition((int)position.x, (int)position.y), "" + i);
             }
         }
