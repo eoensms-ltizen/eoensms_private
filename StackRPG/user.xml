@@ -1,22 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UserData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <name>TestUser</name>
+  <name />
   <hideFlags>None</hideFlags>
   <m_user>
-    <m_id>21412521</m_id>
-    <m_nickName>테스트유저</m_nickName>
-    <m_cash>500</m_cash>
+    <m_id>47a83bb00e1aec70fc9945614ed7d7e4031a056c</m_id>
+    <m_nickName>한글상훼</m_nickName>
+    <m_cash>493070</m_cash>
     <m_haveUnit>
+      <int>301</int>
+      <int>302</int>
       <int>201</int>
+      <int>202</int>
     </m_haveUnit>
     <m_haveAbility>
       <AbilityData>
         <m_abilityType>Charisma</m_abilityType>
-        <m_level>2</m_level>
+        <m_level>5</m_level>
       </AbilityData>
       <AbilityData>
         <m_abilityType>Smart</m_abilityType>
-        <m_level>4</m_level>
+        <m_level>5</m_level>
+      </AbilityData>
+      <AbilityData>
+        <m_abilityType>Lucky</m_abilityType>
+        <m_level>3</m_level>
       </AbilityData>
     </m_haveAbility>
   </m_user>
