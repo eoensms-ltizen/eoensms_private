@@ -78,6 +78,12 @@ public class MUserManager : Singleton<MUserManager>
         return true;
     }
 
+    public void SetSkill(AbilityData abilityData)
+    {
+        m_user.m_haveAbility.RemoveAll(x => x.m_abilityType == abilityData.m_abilityType);
+        m_user.m_haveAbility.Add(abilityData);
+        m_isChangeData = true;
+    }
 
     public void ShowSaveDialog(UnityAction unityAction)
     {

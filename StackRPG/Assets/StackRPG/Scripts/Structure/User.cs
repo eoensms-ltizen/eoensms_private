@@ -10,6 +10,8 @@ public class User
     public int m_cash;
     public List<int> m_haveUnit;
 
+    public List<AbilityData> m_haveAbility;
+
     public User()
     {
 
@@ -25,6 +27,12 @@ public class User
         for (int i= 0;i<user.m_haveUnit.Count;++i)
         {
             m_haveUnit.Add(user.m_haveUnit[i]);
+        }
+
+        m_haveAbility = new List<AbilityData>();
+        for(int i =0;i<user.m_haveAbility.Count;++i)
+        {
+            m_haveAbility.Add(user.m_haveAbility[i]);
         }
     }
 }

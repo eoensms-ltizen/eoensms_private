@@ -25,10 +25,9 @@ public class MainUnitBar : MonoBehaviour
         m_charAnimationControllerUI.IsAnimated = isHave;
         m_charAnimationControllerUI.TargetImage.color = isHave ? m_haveColor : m_nonHaveColor;
 
-        m_unitInfo.text = string.Format("{0}", unit.m_name);
-        //m_unitInfo.text = string.Format("Name : {0}[{1}] \nHP : {2}\nATK : {3}\nSPD : {4}", m_unit.m_name, level, m_unit.m_hp[level], m_unit.m_attackDamage[level], m_unit.m_moveSpeed);
+        m_unitInfo.text = string.Format("{0}", unit.m_name);        
 
-        m_buyCostText.text = isHave ? string.Format("Sell\n$ {0}", unit.m_openPrice) : string.Format("Buy\n$ {0}", unit.m_openPrice);
+        m_buyCostText.text = isHave ? string.Format("팔자\n{0:n0}", unit.m_openPrice) : string.Format("사자\n{0:n0}", unit.m_openPrice);
         m_buyButton.onClick.RemoveAllListeners();
         m_buyButton.onClick.AddListener(() =>
         {

@@ -32,8 +32,8 @@ public partial class MGameManager : Singleton<MGameManager>
 
             if(isOwner)
             {   
-                yield return StartCoroutine(Notice.Instance.Center("$ " + SingleGameManager.Instance.m_currentRewordGold + " 지급", NoticeEffect.Typing, 2, 1));
-                m_owner.SetGold(m_owner.m_gold + SingleGameManager.Instance.m_currentRewordGold);
+                yield return StartCoroutine(Notice.Instance.Center(string.Format("{0:n0} 매력받음",SingleGameManager.Instance.m_currentRewordGold), NoticeEffect.Typing, 2, 1));
+                m_owner.TakeLevelGold(SingleGameManager.Instance.m_currentRewordGold);
             }
             
             PlayUI.Instance.ShowSkipButton(!isOwner);

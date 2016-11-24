@@ -5,10 +5,19 @@
   <m_user>
     <m_id>21412521</m_id>
     <m_nickName>테스트유저</m_nickName>
-    <m_cash>1840</m_cash>
+    <m_cash>500</m_cash>
     <m_haveUnit>
-      <int>102</int>
-      <int>301</int>
+      <int>201</int>
     </m_haveUnit>
+    <m_haveAbility>
+      <AbilityData>
+        <m_abilityType>Charisma</m_abilityType>
+        <m_level>2</m_level>
+      </AbilityData>
+      <AbilityData>
+        <m_abilityType>Smart</m_abilityType>
+        <m_level>4</m_level>
+      </AbilityData>
+    </m_haveAbility>
   </m_user>
 </UserData>

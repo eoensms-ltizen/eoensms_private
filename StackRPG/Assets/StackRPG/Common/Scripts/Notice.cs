@@ -322,5 +322,14 @@ public class Notice : Singleton<Notice> {
     {
         m_bottomCoroutine = StartCoroutine(Bottom(text, NoticeEffect.None, 1, 2));
     }
+
+    /// <summary>
+    /// 특수능력이나, 유저가 알아야할 진행 정보들을 띄운다. 누적하고, 확인할수있다.
+    /// </summary>
+    /// <param name="text"></param>
+    public void SystemLog(string text)
+    {
+        Debug.Log(text);
+    }
 }
 

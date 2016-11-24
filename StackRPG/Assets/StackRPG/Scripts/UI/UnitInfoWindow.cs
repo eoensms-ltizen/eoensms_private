@@ -44,7 +44,7 @@ public class UnitInfoWindow : Singleton<UnitInfoWindow>
         m_stat_value.text = string.Format("{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}", unit.m_hp[level], unit.m_moveSpeed, unit.m_attackDamage[level], unit.m_attackCoolTime, unit.m_attackRange, unit.m_attackType, unit.m_armorType);
 
         //m_openPrice_name.text = "";
-        m_openPrice_value.text = string.Format("$ {0:n0}",unit.m_openPrice);
+        m_openPrice_value.text = string.Format("{0:n0}",unit.m_openPrice);
 
         gameObject.SetActive(true);
     }

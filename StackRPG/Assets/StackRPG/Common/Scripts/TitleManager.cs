@@ -21,13 +21,13 @@ public class TitleManager : MonoBehaviour
 
         bool isAlreadyLogin = false;
 
-        Notice.Instance.CenterAppear("[Anip] Attack 땅!", NoticeEffect.Typing, 1.0f);
+        Notice.Instance.CenterAppear("[안입] 공격해!", NoticeEffect.Typing, 1.0f);
         yield return new WaitForSeconds(2.0f);
 
         isAlreadyLogin = MUserManager.Instance.ShowLoadDialog();
         while (MUserManager.Instance.m_userData == null) yield return null;
 
-        Notice.Instance.CenterDisappear("[Anip] Attack 땅!", NoticeEffect.Typing, 2.0f);
+        Notice.Instance.CenterDisappear("[안입] 공격해", NoticeEffect.Typing, 2.0f);
         yield return new WaitForSeconds(1.0f);
 
         if (isAlreadyLogin == true) StartCoroutine(StartGameAnimation());

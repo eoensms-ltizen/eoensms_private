@@ -159,7 +159,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 135597ca5d1276748bd7062cb86ca672, type: 3}
+    m_Font: {fileID: 12800000, guid: 242a7989ffb704249b6af8b6f84a56d9, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -171,7 +171,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Name : Zilot\nHP : 140                     \nATK : 20\nSPD : 10"
+  m_Text: "\uC774\uB984 : \uC878\uB837\n\uCCB4\uB825 : 140                     \n\uACF5\uACA9\uB825
+    : 20\n\uC774\uB3D9\uC18D\uB3C4 : 10"
 --- !u!114 &11410368
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -233,19 +234,19 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 135597ca5d1276748bd7062cb86ca672, type: 3}
-    m_FontSize: 14
+    m_Font: {fileID: 12800000, guid: 242a7989ffb704249b6af8b6f84a56d9, type: 3}
+    m_FontSize: 30
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 3
+    m_MaxSize: 30
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: $ 100
+  m_Text: "\uAC15\uD654\n100"
 --- !u!114 &11419418
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -420,19 +421,19 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 135597ca5d1276748bd7062cb86ca672, type: 3}
-    m_FontSize: 14
+    m_Font: {fileID: 12800000, guid: 242a7989ffb704249b6af8b6f84a56d9, type: 3}
+    m_FontSize: 30
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 3
+    m_MaxSize: 30
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: $ 100
+  m_Text: "\uC5F0\uAD6C\n1000"
 --- !u!114 &11474854
 MonoBehaviour:
   m_ObjectHideFlags: 1

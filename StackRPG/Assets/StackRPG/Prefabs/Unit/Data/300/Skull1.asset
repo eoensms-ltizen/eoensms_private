@@ -17,7 +17,7 @@ MonoBehaviour:
     m_deadPrefab: {fileID: 151528, guid: 0625cd431521eef4b96135ee6d33e83c, type: 2}
     m_levelUpPrefab: {fileID: 134826, guid: cddc271088608464bb9b593a289eb79d, type: 2}
     m_id: 301
-    m_name: Skull1
+    m_name: "\uD574\uACE8"
     m_history: "\uC36C\uB354\uCE58\uD0A8\uC758 \uB2ED\uCC98\uB7FC \uBF08\uB4E4\uC758
       \uC8FC\uC778\uC774 \uB2E4 \uB2E4\uB97C \uC218 \uC788\uB2E4."
     m_openPrice: 40

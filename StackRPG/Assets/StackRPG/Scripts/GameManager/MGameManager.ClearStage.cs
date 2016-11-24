@@ -13,7 +13,7 @@ public partial class MGameManager : Singleton<MGameManager>
     {
         if (SingleGameManager.Instance.IsLastStage() == true) { ChangeGameState(GameState.Finish); yield break; }
 
-        StartCoroutine(Notice.Instance.Center("Clear", NoticeEffect.Typing, 1, 0.5f));
+        StartCoroutine(Notice.Instance.Center("전투에 승리하였습니다.", NoticeEffect.Typing, 1, 0.5f));
         //! 모든 유닛 제거
         for (int i = 0; i < m_userList.Count; ++i)
         {

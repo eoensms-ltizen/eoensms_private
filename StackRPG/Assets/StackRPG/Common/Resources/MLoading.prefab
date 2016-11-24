@@ -112,10 +112,10 @@ MonoBehaviour:
   resHeight: 360
   m_baseTime: 1
   m_isUseDOTween: 1
-  m_pixelEaseType: 18
+  m_pixelEaseType: 3
   m_pixelFrom: 256
   m_pixelTo: 4
-  m_effectEaseType: 2
+  m_effectEaseType: 1
   m_effectTo: 0
   m_effectFrom: 2
   m_texture2D: {fileID: 0}

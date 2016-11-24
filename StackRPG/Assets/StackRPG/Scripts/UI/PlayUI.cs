@@ -291,12 +291,12 @@ namespace stackRPG
 
         void DrawGold()
         {
-            m_gold.text = string.Format("Gold\n{0}", m_user !=null? m_user.m_gold : 0);
+            m_gold.text = string.Format("매력 {0:n0}", m_user !=null? m_user.m_gold : 0);
         }
 
         public void DrawStage(int stageNumber)
         {
-            m_stage.text = string.Format("Stage\n{0}", stageNumber);
+            m_stage.text = string.Format("전투 {0}", stageNumber);
         }
         private void InitMarkUnit()
         {

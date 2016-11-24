@@ -17,7 +17,7 @@ MonoBehaviour:
     m_deadPrefab: {fileID: 151528, guid: 0625cd431521eef4b96135ee6d33e83c, type: 2}
     m_levelUpPrefab: {fileID: 134826, guid: cddc271088608464bb9b593a289eb79d, type: 2}
     m_id: 401
-    m_name: Vemfire3
+    m_name: "\uD761\uD608\uADC0"
     m_history: "\uBA87 \uC0B4\uC778\uC9C0 \uC54C\uC218\uC5C6\uB2E4. \uC774\uC058\uBA74
       \uB42C\uB2E4."
     m_openPrice: 120

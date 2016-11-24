@@ -14,5 +14,10 @@ MonoBehaviour:
   m_user:
     m_id: 21412521
     m_nickName: "\uD14C\uC2A4\uD2B8\uC720\uC800"
-    m_cash: 2000
+    m_cash: 500
     m_haveUnit: c9000000
+    m_haveAbility:
+    - m_abilityType: 0
+      m_level: 2
+    - m_abilityType: 2
+      m_level: 4

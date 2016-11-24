@@ -17,7 +17,7 @@ MonoBehaviour:
     m_deadPrefab: {fileID: 151528, guid: 0625cd431521eef4b96135ee6d33e83c, type: 2}
     m_levelUpPrefab: {fileID: 134826, guid: cddc271088608464bb9b593a289eb79d, type: 2}
     m_id: 202
-    m_name: Marine
+    m_name: "\uC18C\uCD1D\uC218"
     m_history: "\uB2F9\uC2E0\uC774 \uAC00\uC7A5 \uC624\uB79C\uC2DC\uAC04 \uB9CE\uC774
       \uBCFC \uB140\uC11D\uC774\uB77C\uB294\uAC83\uC740 \uD655\uC2E4\uD558\uB2E4. "
     m_openPrice: 50

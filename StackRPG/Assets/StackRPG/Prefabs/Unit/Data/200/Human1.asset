@@ -17,7 +17,7 @@ MonoBehaviour:
     m_deadPrefab: {fileID: 151528, guid: 0625cd431521eef4b96135ee6d33e83c, type: 2}
     m_levelUpPrefab: {fileID: 134826, guid: cddc271088608464bb9b593a289eb79d, type: 2}
     m_id: 201
-    m_name: ZilLot
+    m_name: "\uBCF4\uBCD1"
     m_history: "\uBA38\uB9AC\uC190\uC9C8\uC744 \uC88B\uC544\uD55C\uB2E4. \uADF8\uB2E5
       \uAC15\uD558\uC9C0 \uC54A\uC744\uC9C0\uB3C4 \uBAA8\uB978\uB2E4."
     m_openPrice: 80

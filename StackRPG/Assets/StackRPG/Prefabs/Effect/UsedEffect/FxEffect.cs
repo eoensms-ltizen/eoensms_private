@@ -1,9 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using DG.Tweening;
-using UnityEngine.Events;
-using UnityEditor;
-
 
 public abstract class FxEffect : MonoBehaviour
 {   
